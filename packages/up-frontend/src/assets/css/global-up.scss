@@ -1,0 +1,54 @@
+#app > .up-app {
+  min-height: 100vh;
+  > .page {
+    background: #ffffff;
+    border-radius: 1rem;
+    padding: 24px;
+    margin: 0 auto;
+    text-align: center;
+    max-width: 375px;
+  }
+  > .up-banner {
+    background-color: #fdf0b4;
+    // text-align: center;
+    color: #606266;
+    font-size: 14px;
+    padding: 4px 8px;
+  }
+}
+
+html.dark {
+  #app > .up-app {
+    background: #333;
+    > .page {
+      background: #333;
+      color: #ffffff;
+    }
+  }
+}
+
+h2,
+h4 {
+  text-align: left;
+}
+h4 {
+  font-weight: initial;
+  color: var(--el-text-color-regular);
+  font-size: 14px;
+}
+
+@media screen and (min-width: 376px) {
+  #app > .up-app {
+    // padding-top: 5rem;
+    padding-bottom: 5rem;
+    background-image: linear-gradient(to right, #4299e1, #38b2ac);
+    > .up-banner {
+      margin-bottom: 5rem;
+    }
+  }
+  html.dark {
+    #app > .up-app {
+      background: transparent;
+    }
+  }
+}

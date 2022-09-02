@@ -1,0 +1,55 @@
+:root {
+  --primary: #5575ff;
+  // --success: #67c23a;
+  // --warning: #e6a23c;
+  --danger: #ff583d;
+  // --info: #909399;
+  --color-primary: #1c7bff;
+  --color-regular: #9d6fff;
+  --text-primary: #333333;
+  --text-regular: #666666;
+  // --text-secondary: #909399;
+  // --text-placeholder: #c0c4cc;
+  --sub: #f6f7fb;
+}
+
+*,
+::after,
+::before {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+html {
+  color: var(--text-primary);
+  font-size: 16px;
+  font-weight: 500;
+  word-spacing: 1px;
+  word-break: break-word;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+}
+
+html,
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: PingFang SC, Source Sans, Microsoft Yahei, sans-serif;
+}
+
+a {
+  cursor: pointer;
+  color: var(--el-color-primary);
+  text-decoration: none;
+}
+a:hover {
+  color: var(--el-color-primary-light-5);
+}
+
+.iconfont {
+  display: inline-block;
+}

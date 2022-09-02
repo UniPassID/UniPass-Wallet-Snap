@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="335px" height="180px" viewBox="0 0 335 180" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>编组 3</title>
+    <defs>
+        <linearGradient x1="0%" y1="35.5647137%" x2="100%" y2="64.4352863%" id="linearGradient-1">
+            <stop stop-color="#398BFF" offset="0%"></stop>
+            <stop stop-color="#8864FF" offset="100%"></stop>
+        </linearGradient>
+        <path d="M25.638852,-1.03584031e-15 L309.361148,1.03584031e-15 C318.276335,-6.01853049e-16 321.509198,0.928256111 324.768457,2.67132704 C328.027716,4.41439796 330.585602,6.97228371 332.328673,10.231543 C334.071744,13.4908022 335,16.7236646 335,25.638852 L335,154.361148 C335,163.276335 334.071744,166.509198 332.328673,169.768457 C330.585602,173.027716 328.027716,175.585602 324.768457,177.328673 C321.509198,179.071744 318.276335,180 309.361148,180 L25.638852,180 C16.7236646,180 13.4908022,179.071744 10.231543,177.328673 C6.97228371,175.585602 4.41439796,173.027716 2.67132704,169.768457 C0.928256111,166.509198 4.01235366e-16,163.276335 -6.90560205e-16,154.361148 L6.90560205e-16,25.638852 C-4.01235366e-16,16.7236646 0.928256111,13.4908022 2.67132704,10.231543 C4.41439796,6.97228371 6.97228371,4.41439796 10.231543,2.67132704 C13.4908022,0.928256111 16.7236646,6.01853049e-16 25.638852,-1.03584031e-15 Z" id="path-2"></path>
+        <filter x="-57.7%" y="-93.2%" width="215.4%" height="286.3%" filterUnits="objectBoundingBox" id="filter-4">
+            <feGaussianBlur stdDeviation="50" in="SourceGraphic"></feGaussianBlur>
+        </filter>
+        <filter x="-50.5%" y="-102.4%" width="200.9%" height="304.7%" filterUnits="objectBoundingBox" id="filter-5">
+            <feGaussianBlur stdDeviation="50" in="SourceGraphic"></feGaussianBlur>
+        </filter>
+        <filter x="-75.4%" y="-93.2%" width="250.8%" height="286.3%" filterUnits="objectBoundingBox" id="filter-6">
+            <feGaussianBlur stdDeviation="50" in="SourceGraphic"></feGaussianBlur>
+        </filter>
+    </defs>
+    <g id="移动端" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="钱包首页" transform="translate(-20.000000, -104.000000)">
+            <g id="编组-3" transform="translate(20.000000, 104.000000)">
+                <mask id="mask-3" fill="white">
+                    <use xlink:href="#path-2"></use>
+                </mask>
+                <use id="矩形" fill="url(#linearGradient-1)" xlink:href="#path-2"></use>
+                <path d="M-27,139.152307 C26.5935095,143.256514 58.1984477,128.891789 67.8148148,96.0581311 C82.2393654,46.8076441 155.222222,-21.1636582 233,-21.1636582 L-27,-21.1636582 L-27,139.152307 Z" id="路径-2" fill="#8864FF" filter="url(#filter-4)" mask="url(#mask-3)"></path>
+                <path d="M45.800641,186.528608 C65.3153783,155.509536 96.0606224,140 138.036373,140 C201,140 206.018946,108.090909 242,100.818182 C277.981054,93.5454545 288.729443,40 343,40 L343,186.528608 L45.800641,186.528608 Z" id="路径-3" fill="#8864FF" filter="url(#filter-5)" mask="url(#mask-3)"></path>
+                <path d="M161.967373,-10 C161.23858,29.8310889 181.827676,52.2510503 223.73466,57.2598844 C286.595136,64.7731354 253.749121,106.817462 293.390863,128.908731 C319.818691,143.636244 342.337965,151 360.948686,151 L360.948686,-10 L161.967373,-10 Z" id="路径-4" fill="#498FFF" filter="url(#filter-6)" mask="url(#mask-3)"></path>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,60 @@
+// element ui
+
+.up-button {
+  width: 100%;
+}
+.el-form--default.el-form--label-top .el-form-item .el-form-item__label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0;
+}
+.el-form-item__error {
+  text-align: left;
+}
+.el-message {
+  width: 365px !important;
+}
+.el-message-box {
+  width: 365px !important;
+}
+.el-dialog {
+  width: 90%;
+  max-width: 44rem;
+  border-radius: 12px;
+
+  .el-dialog__header {
+    padding-top: 16px;
+    padding-bottom: 0;
+
+    .el-dialog__title {
+      line-height: 24px;
+      font-size: 18px;
+    }
+  }
+
+  .el-dialog__body {
+    padding: 30px 24px;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 22px;
+  }
+}
+
+#page-send {
+  .el-radio {
+    display: flex;
+    line-height: 20px;
+    height: auto;
+    .el-radio__label {
+      white-space: normal;
+    }
+  }
+  .el-link {
+    font-size: 16px;
+  }
+  .el-input__wrapper,
+  .el-textarea__inner {
+    border-radius: 14px;
+  }
+}
