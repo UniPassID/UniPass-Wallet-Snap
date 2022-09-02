@@ -3,12 +3,17 @@
   "version": "0.0.3",
   "description": "An example for UniPass Wallet integrated with Metamask snaps.",
   "scripts": {
-    "start": "pnpm --stream -r start",
-    "start:dev": "pnpm --stream -r run start:dev",
-    "build": "pnpm --stream -r run build",
-    "clean": "rm -rf .parcel-cache && pnpm -r run clean"
+    "start:dev": "concurrently  --raw --kill-others \"yarn workspace up-snap run start:dev\" \"yarn workspace up-frontend run start:dev\"",
+    "build": "yarn workspaces run build"
   },
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "keywords": [],
   "author": "johnz@lay2.dev",
-  "license": "Apache 2.0"
+  "license": "Apache 2.0",
+  "dependencies": {
+    "concurrently": "^7.3.0"
+  }
 }
