@@ -6,8 +6,7 @@
     "start:dev": "ENV=dev-snaps sh bin/start.sh 1903",
     "build": "ENV=test-snaps sh bin/build.sh",
     "preview": "cd dist && serve .",
-    "lint": "vue-cli-service lint",
-    "yarn": "yarn"
+    "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "unipass-wallet": "0.0.4"
@@ -16,10 +15,11 @@
     "@metamask/types": "^1.1.0",
     "@sentry/tracing": "^7.2.0",
     "@sentry/vue": "^7.2.0",
-    "@types/node": "^18.0.0",
+    "@types/node": "^18.7.14",
     "@types/qrcode": "^1.4.2",
     "@typescript-eslint/eslint-plugin": "^5.29.0",
     "@typescript-eslint/parser": "^5.29.0",
+    "@vue/babel-plugin-transform-vue-jsx": "^1.4.0",
     "@vue/cli": "^5.0.8",
     "@vue/cli-plugin-babel": "~5.0.6",
     "@vue/cli-plugin-eslint": "~5.0.6",
@@ -37,7 +37,7 @@
     "core-js": "^3.23.2",
     "dayjs": "^1.11.3",
     "dexie": "^3.2.2",
-    "element-plus": "^2.2.6",
+    "element-plus": "^2.2.16",
     "eslint": "^8.18.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",
