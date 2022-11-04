@@ -1,6 +1,6 @@
 {
   "name": "up-snap",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "license": "Apache 2.0",
   "author": "johnz",
   "main": "dist/bundle.js",

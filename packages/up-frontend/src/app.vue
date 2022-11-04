@@ -18,27 +18,27 @@ import router from './plugins/router'
 import api from './service/backend'
 import { useUserStore } from './store/user'
 
-const gasType = ref('')
-axios
-  .get(
-    'https://api.polygonscan.com/api?module=gastracker&action=gasoracle&apikey=6QQXQ81TGYF8NBGUDK86W17R4UMBBMRPEU',
-  )
-  .then((res) => {
-    if (res.data && res.data.message === 'OK') {
-      const FastGasPrice = Number(res.data.result.FastGasPrice)
-      if (FastGasPrice < 200) {
-        gasType.value = 'acceptable'
-      } else {
-        gasType.value = 'unacceptable'
-      }
-    }
-    if (gasType.value === '') {
-      gasType.value = 'unacceptable'
-    }
-  })
-  .catch(() => {
-    gasType.value = 'unacceptable'
-  })
+const gasType = ref('acceptable')
+// axios
+//   .get(
+//     'https://api.polygonscan.com/api?module=gastracker&action=gasoracle&apikey=6QQXQ81TGYF8NBGUDK86W17R4UMBBMRPEU',
+//   )
+//   .then((res) => {
+//     if (res.data && res.data.message === 'OK') {
+//       const FastGasPrice = Number(res.data.result.FastGasPrice)
+//       if (FastGasPrice < 200) {
+//         gasType.value = 'acceptable'
+//       } else {
+//         gasType.value = 'unacceptable'
+//       }
+//     }
+//     if (gasType.value === '') {
+//       gasType.value = 'unacceptable'
+//     }
+//   })
+//   .catch(() => {
+//     gasType.value = 'unacceptable'
+//   })
 
 const init = async () => {
   const res = await api.getSuffixes()

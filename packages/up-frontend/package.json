@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start:dev": "ENV=dev-snaps sh bin/start.sh 1903",
+    "start:test": "ENV=test-snaps sh bin/start.sh 1903",
     "build": "ENV=test-snaps sh bin/build.sh",
     "preview": "cd dist && serve .",
     "lint": "vue-cli-service lint"

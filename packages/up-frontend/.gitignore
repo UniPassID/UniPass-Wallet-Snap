@@ -27,3 +27,4 @@ pnpm-debug.log*
 
 # test page
 /src/pages/test.vue
+.vercel
