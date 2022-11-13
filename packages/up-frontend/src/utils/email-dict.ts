@@ -17,7 +17,16 @@ const netease = [
   'vip.188.com',
 ]
 
-export const emailLowercaseFormat = [...google, ...yahoo, ...tencent, ...netease, ...apple]
+const gsuit = ['unipass.id', 'consensys.net']
+
+export const emailLowercaseFormat = [
+  ...google,
+  ...yahoo,
+  ...tencent,
+  ...netease,
+  ...apple,
+  ...gsuit,
+]
 export const emailLowercasePrompt = [...protonmail, ...microsoft, ...mail]
-export const emailDotPrompt = [...protonmail, ...google]
+export const emailDotPrompt = [...protonmail, ...google, ...gsuit]
 export const emailDotNoPrompt = [...yahoo, ...tencent, ...netease, ...apple, ...microsoft, ...mail]

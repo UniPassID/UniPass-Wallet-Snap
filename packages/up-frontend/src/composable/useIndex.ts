@@ -177,7 +177,6 @@ export const useIndex = () => {
       if (user) {
         // check login
         // if (dayjs.unix(user.sessionKey.expires).isAfter(dayjs())) {
-        debugger
         const resKeysetHash = await blockchain.getAccountKeysetHash(user.account)
         if (resKeysetHash === user.keyset.hash) {
           address.value = user.account

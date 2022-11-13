@@ -48,6 +48,12 @@
         <span>mail.com</span>
       </div>
     </div>
+    <div class="mail">
+      <img class="logo" src="@/assets/img/support-email/consensys.svg" />
+      <div class="suffix">
+        <span>consensys.net</span>
+      </div>
+    </div>
   </el-dialog>
 </template>
 <script lang="ts" setup>
