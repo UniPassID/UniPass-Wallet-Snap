@@ -1,4 +1,4 @@
-import { FormInstance } from 'element-plus'
+import { FormInstance, ElMessageBox } from 'element-plus'
 import api from '@/service/backend'
 import { useRegisterStore } from '@/store/register'
 
@@ -75,6 +75,19 @@ export function useRegisterGuardian() {
     }
     form.guardians.push(GuardiansInfo)
   }
+  const skipGuardian = () => {
+    ElMessageBox.confirm($t('SureSkip'), {
+      confirmButtonText: $t('SkipGuardian'),
+      cancelButtonText: $t('Cancel'),
+    })
+      .then(async () => {
+        form.loading = true
+        await registerStore.register()
+        form.loading = false
+      })
+      .catch(() => {})
+  }
+
   const submitGuardians = async () => {
     form.loading = true
     registerStore.guardians = form.guardians
@@ -117,6 +130,7 @@ export function useRegisterGuardian() {
     formElement,
     form,
     addGuardian,
+    skipGuardian,
     deleteGuardian,
     fetchGuardianEmail,
     submitGuardians,

@@ -80,5 +80,8 @@
   "LoginNow": "前往登录",
   "SupportMail": "支持邮箱",
   "UniPassDKIM": "UniPass 通过在链上验证电子邮件的 DKIM 签名，实现了安全和去中心化的帐户恢复。因此，目前 UniPass 账号注册只支持高可信度的大型邮件服务商。",
-  "RegisterWithMM": "使用 MetaMask 创建账户"
+  "RegisterWithMM": "使用 MetaMask 创建账户",
+  "NetworkError": "网络错误或超时，请稍后重试",
+  "SkipGuardian": "跳过",
+  "SureSkip": "你确定要跳过守护者设置吗？"
 }

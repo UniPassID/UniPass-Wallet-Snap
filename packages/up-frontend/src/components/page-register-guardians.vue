@@ -62,12 +62,17 @@
         <div class="line"></div>
       </div>
       <br />
-      <up-button class="guardian-add" v-if="form.guardians.length < 4" @click="addGuardian">
+      <up-button
+        class="guardian-add"
+        :disabled="form.loading"
+        v-if="form.guardians.length < 4"
+        @click="addGuardian"
+      >
         {{ $t('AddGuardian') }}
       </up-button>
     </el-form>
-    <br />
     <up-button
+      class="guardian-submit"
       type="primary"
       :loading="form.loading"
       :disabled="
@@ -77,6 +82,17 @@
       @click="submitGuardians"
     >
       {{ $t('Submit') }}
+    </up-button>
+    <br />
+    <br />
+    <up-button
+      class="guardian-skip"
+      type="primary"
+      :loading="form.loading"
+      @click="skipGuardian"
+      link
+    >
+      {{ $t('SkipGuardian') }}
     </up-button>
   </div>
 </template>
@@ -100,6 +116,7 @@ const {
   formElement,
   // guardian
   addGuardian,
+  skipGuardian,
   deleteGuardian,
   fetchGuardianEmail,
   submitGuardians,
@@ -163,10 +180,12 @@ const {
       background: var(--el-fill-color);
     }
   }
+  .guardian-submit {
+    margin-top: 24px;
+  }
   .guardian-add {
-    margin: 0 auto;
     margin-top: 12px;
-    display: block;
+    width: auto;
   }
 }
 </style>

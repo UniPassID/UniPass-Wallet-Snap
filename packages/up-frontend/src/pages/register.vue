@@ -6,17 +6,17 @@
     @back="back"
     @token="getToken"
   /> -->
-  <!-- <page-register-guardians v-else-if="registerStore.step === 3" @back="back" /> -->
-  <page-register />
+  <page-register-guardians v-if="registerStore.step === 3" @back="back" />
+  <page-register v-else />
 </template>
 
 <script lang="ts" setup>
-// import { useRegister } from '@/composable/useRegister'
+import { useRegister } from '@/composable/useRegister'
 
-// const { registerStore, getToken } = useRegister()
-// const back = () => {
-//   registerStore.password = ''
-//   registerStore.confirmPassword = ''
-//   registerStore.step = 1
-// }
+const { registerStore, getToken } = useRegister()
+const back = () => {
+  // registerStore.password = ''
+  // registerStore.confirmPassword = ''
+  registerStore.step = 1
+}
 </script>

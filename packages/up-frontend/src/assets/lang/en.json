@@ -80,5 +80,8 @@
   "LoginNow": "Login now",
   "UniPassDKIM": "UniPass implements secure and decentralized account recovery by verifying the DKIM signature via emails on the chain. Therefore, currently, UniPass account registration only supports large-scale email service providers with high credibility.",
   "SupportMail": "Supported Emails",
-  "RegisterWithMM": "Create account with MetaMask"
+  "RegisterWithMM": "Create account with MetaMask",
+  "NetworkError": "Network error or timeout, please try again later",
+  "SkipGuardian": "Skip",
+  "SureSkip": "Are you sure to skip the guardians setting?"
 }

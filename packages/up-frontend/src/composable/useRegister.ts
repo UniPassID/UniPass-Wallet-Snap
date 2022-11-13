@@ -76,9 +76,9 @@ export const useRegister = (otpAction: OtpAction, email: string, $emit: Emits) =
       if (res.ok) {
         const token = res.data.upAuthToken
         $emit('token', token)
-        registerStore.token = token
-
-        await registerStore.register()
+        // registerStore.token = token
+        // await registerStore.register()
+        getToken(token)
       }
       form.loading = false
     })
