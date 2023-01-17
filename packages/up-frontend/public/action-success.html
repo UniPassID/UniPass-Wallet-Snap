@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Action Successful</title>
+    <link rel="stylesheet" href="/action-success.css" />
+    <style>
+      body {
+        margin: 0;
+        padding: 0 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        width: calc(100% - 40px);
+        height: 100vh;
+        text-align: center;
+      }
+
+      body h1 {
+        margin: 0;
+        margin-top: 40px;
+        font-size: 36px;
+        font-weight: bold;
+        color: #1f202a;
+        line-height: 49px;
+      }
+
+      body h2 {
+        margin: 0;
+        margin-top: 20px;
+        font-size: 24px;
+        font-weight: 400;
+        color: #5e5f6e;
+        line-height: 33px;
+      }
+
+      body button {
+        cursor: pointer;
+        margin-top: 60px;
+
+        width: 260px;
+        height: 72px;
+        background: linear-gradient(320deg, #8864ff 0%, #9a7cff 100%);
+        box-shadow: inset 1px 1px 4px 0px rgba(255, 255, 255, 0.5);
+        border-radius: 40px;
+        border: 0;
+
+        font-size: 24px;
+        font-weight: 600;
+        color: #ffffff;
+        line-height: 28px;
+      }
+      body button:hover {
+        background: linear-gradient(320deg, #6d4fcd 0%, #8079ce 100%);
+      }
+    </style>
+  </head>
+  <body>
+    <svg width="100px" height="100px" viewBox="0 0 100 100" version="1.1">
+      <title>切片</title>
+      <defs>
+        <linearGradient
+          x1="55.2787092%"
+          y1="55.9914863%"
+          x2="16.4477609%"
+          y2="12.7440604%"
+          id="linearGradient-1"
+        >
+          <stop stop-color="#8864FF" offset="0%"></stop>
+          <stop stop-color="#9A7CFF" offset="100%"></stop>
+        </linearGradient>
+        <path
+          d="M50,0 C77.6142375,0 100,22.3857625 100,50 C100,77.6142375 77.6142375,100 50,100 C22.3857625,100 0,77.6142375 0,50 C0,22.3857625 22.3857625,0 50,0 Z M71.7401982,27.1114684 C54.3609453,38.5916289 46.0156114,59.7304288 46.0156114,59.7304288 L36.8724625,50.000026 L26.2598018,56.098819 C26.2598018,56.098819 38.9651356,61.4083711 45.2806217,72.8885316 C52.8662307,58.6818317 67.4268106,45.4304002 71.7401982,44.4503447 L71.7401982,27.1114684 L71.7401982,27.1114684 Z"
+          id="path-2"
+        ></path>
+        <filter
+          x="-4.0%"
+          y="-4.0%"
+          width="108.0%"
+          height="108.0%"
+          filterUnits="objectBoundingBox"
+          id="filter-3"
+        >
+          <feGaussianBlur
+            stdDeviation="3"
+            in="SourceAlpha"
+            result="shadowBlurInner1"
+          ></feGaussianBlur>
+          <feOffset dx="0" dy="-2" in="shadowBlurInner1" result="shadowOffsetInner1"></feOffset>
+          <feComposite
+            in="shadowOffsetInner1"
+            in2="SourceAlpha"
+            operator="arithmetic"
+            k2="-1"
+            k3="1"
+            result="shadowInnerInner1"
+          ></feComposite>
+          <feColorMatrix
+            values="0 0 0 0 1   0 0 0 0 1   0 0 0 0 1  0 0 0 0.303099732 0"
+            type="matrix"
+            in="shadowInnerInner1"
+          ></feColorMatrix>
+        </filter>
+      </defs>
+      <g id="2022.7" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="邮箱" transform="translate(-910.000000, -353.000000)">
+          <g id="编组" transform="translate(722.000000, 353.000000)">
+            <g id="形状结合" transform="translate(188.000000, 0.000000)">
+              <use fill="url(#linearGradient-1)" fill-rule="evenodd" xlink:href="#path-2"></use>
+              <use fill="black" fill-opacity="1" filter="url(#filter-3)" xlink:href="#path-2"></use>
+            </g>
+          </g>
+        </g>
+      </g>
+    </svg>
+    <h1>Action Successful!</h1>
+    <h2>You have accepted the guardian invitation.</h2>
+    <button id="close">Close Page</button>
+
+    <script>
+      const close = function () {
+        if (window.WeixinJSBridge && window.WeixinJSBridge.call) {
+          window.WeixinJSBridge.call('closeWindow')
+        }
+        window.location.href = 'about:blank'
+        window.close()
+      }
+
+      document.querySelector('#close').addEventListener('click', () => {
+        close()
+      })
+    </script>
+  </body>
+</html>

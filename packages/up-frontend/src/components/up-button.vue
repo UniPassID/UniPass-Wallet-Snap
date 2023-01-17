@@ -3,4 +3,3 @@
     <template v-for="(index, name) in $slots" #[name]><slot :name="name" /></template>
   </el-button>
 </template>
-<script setup lang="ts"></script>

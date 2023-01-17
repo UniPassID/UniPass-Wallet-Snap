@@ -1,5 +1,8 @@
 const plugins = ['@vue/babel-plugin-transform-vue-jsx']
-if (process.env.NODE_ENV === 'production') {
+
+const net = process.env.VUE_APP_Net
+
+if (net === 'mainnet' || net === 'testnet') {
   plugins.push('transform-remove-console')
 }
 

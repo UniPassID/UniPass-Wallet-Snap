@@ -7,4 +7,4 @@
   </div>
 </template>
 
-<script lang="ts" steup></script>
+<script lang="ts" setup></script>

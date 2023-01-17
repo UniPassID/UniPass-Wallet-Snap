@@ -1,0 +1,38 @@
+{
+  "chainId": 2025,
+  "default": true,
+  "cmcId": 12221,
+  "tokenStandard": "erc20",
+  "tokens": [
+    {
+      "chainId": 2025,
+      "address": "0x8e8816a1747fddc5f8b45d2e140a425d3788f659",
+      "name": "USDT",
+      "symbol": "USDT",
+      "decimals": 18,
+      "logoURI": "https://lay2-unipass-token-images.s3.ap-southeast-1.amazonaws.com/coins/images/325/large/Tether-logo.png?1598003707",
+      "default": false,
+      "cmcId": 825
+    },
+    {
+      "chainId": 2025,
+      "address": "0x09C1226a28C07F2177975bdeC7aC3BAa0133D833",
+      "name": "WETH",
+      "symbol": "WETH",
+      "decimals": 18,
+      "logoURI": "https://lay2-unipass-token-images.s3.ap-southeast-1.amazonaws.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
+      "default": false,
+      "cmcId": 1027
+    },
+    {
+      "chainId": 2025,
+      "address": "0x36426B7bF5709E5c2160411C6E8B1832e3404FE1",
+      "name": "MIX",
+      "symbol": "MIX",
+      "decimals": 18,
+      "logoURI": "https://lay2-unipass-token-images.s3.ap-southeast-1.amazonaws.com/custom/MIX-logo.png",
+      "default": false,
+      "cmcId": 4366
+    }
+  ]
+}

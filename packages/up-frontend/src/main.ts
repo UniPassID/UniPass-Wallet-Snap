@@ -1,12 +1,11 @@
 import { createApp } from 'vue'
 import App from '@/app.vue'
-// pwa
-// import '@/plugins/register-service-worker'
 import router from '@/plugins/router'
 import i18n from '@/plugins/i18n'
 import pinia from '@/plugins/pinia'
 import VueGtag from 'vue-gtag-next'
-// sentry
+import JsonViewer from 'vue-json-viewer'
+
 import * as Sentry from '@sentry/vue'
 import { BrowserTracing } from '@sentry/tracing'
 
@@ -14,16 +13,22 @@ import { BrowserTracing } from '@sentry/tracing'
 import '@/main.scss'
 
 const app = createApp(App)
-// sentry
-// https://docs.sentry.io/platforms/javascript/guides/vue/#vue-3
-if (process.env.VUE_APP_Sentry) {
+
+// google analytics https://matteo-gabriele.gitbook.io/vue-gtag/v/next/
+if (process.env.VUE_APP_UniPass_GA) {
+  app.use(VueGtag, {
+    property: { id: process.env.VUE_APP_UniPass_GA, send_page_view: false },
+  })
+}
+
+if (process.env.VUE_APP_UniPass_Sentry) {
   Sentry.init({
     app,
-    dsn: process.env.VUE_APP_Sentry,
+    dsn: process.env.VUE_APP_UniPass_Sentry,
     integrations: [
       new BrowserTracing({
         routingInstrumentation: Sentry.vueRouterInstrumentation(router),
-        tracingOrigins: ['localhost', 'unipass-wallet.vercel.app', /^\//],
+        // tracePropagationTargets: ['localhost', /^\//],
       }),
     ],
     // Set tracesSampleRate to 1.0 to capture 100%
@@ -32,12 +37,8 @@ if (process.env.VUE_APP_Sentry) {
     tracesSampleRate: 1.0,
   })
 }
-// google analytics
-if (process.env.VUE_APP_UniPass_GA) {
-  app.use(VueGtag, {
-    property: { id: process.env.VUE_APP_UniPass_GA },
-  })
-}
+
+app.use(JsonViewer)
 app.use(pinia)
 app.use(router)
 app.use(i18n)

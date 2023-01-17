@@ -1,0 +1,290 @@
+@font-face {
+  font-family: 'Secular One';
+  src: url('@/assets/cassava/SecularOne-Regular.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+html.dark.cassava {
+
+  .page-sign,
+  #page-connect,
+  #page-login,
+  #page-register,
+  #page-register-password,
+  #page-password-login,
+  #page-recovery-password,
+  #page-recovery-guardian,
+  #page-recovery-result {
+    background-color: var(--up-background);
+    background-image: url('assets/cassava/bg.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+
+
+    --up-primary: #83F05F;
+    --up-background: #161616;
+    // --up-app-background: #111212;
+
+    // --up-text-primary: #ffffff;
+    --up-text-secondary: #97A1A9;
+    // --up-text-third: rgba(255, 255, 255, 0.6);
+
+    // --up-bg: rgba(255, 255, 255, 0.08);
+    // --up-bg-solid: rgb(49, 49, 59);
+    // --up-bg-checked: rgba(255, 255, 255, 0.16);
+    // --up-text: rgba(255, 255, 255, 0.4);
+    // --up-line: rgba(255, 255, 255, 0.2);
+    // --up-tag-bg: rgba(255, 255, 255, 0.08);
+    // --up-card-bg: #31323b;
+
+    h1 {
+      font-family: Secular One;
+      margin-top: 96px;
+      font-weight: 400;
+      font-size: 24px;
+      line-height: 28px;
+
+      text-transform: uppercase;
+      background: linear-gradient(270deg, #FFC78B 0%, #BEFF89 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-fill-color: transparent;
+    }
+
+    h2 {
+      margin-top: 108px;
+      font-weight: 700;
+      font-size: 20px;
+      line-height: 28px;
+    }
+
+    h4 {
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 18px;
+    }
+
+
+    .up-header>.right {
+      visibility: hidden;
+    }
+
+
+
+
+    .up-message-error,
+    .up-message-success {
+      top: 130px !important;
+      border: none;
+      background-color: rgba(45, 45, 45, 0.85);
+      padding: 22px 77px;
+      justify-content: center;
+
+    }
+
+    .up-message-success {
+      color: var(--up-primary);
+    }
+
+    .el-form-item[type=email],
+    .el-form-item[type=password] {
+
+      .el-input__wrapper {
+        padding: 1px 16px 1px 40px;
+
+        &::before {
+          content: '';
+          position: absolute;
+          left: 10px;
+          top: 50%;
+          transform: translate(0, -50%);
+          width: 20px;
+          height: 20px;
+          background-image: url("assets/cassava/cassava-email.png");
+          background-size: contain;
+        }
+      }
+    }
+
+    .el-form-item[type=password] {
+      .el-input__wrapper {
+
+        &::before {
+          background-image: url("assets/cassava/cassava-password.png");
+        }
+      }
+    }
+
+    .up-input {
+      height: 48px;
+      border: 1px solid #83F05F;
+
+      .el-input__wrapper {
+        background: linear-gradient(180deg, #2F4228 0%, #2D2D2D 100%);
+
+        border-radius: 10px;
+        box-shadow: none;
+        position: relative;
+
+        .input__prefix {
+          display: none;
+        }
+
+        &.is-focus {
+          background: linear-gradient(180deg, #415B37 0%, #464646 100%);
+          border-radius: 8px;
+        }
+      }
+    }
+
+    .el-form .up-form-item .el-form-item__label {
+      display: none;
+    }
+
+    .el-button {
+      font-weight: 700;
+      font-size: 14px;
+      line-height: 14px;
+    }
+
+    .el-button.el-button--primary {
+      background: #83F05F;
+      color: #00340F;
+      border: none;
+
+      &:hover {
+        background: #9FFF7F;
+      }
+    }
+
+    .el-button.el-button--primary.is-disabled {
+      background: #D7D7D7;
+      opacity: 1;
+      color: #ffffff;
+    }
+
+    .el-form .up-form-item .el-form-item__content .error .icon-wrong {
+      display: none;
+    }
+  }
+
+  #page-register-password {
+    h2 {
+      display: none;
+    }
+
+    h4 {
+      margin-top: 108px;
+      font-weight: 700;
+      font-size: 20px;
+      line-height: 28px;
+      color: var(--up-text-primary);
+    }
+  }
+
+  #page-password-login {
+    h2 {
+      font-family: Secular One;
+      text-transform: uppercase;
+      background: linear-gradient(270deg, #FFC78B 0%, #BEFF89 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    h4 {
+      display: none;
+    }
+
+    .el-form .forgot-password {
+      text-align: right;
+    }
+  }
+
+  #page-recovery-guardian {
+    .main-content {
+      h4 {
+        text-align: left;
+      }
+
+      .send-box {
+        display: none;
+      }
+
+      .progress-box {
+        padding-top: 40px;
+
+        .tip-box .progress {
+          background: #6F7771;
+
+          .box::before {
+            border-color: #6F7771 transparent transparent transparent;
+          }
+        }
+
+        .line {
+          height: 4px;
+          background: #D9D9D9;
+        }
+      }
+
+    }
+  }
+
+  #page-login,
+  #page-register,
+  #page-password-login,
+  #page-recovery-password,
+  #page-recovery-guardian,
+  #page-recovery-result {
+    .up-button.submit {
+      height: 48px;
+    }
+  }
+
+  #page-login,
+  #page-register {
+    .logo {
+      display: none;
+    }
+
+    .oauth-box .one {
+      height: 48px;
+      background: linear-gradient(180deg, #2F4228 0%, #2D2D2D 100%);
+      border-radius: 10px;
+      box-shadow: none;
+
+      &:hover {
+        background: linear-gradient(180deg, #415B37 0%, #464646 100%);
+      }
+    }
+
+    .or-box {
+      margin-top: 32px;
+
+      .line {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+
+      span {
+        font-weight: 400;
+        color: #97A1A9;
+      }
+    }
+
+    .to-continue-to {
+      display: none;
+    }
+  }
+
+  .up-supported-by {
+    display: flex;
+  }
+
+  .up-header>.left>.icon-UniPass {
+    visibility: hidden;
+  }
+
+
+}

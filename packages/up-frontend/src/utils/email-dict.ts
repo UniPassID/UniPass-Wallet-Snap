@@ -4,7 +4,7 @@ const google = ['gmail.com', 'googlemail.com']
 const yahoo = ['yahoo.com']
 const tencent = ['qq.com', 'foxmail.com']
 const apple = ['icloud.com']
-const protonmail = ['protonmail.com', 'proton.me', 'pm.me']
+const protonmail = ['protonmail.com', 'pm.me']
 const microsoft = ['outlook.com', 'hotmail.com']
 const mail = ['mail.com']
 const netease = [
@@ -17,16 +17,18 @@ const netease = [
   'vip.188.com',
 ]
 
-const gsuit = ['unipass.id', 'consensys.net']
-
-export const emailLowercaseFormat = [
-  ...google,
-  ...yahoo,
-  ...tencent,
-  ...netease,
-  ...apple,
-  ...gsuit,
-]
+export const emailLowercaseFormat = [...google, ...yahoo, ...tencent, ...netease, ...apple]
 export const emailLowercasePrompt = [...protonmail, ...microsoft, ...mail]
-export const emailDotPrompt = [...protonmail, ...google, ...gsuit]
+export const emailDotPrompt = [...protonmail, ...google]
 export const emailDotNoPrompt = [...yahoo, ...tencent, ...netease, ...apple, ...microsoft, ...mail]
+
+export default {
+  google,
+  yahoo,
+  tencent,
+  apple,
+  protonmail,
+  microsoft,
+  mail,
+  netease,
+}

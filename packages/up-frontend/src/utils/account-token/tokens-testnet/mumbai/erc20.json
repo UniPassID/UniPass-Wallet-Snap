@@ -1,0 +1,28 @@
+{
+  "chainId": 80001,
+  "default": true,
+  "cmcId": 3890,
+  "tokenStandard": "erc20",
+  "tokens": [
+    {
+      "chainId": 80001,
+      "address": "0x87F0E95E11a49f56b329A1c143Fb22430C07332a",
+      "name": "USDC",
+      "symbol": "USDC",
+      "decimals": 6,
+      "logoURI": "https://lay2-unipass-token-images.s3.ap-southeast-1.amazonaws.com/coins/images/6319/large/USD_Coin_icon.png?1547042389",
+      "default": true,
+      "cmcId": 3408
+    },
+    {
+      "chainId": 80001,
+      "address": "0x569F5fF11E259c8e0639b4082a0dB91581a6b83e",
+      "name": "USDT",
+      "symbol": "USDT",
+      "decimals": 6,
+      "logoURI": "https://lay2-unipass-token-images.s3.ap-southeast-1.amazonaws.com/coins/images/325/large/Tether-logo.png?1598003707",
+      "default": true,
+      "cmcId": 825
+    }
+  ]
+}

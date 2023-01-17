@@ -1,103 +1,96 @@
 <template>
-  <el-dialog
-    v-model="userStore.showSupportEmail"
-    center
-    :title="$t('SupportMail')"
-    custom-class="dialog-support-email"
-  >
+  <up-dialog v-model="userStore.showSupportEmail" class="dialog-support-email">
+    <div class="title">{{ $t('SupportMailTitle') }}</div>
+    <div class="support">
+      <div class="tip">{{ $t('SupportMail') }}</div>
+      <div class="mail">
+        <up-icon class="logo" name="google" />
+        <div>gmail.com</div>
+        <span>/</span>
+        <div>googlemail.com</div>
+      </div>
+      <div class="mail">
+        <up-icon class="logo" name="outlook" />
+        <div>outlook.com</div>
+        <span>/</span>
+        <div>hotmail.com</div>
+      </div>
+      <div class="mail">
+        <up-icon class="logo" name="yahoo" :style="{ color: isDark ? '#AD94FF' : '#2d1078' }" />
+        <div>yahoo.com</div>
+      </div>
+      <div class="mail">
+        <up-icon
+          class="logo"
+          name="protonmail"
+          :style="{ color: isDark ? '#858BC1' : '#474A5f' }"
+        />
+        <div>protonmail.com</div>
+        <span>/</span>
+        <div>pm.me</div>
+      </div>
+      <div class="mail">
+        <up-icon class="logo" name="icloud" />
+        <div>icloud.com</div>
+      </div>
+      <div class="mail">
+        <up-icon class="logo" name="mail-com" :style="{ color: isDark ? '#fff' : '#000' }" />
+        <div>mail.com</div>
+      </div>
+    </div>
     <div class="content">
       {{ $t('UniPassDKIM') }}
     </div>
-    <div class="mail">
-      <img class="logo" src="@/assets/img/support-email/google.svg" />
-      <div class="suffix">
-        <span>gmail.com</span>
-        <span>googlemail.com</span>
-      </div>
-    </div>
-    <div class="mail">
-      <img class="logo" src="@/assets/img/support-email/outlook.svg" />
-      <div class="suffix">
-        <span>outlook.com</span>
-        <span>hotmail.com</span>
-      </div>
-    </div>
-    <div class="mail">
-      <img class="logo" src="@/assets/img/support-email/yahoo.svg" />
-      <div class="suffix">
-        <span>yahoo.com</span>
-      </div>
-    </div>
-    <div class="mail">
-      <img class="logo" src="@/assets/img/support-email/protonmail.svg" />
-      <div class="suffix">
-        <span>protonmail.com</span>
-        <span>proton.me</span>
-        <span>pm.me</span>
-      </div>
-    </div>
-    <div class="mail">
-      <img class="logo" src="@/assets/img/support-email/icloud.png" />
-      <div class="suffix">
-        <span>icloud.com</span>
-      </div>
-    </div>
-    <div class="mail">
-      <img class="logo" src="@/assets/img/support-email/mail.svg" />
-      <div class="suffix">
-        <span>mail.com</span>
-      </div>
-    </div>
-    <div class="mail">
-      <img class="logo" src="@/assets/img/support-email/consensys.svg" />
-      <div class="suffix">
-        <span>consensys.net</span>
-      </div>
-    </div>
-  </el-dialog>
+    <up-button type="primary" @click="userStore.showSupportEmail = false">
+      {{ $t('Confirm') }}
+    </up-button>
+  </up-dialog>
 </template>
 <script lang="ts" setup>
 import { useUserStore } from '@/store/user'
 
 const userStore = useUserStore()
+const isDark = useDark()
 </script>
 <style lang="scss">
 .el-dialog.dialog-support-email {
-  border-radius: 16px;
-
-  .el-dialog__header {
-    font-size: 20px;
-    font-weight: bold;
-  }
-
   .el-dialog__body {
-    padding-top: 0;
-    text-align: center;
-
-    .content {
-      color: var(--text-regular);
-      word-break: break-word;
-      margin-top: 0;
+    color: var(--up-text-primary);
+    .title {
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 26px;
     }
-
-    .mail {
-      margin-top: 20px;
-
-      .logo {
-        height: 28px;
-        width: 137px;
-        object-fit: contain;
+    .support {
+      border-top: 1px dashed var(--up-line);
+      border-bottom: 1px dashed var(--up-line);
+      padding: 20px 0;
+      margin: 20px 0;
+      .tip {
+        font-size: 12px;
+        font-weight: 400;
+        color: var(--up-text-secondary);
+        line-height: 12px;
+        margin-bottom: 16px;
       }
-
-      .suffix {
+      .mail {
         display: flex;
-        justify-content: center;
-        flex-wrap: wrap;
-
-        span + span {
-          margin-left: 10px;
+        align-items: center;
+        .logo {
+          font-size: 24px;
+          margin-right: 12px;
         }
       }
+      .mail + .mail {
+        margin-top: 28px;
+      }
+    }
+    .content {
+      margin-bottom: 20px;
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--up-text-third);
+      line-height: 20px;
     }
   }
 }

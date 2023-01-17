@@ -8,6 +8,17 @@ const TerserPlugin = require('terser-webpack-plugin')
 module.exports = defineConfig({
   productionSourceMap: false,
   transpileDependencies: true,
+  chainWebpack: (config) => {
+    config.module
+      .rule('vue')
+      .use('vue-loader')
+      .tap((options) => {
+        options.compilerOptions = options.compilerOptions || {}
+        options.compilerOptions.isCustomElement = (tag) => tag === 'iconpark-icon'
+        // modify the options...
+        return options
+      })
+  },
   configureWebpack: {
     optimization: {
       nodeEnv: false,

@@ -1,6 +1,7 @@
+import { useUserStore } from '@/store/user'
 import { AxiosResponse } from 'axios'
-import { ElMessage } from 'element-plus'
 import i18n from '@/plugins/i18n'
+import { upError } from '@/utils/useUniPass'
 
 const { t: $t } = i18n.global
 // https://www.notion.so/lay2/589cad6cd73e4fcf8b2e37fec22efbd1
@@ -23,25 +24,33 @@ const showCode = {
   3006: false,
   3007: 'SystemBusy', // $t('SystemBusy'),
   3008: '', // todo code captchaToken 缺失
+  3009: 'IncorrectPassword', // $t('IncorrectPassword'),
   5000: false,
   5001: false,
   5002: false,
   5004: false,
+  5005: 'AccountPending', // $t('AccountPending'),
   5006: false,
   5007: false,
   5008: false,
   5009: false,
   5010: false,
   5011: false,
-  5012: 'SamePasswordToLogin', //$t('SamePasswordToLogin'),
+  5012: false,
   5014: false,
+  5015: false,
   // params
   422: false,
 }
 
 export const initError = (statusCode: number) => {
+  if (statusCode === 401 || statusCode === 403) {
+    console.log('user info not valid')
+    const userStore = useUserStore()
+    userStore.exit()
+  }
   if (showCode[statusCode]) {
-    ElMessage.error($t(showCode[statusCode]))
+    upError($t(showCode[statusCode]))
   } else {
     console.error('error code: ' + statusCode)
   }

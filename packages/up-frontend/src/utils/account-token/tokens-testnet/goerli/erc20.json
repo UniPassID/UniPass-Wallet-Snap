@@ -1,0 +1,18 @@
+{
+  "chainId": 5,
+  "cmcId": 1027,
+  "default": true,
+  "tokenStandard": "erc20",
+  "tokens": [
+    {
+      "chainId": 5,
+      "address": "0x365E05Fd986245d14c740c139DF8712AD8807874",
+      "name": "USDC",
+      "symbol": "USDC",
+      "decimals": 6,
+      "logoURI": "https://lay2-unipass-token-images.s3.ap-southeast-1.amazonaws.com/coins/images/6319/large/USD_Coin_icon.png?1547042389",
+      "default": true,
+      "cmcId": 3408
+    }
+  ]
+}

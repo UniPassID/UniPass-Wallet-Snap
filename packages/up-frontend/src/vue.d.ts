@@ -5,11 +5,26 @@ declare global {
     // walletconnect
     connector: any
     WeixinJSBridge: any
-    // scan
-    mozRequestAnimationFrame: any
-    webkitRequestAnimationFrame: any
-    msRequestAnimationFrame: any
-    mozCancelAnimationFrame: any
+    // flutter webview global var
+    flutter_inappwebview: any
+    onConnectPageReady: any
+    onSignMessageReady: any
+    onSendTransactionReady: any
+
+    // unity webview global var
+    vuplex: any
+    vuplexReady: any
+    onSignMessagePageReady: any
+    onSendTransactionPageReady: any
+
+    // unreal webview global var
+    ue: any
+
+    // camera
+    mozRequestAnimationFrame: (callback: FrameRequestCallback) => number
+    webkitRequestAnimationFrame: (callback: FrameRequestCallback) => number
+    msRequestAnimationFrame: (callback: FrameRequestCallback) => number
+    mozCancelAnimationFrame: (callback: FrameRequestCallback) => number
   }
 }
 

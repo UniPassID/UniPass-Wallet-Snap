@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useRegisterLoading } from '@/composable/useRegister'
+import { useRegisterLoading } from '@/composable/useOAuth'
 
 useRegisterLoading()
 </script>

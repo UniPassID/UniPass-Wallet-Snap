@@ -1,21 +1,15 @@
 <template>
-  <page-verify
-    v-if="recoveryStore.step === 2"
-    @back="back"
-    action="sendRecoveryEmail"
-    :email="recoveryStore.email"
-    @token="getToken"
-  />
-  <!-- <page-recovery-password v-else-if="recoveryStore.step === 3" @back="back" /> -->
-  <page-recovery-guardian v-else-if="recoveryStore.step === 3" @back="back" />
-  <page-recovery v-else />
+  <page-recovery-guardian v-if="recoveryStore.step === 2" @back="guardianPageBack" />
+  <page-recovery-password v-else />
 </template>
 
 <script lang="ts" setup>
-import { useRecovery } from '@/composable/useRecovery'
+import { useRecoveryStore } from '@/store/recovery'
 
-const { recoveryStore, getToken } = useRecovery()
-const back = () => {
+const recoveryStore = useRecoveryStore()
+
+const guardianPageBack = () => {
+  // clear password
   recoveryStore.password = ''
   recoveryStore.confirmPassword = ''
   recoveryStore.step = 1

@@ -1,0 +1,153 @@
+{
+  "chainId": 56,
+  "cmcId": 1839,
+  "default": true,
+  "tokenStandard": "erc20",
+  "tokens": [
+    {
+      "chainId": 56,
+      "address": "0x24802247bd157d771b7effa205237d8e9269ba8a",
+      "name": "Thetan Coin",
+      "symbol": "THC",
+      "decimals": 18,
+      "logoURI": "https://lay2-unipass-token-images.s3.ap-southeast-1.amazonaws.com/coins/images/20959/large/coin_ui.png?1638142381",
+      "cmcId": 15250
+    },
+    {
+      "chainId": 56,
+      "address": "0x9fd87aefe02441b123c3c32466cd9db4c578618f",
+      "name": "Thetan Arena",
+      "symbol": "THG",
+      "decimals": 18,
+      "logoURI": "https://lay2-unipass-token-images.s3.ap-southeast-1.amazonaws.com/coins/images/18414/large/c4N4n8k-_400x400.png?1631831447",
+      "cmcId": 11926
+    },
+    {
+      "chainId": 56,
+      "address": "0x2170Ed0880ac9A755fd29B2688956BD959F933F8",
+      "name": "Ether",
+      "symbol": "ETH",
+      "decimals": 18,
+      "logoURI": "https://lay2-unipass-token-images.s3.ap-southeast-1.amazonaws.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
+      "cmcId": 1027
+    },
+    {
+      "chainId": 56,
+      "address": "0xCC42724C6683B7E57334c4E856f4c9965ED682bD",
+      "name": "Polygon",
+      "symbol": "MATIC",
+      "decimals": 18,
+      "logoURI": "https://lay2-unipass-token-images.s3.ap-southeast-1.amazonaws.com/coins/images/4713/large/Matic.png?1553498071",
+      "cmcId": 3890
+    },
+    {
+      "chainId": 56,
+      "address": "0xAD29AbB318791D579433D831ed122aFeAf29dcfe",
+      "name": "Fantom",
+      "symbol": "FTM",
+      "decimals": 18,
+      "logoURI": "https://lay2-unipass-token-images.s3.ap-southeast-1.amazonaws.com/coins/images/4001/large/Fantom.png?1558015016",
+      "cmcId": 3513
+    },
+    {
+      "chainId": 56,
+      "address": "0x55d398326f99059fF775485246999027B3197955",
+      "name": "USDT",
+      "symbol": "USDT",
+      "decimals": 18,
+      "logoURI": "https://lay2-unipass-token-images.s3.ap-southeast-1.amazonaws.com/token/images/busdt_128.png",
+      "cmcId": 825
+    },
+    {
+      "chainId": 56,
+      "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+      "name": "Wrapped BNB",
+      "symbol": "WBNB",
+      "decimals": 18,
+      "logoURI": "https://lay2-unipass-token-images.s3.ap-southeast-1.amazonaws.com/coins/images/825/large/bnb-icon2_2x.png?1644979850",
+      "cmcId": 7192
+    },
+    {
+      "chainId": 56,
+      "address": "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d",
+      "name": "USDC",
+      "default": false,
+      "symbol": "USDC",
+      "decimals": 18,
+      "logoURI": "https://lay2-unipass-token-images.s3.ap-southeast-1.amazonaws.com/coins/images/6319/large/USD_Coin_icon.png?1547042389",
+      "cmcId": 3408
+    },
+    {
+      "chainId": 56,
+      "address": "0x1D2F0da169ceB9fC7B3144628dB156f3F6c60dBE",
+      "name": "XRP",
+      "symbol": "XRP",
+      "decimals": 18,
+      "logoURI": "https://lay2-unipass-token-images.s3.ap-southeast-1.amazonaws.com/coins/images/44/large/xrp-symbol-white-128.png?1605778731",
+      "cmcId": 52
+    },
+    {
+      "chainId": 56,
+      "address": "0x3EE2200Efb3400fAbB9AacF31297cBdD1d435D47",
+      "name": "Cardano",
+      "symbol": "ADA",
+      "decimals": 18,
+      "logoURI": "https://lay2-unipass-token-images.s3.ap-southeast-1.amazonaws.com/coins/images/975/large/cardano.png?1547034860",
+      "cmcId": 2010
+    },
+    {
+      "chainId": 56,
+      "address": "0x1CE0c2827e2eF14D5C4f29a091d735A204794041",
+      "name": "Avalanche",
+      "symbol": "AVAX",
+      "decimals": 18,
+      "logoURI": "https://lay2-unipass-token-images.s3.ap-southeast-1.amazonaws.com/coins/images/12559/large/coin-round-red.png?1604021818",
+      "cmcId": 5805
+    },
+    {
+      "chainId": 56,
+      "address": "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56",
+      "name": "BUSD",
+      "symbol": "BUSD",
+      "decimals": 18,
+      "logoURI": "https://lay2-unipass-token-images.s3.ap-southeast-1.amazonaws.com/coins/images/9576/large/BUSD.png?1568947766",
+      "cmcId": 4687
+    },
+    {
+      "chainId": 56,
+      "address": "0x7083609fCE4d1d8Dc0C979AAb8c869Ea2C873402",
+      "name": "Polkadot",
+      "symbol": "DOT",
+      "decimals": 18,
+      "logoURI": "https://lay2-unipass-token-images.s3.ap-southeast-1.amazonaws.com/token/images/polkadot_128.png",
+      "cmcId": 6636
+    },
+    {
+      "chainId": 56,
+      "address": "0xbA2aE424d960c26247Dd6c32edC70B295c744C43",
+      "name": "Dogecoin",
+      "symbol": "DOGE",
+      "decimals": 8,
+      "logoURI": "https://lay2-unipass-token-images.s3.ap-southeast-1.amazonaws.com/token/images/dogecoin_128.png",
+      "cmcId": 74
+    },
+    {
+      "chainId": 56,
+      "address": "0xc732B6586A93b6B7CF5FeD3470808Bc74998224D",
+      "name": "Kryptomon",
+      "symbol": "KMON",
+      "decimals": 18,
+      "logoURI": "https://lay2-unipass-token-images.s3.ap-southeast-1.amazonaws.com/coins/images/17886/large/kryptomon.png?1629713536",
+      "cmcId": 11291
+    },
+    {
+      "chainId": 56,
+      "address": "0x155040625D7ae3e9caDA9a73E3E44f76D3Ed1409",
+      "name": "Revomon",
+      "symbol": "REVO",
+      "decimals": 18,
+      "logoURI": "https://lay2-unipass-token-images.s3.ap-southeast-1.amazonaws.com/coins/images/14759/large/revomon.jpeg?1618243538",
+      "cmcId": 9200
+    }
+  ]
+}

@@ -3,9 +3,65 @@
 @import 'element-plus/theme-chalk/dark/css-vars.css';
 // global
 @import '@/assets/css/global.scss';
-// unipass
-@import '@/assets/css/global-up.scss';
+
+// json view 
+@import 'vue-json-viewer/style.css';
+
 // element
-body {
+html {
   @import '@/assets/css/element.scss';
 }
+
+
+@font-face {
+  font-family: 'Futura';
+  src: url('@/assets/font/Futura/Futura-Bold.ttf');
+  font-weight: bold;
+  font-style: normal;
+}
+
+// Light 300, Normal 400, Medium 500, Semi-Bold 600, Bold 700 and Extra Bold 800
+@font-face {
+  font-family: 'Open Sans';
+  src: url('@/assets/font/OpenSans/OpenSans-Light.ttf');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  src: url('@/assets/font/OpenSans/OpenSans-Regular.ttf');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  src: url('@/assets/font/OpenSans/OpenSans-Medium.ttf');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  src: url('@/assets/font/OpenSans/OpenSans-SemiBold.ttf');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  src: url('@/assets/font/OpenSans/OpenSans-Bold.ttf');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  src: url('@/assets/font/OpenSans/OpenSans-ExtraBold.ttf');
+  font-weight: 800;
+  font-style: normal;
+}
+
+// theme
+@import '@/assets/cassava/cassava.scss';
