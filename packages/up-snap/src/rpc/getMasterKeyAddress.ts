@@ -50,8 +50,10 @@ export async function extractMasterPrivateKey(
  * Return UniPass master key address from seed.
  * @param wallet
  */
+// export async function getMasterKeyAddress() {
 export async function getMasterKeyAddress(wallet: SnapProvider) {
   const masterPrivateKey = await extractMasterPrivateKey(wallet);
+
   const ethersWallet = new Wallet(masterPrivateKey);
 
   return ethersWallet.address;

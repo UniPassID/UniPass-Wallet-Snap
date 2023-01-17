@@ -8,7 +8,7 @@ export type MessageRequest = {
   params?: SignRequest;
 };
 
-export type RpcReqeust = {
+export type RpcRequest = {
   origin: string;
   request: MessageRequest;
 };
