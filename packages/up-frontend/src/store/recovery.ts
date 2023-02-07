@@ -4,7 +4,6 @@ import { Keyset, KeyOpenIDWithEmail } from '@unipasswallet/keys'
 import api, { AuditStatus, AuthType, SignType } from '@/service/backend'
 import blockchain, { genUnipassWalletContext } from '@/service/blockchain'
 import { addSignCapabilityToKeyset, updateKeyset } from '@/utils/rbac'
-import Tss from '@/utils/tss'
 import { Wallet } from '@unipasswallet/wallet'
 import { CancelLockKeysetHashTxBuilder } from '@unipasswallet/transaction-builders'
 import { useUserStore } from './user'
@@ -13,13 +12,12 @@ import { constants } from 'ethers'
 import { sdkConfig } from '@/service/chains-config'
 import { getOAuthUserInfo } from './storages'
 import { IdTokenParams, OAuthProvider } from '@/utils/oauth/parse_hash'
-import { safeEncryptKeystore } from '@/utils/oauth/aws-config'
 import { ElMessageBox } from 'element-plus'
 import i18n from '@/plugins/i18n'
-import { encryptSessionKey } from '@/utils/session-key'
 import DB from './index_db'
 import { clearUpSignToken } from '@/utils/oauth/check_up_sign_token'
-import { signMsgWithMM } from '@/service/snap-rpc'
+import { signMsgWithMM, getMasterKeyAddress } from '@/service/snap-rpc'
+import dayjs from 'dayjs'
 
 const { t: $t } = i18n.global
 
@@ -96,27 +94,22 @@ export const useRecoveryStore = defineStore({
       const decoded = jwt_decode<IdTokenParams>(id_token)
 
       const { email } = decoded
-      const action = 'sendRecoveryEmail'
-      const localKeyData = await Tss.generateLocalKey({
-        email: email,
-        action,
-      })
-      if (!localKeyData) return
-
-      const encryptedKeystore = await safeEncryptKeystore(localKeyData.keystore, this.password)
-      localKeyData.keystore = encryptedKeystore
-
-      const { encrypted_key, aes_key } = await encryptSessionKey(localKeyData.keystore)
 
       this.email = email
 
-      const masterKeyAddress = localKeyData.localKeyAddress
+      const masterKeyAddress = await getMasterKeyAddress()
       const newKeyset = updateKeyset(keyset, masterKeyAddress)
+      const timestamp = dayjs().add(10, 'minute').unix()
+      const sig = await signMsgWithMM('login UniPass:' + timestamp, masterKeyAddress)
 
       const resToken = await api.uploadRecoveryMasterKey({
         masterKey: {
           masterKeyAddress,
-          keyStore: encryptedKeystore,
+          keyType: 1,
+          keySig: {
+            timestamp,
+            sig,
+          },
         },
       })
       if (!resToken.ok) {
@@ -139,7 +132,7 @@ export const useRecoveryStore = defineStore({
       await userStore.update(user)
       this.step = 2
     },
-    async sendCancelRecovery(password: string) {
+    async sendCancelRecovery() {
       const accountInfo = await DB.getAccountInfo()
       if (!accountInfo) return
       const { email, address, keyset: _keyset } = accountInfo

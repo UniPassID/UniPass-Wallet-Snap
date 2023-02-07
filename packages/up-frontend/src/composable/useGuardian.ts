@@ -13,7 +13,9 @@ import { AccountInfo } from '@/store/oauth_login'
 import DB from '@/store/index_db'
 import { clearUpSignToken } from '@/utils/oauth/check_up_sign_token'
 import emailDict from '@/utils/email-dict'
-import { getMasterKeyAddress, signMsgWithMM } from '@/service/snap-rpc'
+import { SignType as SignTypeUP } from '@unipasswallet/keys'
+import { solidityPack } from 'ethers/lib/utils'
+import { signMsgWithMM } from '@/service/snap-rpc'
 
 export type GuardiansStatus = 'send' | 'openId' | 'pending' | 'success' | 'error'
 export type GuardiansAuthType = 'delete' | 'add'
@@ -224,51 +226,46 @@ export const useGuardian = () => {
     }, 4000)
   }
 
-  const authentication = () => {
-    if (!authElement.value) return
-    authElement.value.validate(async (ok) => {
-      if (ok) {
-        auth.loading = true
-        let guardians = []
-        if (auth.type === 'delete') {
-          guardians = JSON.parse(JSON.stringify(form.guardians)) as GuardiansInfo[]
-          for (const e of deleteChecked.value) {
-            const i = guardians.findIndex((item) => item.recoveryEmail === e)
-            if (i !== -1) {
-              clearInterval(guardians[i].n)
-              guardians.splice(i, 1)
-            }
-          }
-        } else {
-          guardians = form.guardians
-        }
-        const guardianData = guardians.map((e) => {
-          return {
-            email: e.recoveryEmail,
-            isSelfGuardian: e.isSelfGuardian,
-            emailHash: e.emailHash,
-            pepper: e.pepper,
-            rawOrHash: e.rawOrHash,
-          }
-        })
-        try {
-          const ok = await updateGuardian(auth.password, guardianData)
-          if (ok) {
-            userStore.upLoading = true
-            await checkKeysetHash()
-            auth.show = false
-          }
-        } catch (e: any) {
-          upError(e?.message || 'unknown error')
-          throw new Error(e)
-        } finally {
-          auth.loading = false
+  const authentication = async () => {
+    auth.loading = true
+    let guardians = []
+    if (auth.type === 'delete') {
+      guardians = JSON.parse(JSON.stringify(form.guardians)) as GuardiansInfo[]
+      for (const e of deleteChecked.value) {
+        const i = guardians.findIndex((item) => item.recoveryEmail === e)
+        if (i !== -1) {
+          clearInterval(guardians[i].n)
+          guardians.splice(i, 1)
         }
       }
+    } else {
+      guardians = form.guardians
+    }
+    const guardianData = guardians.map((e) => {
+      return {
+        email: e.recoveryEmail,
+        isSelfGuardian: e.isSelfGuardian,
+        emailHash: e.emailHash,
+        pepper: e.pepper,
+        rawOrHash: e.rawOrHash,
+      }
     })
+    try {
+      const ok = await updateGuardian(guardianData)
+      if (ok) {
+        userStore.upLoading = true
+        await checkKeysetHash()
+        auth.show = false
+      }
+    } catch (e: any) {
+      upError(e?.message || 'unknown error')
+      throw new Error(e)
+    } finally {
+      auth.loading = false
+    }
   }
 
-  const updateGuardian = async (password: string, guardianData: GuardianData[]) => {
+  const updateGuardian = async (guardianData: GuardianData[]) => {
     const accountInfo = await DB.getAccountInfo()
     if (!accountInfo) return
 
@@ -297,8 +294,6 @@ export const useGuardian = () => {
     const metaNonce = await blockchain.getMetaNonce(address)
     const txBuilder = new UpdateKeysetHashTxBuilder(address, metaNonce, keyset.hash(), false, '0x')
     const digestHash = txBuilder.digestMessage()
-    // const { keystore } = accountInfo
-    // const originKey = await safeDecryptKeyStore(keystore, password)
     const auditRes = await api.audit({
       type: SignType.PersonalSign,
       content: txBuilder.build(),
@@ -309,15 +304,8 @@ export const useGuardian = () => {
       clearUpSignToken()
       if (auditRes.data.approveStatus === AuditStatus.Approved) {
         try {
-          const masterKeyAddress = await getMasterKeyAddress()
-
-          const timestamp = dayjs().add(10, 'minute').unix()
-          const sig = await signMsgWithMM('login UniPass:' + timestamp, masterKeyAddress)
-          const masterKeySig = {
-            masterKeyAddress,
-            timestamp,
-            sig,
-          }
+          const sig = await signMsgWithMM(digestHash, masterKeyAddress)
+          const masterKeySig = solidityPack(['bytes', 'uint8'], [sig, SignTypeUP.EthSign])
 
           const updateGuardianKeysetRes = await api.updateGuardian({ masterKeySig })
           if (updateGuardianKeysetRes.ok) {
@@ -352,9 +340,9 @@ export const useGuardian = () => {
       } else {
         upGA('setguardian_delete_strat')
       }
-
-      auth.show = true
+      // TODO 是否需要移除 authentication 方法
       auth.type = authType
+      authentication()
       clearInterval(polling)
       polling = undefined
       for (const guardia of form.guardians) {

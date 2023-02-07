@@ -1,11 +1,6 @@
-import Dexie from 'dexie'
+import { manageState } from '@/service/snap-rpc'
 import { AccountInfo } from './oauth_login'
-import { getOAuthUserInfo } from './storages'
 import { useUserStore } from './user'
-
-const dbName = 'UniPassWalletIndexDB_v2'
-const db = new Dexie(dbName)
-db.version(1).stores({ users: 'email_provider' })
 
 interface DBProps {
   getAccountInfo: (exit?: boolean) => Promise<AccountInfo | undefined>
@@ -13,20 +8,11 @@ interface DBProps {
   clearAccountInfo: () => Promise<void>
 }
 
-const genUserKey = () => {
-  const oauthUserInfo = getOAuthUserInfo()
-  if (oauthUserInfo) {
-    const { email, oauth_provider } = oauthUserInfo
-    return `${email}_${oauth_provider}`
-  }
-  return ''
-}
-
 const DB: DBProps = {
   async getAccountInfo(exit = true) {
     const userStore = useUserStore()
     try {
-      const _account_info = (await db.table('users').get(genUserKey())) as AccountInfo
+      const _account_info = (await manageState('get')) as AccountInfo
       if (!_account_info) {
         if (exit) userStore.exit()
         return
@@ -43,7 +29,7 @@ const DB: DBProps = {
   },
   async setAccountInfo(account: AccountInfo) {
     try {
-      await db.table('users').put({ ...account, email_provider: genUserKey() })
+      await manageState('update', { ...account })
     } catch (err) {
       console.log(err)
 
@@ -52,7 +38,7 @@ const DB: DBProps = {
   },
   async clearAccountInfo() {
     try {
-      const res = await db.table('users').delete(genUserKey())
+      const res = await manageState('clear')
       return res
     } catch (err) {
       return undefined

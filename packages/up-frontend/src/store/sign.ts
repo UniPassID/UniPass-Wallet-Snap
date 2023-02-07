@@ -6,7 +6,7 @@ import router from '@/plugins/router'
 import { AppSettings, UPTransactionMessage } from '@unipasswallet/popup-types'
 import { formatEther } from 'ethers/lib/utils'
 import { BigNumber, utils } from 'ethers'
-import { ChainType, TransactionProps } from '@unipasswallet/provider'
+import UnipassWalletProvider, { ChainType, TransactionProps } from '@unipasswallet/provider'
 import { etherToWei } from '@/service/format-bignumber'
 import { ADDRESS_ZERO } from '@/service/constants'
 import { FeeOption } from '@unipasswallet/relayer'
@@ -217,6 +217,8 @@ export const useSignStore = defineStore({
       this.cards = cards
     },
     async updateGasFee() {
+      const accountInfo = await DB.getAccountInfo()
+      UnipassWalletProvider.getInstance().setAccountInfo(accountInfo)
       const sponsored = await this.checkGasSponsored()
       if (!sponsored) {
         const gasLimit = await this.estimateGasLimit()
@@ -227,7 +229,11 @@ export const useSignStore = defineStore({
     },
     async checkGasSponsored() {
       const userStore = useUserStore()
-      const wallet = await userStore.unipassWallet.wallet(this.chain)
+      const accountInfo = await DB.getAccountInfo()
+      console.log('accountInfo: ', accountInfo)
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      /* @ts-ignore */
+      const wallet = await userStore.unipassWallet.wallet(this.chain, accountInfo)
       const feeOptions = await wallet.relayer?.getFeeOptions(BigNumber.from(600_000).toHexString())
       if (feeOptions?.options?.length && feeOptions?.options?.length > 0) {
         return false

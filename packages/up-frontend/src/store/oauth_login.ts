@@ -16,6 +16,7 @@ import { upError, upGA } from '@/utils/useUniPass'
 import { getMasterKeyAddress, signMsgWithMM } from '@/service/snap-rpc'
 import dayjs from 'dayjs'
 import DB from './index_db'
+import { isSameAddress } from '@/utils/string-utils'
 
 const { t: $t } = i18n.global
 
@@ -108,10 +109,13 @@ export const useOAuthLoginStore = defineStore({
 
         const res = await api.signUpAccount({
           keysetJson: keyset.toJson(),
-          masterKeySig: {
+          masterKey: {
             masterKeyAddress,
-            timestamp,
-            sig,
+            keyType: 1,
+            keySig: {
+              timestamp,
+              sig,
+            },
           },
           pepper,
           source: 'snap',
@@ -133,7 +137,6 @@ export const useOAuthLoginStore = defineStore({
                 keysetJson: keyset.obscure().toJson(),
               },
             }
-            // TODO: Replace the storage provider from IndexedDB to snap_manageState
             await DB.setAccountInfo(user)
             LocalStorageService.set(
               'OAUTH_INFO',
@@ -159,39 +162,45 @@ export const useOAuthLoginStore = defineStore({
         upGA('login_click_login', { account: unipass_info.address, email }, oauth_provider)
 
         const masterKeyAddress = await getMasterKeyAddress()
-
         const keyset = Keyset.fromJson(unipass_info.keyset)
-        const user: AccountInfo = {
-          email,
-          id_token,
-          address: unipass_info.address,
-          oauth_provider,
-          expires_at,
-          keyset: {
-            hash: keyset.hash(),
-            masterKeyAddress: (keyset.keys[0] as KeySecp256k1).address,
-            keysetJson: keyset.obscure().toJson(),
-          },
-        }
-        await DB.setAccountInfo(user)
-        const userStore = useUserStore()
-        sessionStorage.removeItem('newborn')
-        if (sessionStorage.redirectUrl) {
-          const redirectUrl = new URL(sessionStorage.redirectUrl)
-          sessionStorage.removeItem('redirectUrl')
-          redirectUrl.searchParams.delete('connectType')
-          location.href = redirectUrl.toString()
+        if (
+          unipass_info.keyType === 1 &&
+          isSameAddress((keyset.keys[0] as KeySecp256k1).address, masterKeyAddress)
+        ) {
+          const user: AccountInfo = {
+            email,
+            id_token,
+            address: unipass_info.address,
+            oauth_provider,
+            expires_at,
+            keyset: {
+              hash: keyset.hash(),
+              masterKeyAddress: (keyset.keys[0] as KeySecp256k1).address,
+              keysetJson: keyset.obscure().toJson(),
+            },
+          }
+          await DB.setAccountInfo(user)
+          const userStore = useUserStore()
+          sessionStorage.removeItem('newborn')
+          if (sessionStorage.redirectUrl) {
+            const redirectUrl = new URL(sessionStorage.redirectUrl)
+            sessionStorage.removeItem('redirectUrl')
+            redirectUrl.searchParams.delete('connectType')
+            location.href = redirectUrl.toString()
+          } else {
+            await router.replace(sessionStorage.path || '/')
+          }
+          upGA('login_success', { account: unipass_info.address, email }, oauth_provider)
+          userStore.init()
         } else {
-          await router.replace(sessionStorage.path || '/')
+          // TODO 错误处理
+          router.replace('/recovery')
         }
-        upGA('login_success', { account: unipass_info.address, email }, oauth_provider)
-        userStore.init()
       } catch (e: any) {
         if (e?.message === 'invalid password') {
           upError($t('IncorrectPassword'))
           return
         }
-        console.log(e)
         router.replace('/login')
       } finally {
         this.passwordLoading = false

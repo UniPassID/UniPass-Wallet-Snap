@@ -3,52 +3,28 @@
     <up-header :back="back" />
     <up-supported-by />
 
-    <h2>{{ $t('RecoveryPasswordTitle') }}</h2>
-    <h4>{{ $t('RecoveryPasswordSubtitle') }}</h4>
-    <el-form @submit.prevent ref="formElement" :model="recoveryStore">
-      <up-form-item
-        :label="recoveryStore.password && $t('Password')"
-        prop="password"
-        type="password"
-        :rules="[{ validator: unipass.checkPassword, trigger: 'blur' }]"
-      >
-        <up-input
-          :placeholder="$t('EnterPassword')"
-          @input="(v: string) => (recoveryStore.password = unipass.formatPassword(v))"
-          v-model="recoveryStore.password"
-          @keydown.enter="recoveryStore.password && submitPassword()"
-          @focus="formElement?.clearValidate('password')"
-          show-password
-          :disabled="recoveryStore.loading"
-          clearable
-        />
-      </up-form-item>
-      <up-form-item
-        :label="recoveryStore.confirmPassword && $t('ConfirmPassword')"
-        prop="confirmPassword"
-        type="password"
-        :rules="[{ validator: checkConfirmPassword, trigger: 'blur' }]"
-      >
-        <up-input
-          v-model="recoveryStore.confirmPassword"
-          @keydown.enter="recoveryStore.password && submitPassword()"
-          @focus="formElement?.clearValidate('confirmPassword')"
-          show-password
-          :disabled="recoveryStore.loading"
-          :placeholder="$t('PleaseConfirmPassword')"
-          clearable
-        />
-      </up-form-item>
-    </el-form>
-    <up-button
-      class="submit"
-      type="primary"
-      :loading="recoveryStore.loading"
-      :disabled="!recoveryStore.password"
-      @click="submitPassword"
+    <up-confirm
+      v-model="loginFailed"
+      :title="$t('LoginFailed')"
+      destroy-on-close
+      @closed="back()"
+      class="dialog-show-oauth"
     >
-      {{ $t('NextStep') }}
-    </up-button>
+      <div class="el-dialog__subtitle">
+        {{ $t('LoginFailedGuide') }}
+      </div>
+
+      <template #footer>
+        <up-button type="primary" @click="loginUniPass">
+          {{ $t('LoginUniPass') }}
+        </up-button>
+        <div class="dialog-footer-extension">
+          <a class="underline" @click="recovery">
+            {{ $t('RestoreWallet') }}
+          </a>
+        </div>
+      </template>
+    </up-confirm>
   </div>
 </template>
 
@@ -56,10 +32,15 @@
 import { useRecovery } from '@/composable/useRecovery'
 import router from '@/plugins/router'
 import { clearStorage } from '@/utils/clear'
-import { useUniPass } from '@/utils/useUniPass'
+const APP_LOCATION = process.env.VUE_APP_LOCATION as string
 
-const unipass = useUniPass()
-const { recoveryStore, formElement, submitPassword, checkConfirmPassword } = useRecovery()
+const loginFailed = ref(true)
+
+const { recovery } = useRecovery()
+
+const loginUniPass = () => {
+  window.location.href = APP_LOCATION
+}
 
 const back = async () => {
   await clearStorage()
@@ -71,6 +52,10 @@ const back = async () => {
 #page-recovery-password {
   h2 {
     margin-top: 40px;
+    font-size: 20px;
+  }
+  .guide {
+    font-size: 14px;
   }
   .el-form {
     margin-top: 40px;
@@ -80,6 +65,10 @@ const back = async () => {
   }
   .submit {
     margin-top: 40px;
+  }
+
+  .dialog-footer-extension {
+    margin-top: 12px;
   }
 }
 </style>

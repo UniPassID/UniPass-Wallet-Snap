@@ -253,5 +253,12 @@
   "UseAuth0Oauth": "<strong>{email}</strong> 已经注册过钱包，请直接使用 Email 进行登录",
   "SignWithGoogle": "前往谷歌验证",
   "SignWithEmail": "前往邮箱验证",
-  "WCSwitchChain": "切链成功，请重新请求操作"
+  "WCSwitchChain": "切链成功，请重新请求操作",
+  "LoginFailed": "登录失败",
+  "SnapEnvFailed": "Snap 创建失败",
+  "InstallSnap": "马上安装",
+  "SnapGuide": "运行 snap 需要安装 Metamask flask",
+  "LoginFailedGuide": "您的账户无法登录 UniPass Snap, 您可以重置账户后重试或登录 MPC 模式的 UniPass",
+  "RestoreWallet": "恢复我的钱包",
+  "LoginUniPass": "登录 UniPass (MPC)"
 }

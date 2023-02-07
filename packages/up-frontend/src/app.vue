@@ -16,14 +16,17 @@
 
 <script lang="ts" setup>
 import router from '@/plugins/router'
+import { ElMessageBox } from 'element-plus'
 import api from '@/service/backend'
 import { useUserStore } from '@/store/user'
 import { ElLoading } from 'element-plus'
 import { checkAuthorizationExpired } from './utils/oauth/check_authorization'
 import { useUniPass } from '@/utils/useUniPass'
 import { isRedirectEnv } from '@/service/check-environment'
+import { isMetamaskSnapsSupported } from '@/service/snap-rpc'
 
 const unipass = useUniPass()
+const { t: $t } = useI18n()
 const userStore = useUserStore()
 let loading: any
 
@@ -102,8 +105,21 @@ const initTheme = () => {
   }
 }
 
+const environmentCheck = async () => {
+  const support = await isMetamaskSnapsSupported()
+  if (!support) {
+    ElMessageBox.alert($t('SnapGuide'), $t('SnapEnvFailed'), {
+      confirmButtonText: $t('InstallSnap'),
+      // showClose: false,
+    }).then(() => {
+      window.location.href = 'https://metamask.io/flask/'
+    })
+  }
+}
+
 const inited = ref(false)
 const init = () => {
+  environmentCheck()
   initSuffixes()
   initUser()
   initLanguage()
@@ -156,7 +172,7 @@ init()
 
   > .page {
     width: 100%;
-    max-width: 480px;
+    // max-width: 480px;
     min-height: 100vh;
     overflow: hidden;
     padding: 24px;

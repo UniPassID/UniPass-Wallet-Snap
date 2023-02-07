@@ -229,10 +229,10 @@ export function calculateGuardianWeight(
   return sendRecoveryEmailWeight
 }
 
-export async function addSignCapabilityToKeyset(
+export function addSignCapabilityToKeyset(
   keysetJson: string,
   signFunc: (digestHash: BytesLike, signType: SignType) => Promise<string>,
-): Promise<Keyset> {
+): Keyset {
   const keyset = Keyset.fromJson(keysetJson)
   const masterKey = keyset.keys[0] as KeySecp256k1
   masterKey.signFunc = signFunc

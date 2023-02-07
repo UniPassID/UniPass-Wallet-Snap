@@ -1,6 +1,6 @@
 {
-  "name": "up-snap",
-  "version": "0.0.4",
+  "name": "up-snap-ui",
+  "version": "0.0.3",
   "license": "Apache 2.0",
   "author": "johnz",
   "main": "dist/bundle.js",
@@ -32,6 +32,7 @@
   "dependencies": {
     "@metamask/key-tree": "^4.0.0",
     "@metamask/snap-types": "^0.20.0",
+    "@unipasswallet/provider": "0.2.2-alpha.0",
     "ethers": "^5.7.0"
   },
   "publishConfig": {

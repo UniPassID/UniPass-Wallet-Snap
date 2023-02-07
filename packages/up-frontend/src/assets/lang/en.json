@@ -253,5 +253,11 @@
   "UseAuth0Oauth": "You have already used <strong>{email}</strong>. Please sign in with Email to continue",
   "SignWithGoogle": "Continue with Google",
   "SignWithEmail": "Continue with Email",
-  "WCSwitchChain": "Switching chain successfully, please request the operation again"
+  "WCSwitchChain": "Switching chain successfully, please request the operation again",
+  "SnapEnvFailed": "Failed to generate",
+  "InstallSnap": "Install now",
+  "SnapGuide": "Metamask flask is required to run snap",
+  "LoginFailedGuide": "Your account cannot log in to the UniPass(Snap version), you can restore your account and try again or go to UniPass(MPC version) to log in",
+  "RestoreWallet": "Restore my wallet",
+  "LoginUniPass": "Login to UniPass (MPC)"
 }

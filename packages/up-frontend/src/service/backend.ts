@@ -165,10 +165,13 @@ export interface GuardianData {
 // register Account
 export interface SignUpAccountInput {
   keysetJson: string
-  masterKeySig: {
+  masterKey: {
     masterKeyAddress: string
-    timestamp: number
-    sig: string
+    keyType: number
+    keySig: {
+      timestamp: number
+      sig: string
+    }
   }
   pepper: string
   source: string
@@ -239,7 +242,11 @@ export interface QueryAccountKeysetOutput extends ApiResponse {
 export interface UploadRecoveryCloudKeyInput {
   masterKey: {
     masterKeyAddress: string
-    keyStore: string
+    keyType: number
+    keySig: {
+      sig: string
+      timestamp: number
+    }
   }
 }
 
@@ -468,19 +475,13 @@ export interface Auth2FaCodeToken {
   upAuthToken: string
 }
 
-export interface MasterKeySig {
-  masterKeyAddress: string
-  timestamp: number
-  sig: string
-}
-
 // update guardian
 export interface CheckKeysetInput {
   keysetJson: string
   isAddGuradian: boolean
 }
 export interface UpdateGuardianInput {
-  masterKeySig: MasterKeySig
+  masterKeySig: string
 }
 
 //sync

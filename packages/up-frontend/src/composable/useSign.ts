@@ -1,6 +1,7 @@
 import { getChainName } from './../service/chains-config'
 import { ElMessageBox } from 'element-plus'
 import { useUserStore } from '@/store/user'
+import { getOAuthUserInfo } from '@/store/storages'
 import { upError, upGA, useUniPass } from '@/utils/useUniPass'
 import { useSignStore } from '@/store/sign'
 import { etherToWei } from '@/service/format-bignumber'
@@ -16,16 +17,25 @@ import { UPMessage, UPResponse } from '@unipasswallet/popup-types'
 import { signTypedDataMessageHash } from '@unipasswallet/popup-utils'
 import { ADDRESS_ZERO } from '@/service/constants'
 import { postMessage } from '@unipasswallet/popup-utils'
-import { SignType } from '@unipasswallet/keys'
+import { SignType, Keyset } from '@unipasswallet/keys'
 import { formatUnits, hashMessage, parseUnits } from 'ethers/lib/utils'
 import { addSignCapabilityToKeyset } from '@/utils/rbac'
-import { TransactionProps } from '@unipasswallet/provider'
+import { BigNumberParser } from '@/utils/BigNumberParser'
+import { sdkConfig } from '@/service/chains-config'
 import DB from '@/store/index_db'
 import api, { SyncStatusEnum } from '@/service/backend'
 import { getAuthNodeChain } from '@/service/chains-config'
 import { checkStatusForSendTransaction, checkUpSignToken } from '@/utils/oauth/check_up_sign_token'
 import { useWalletConnectStore } from '@/store/wallet-connect'
-import { getMasterKeyAddress, signMsgWithMM } from '@/service/snap-rpc'
+import {
+  getMasterKeyAddress,
+  signMsgWithMM,
+  sendTransactionWithMM,
+  snapConnect,
+} from '@/service/snap-rpc'
+import { solidityPack } from 'ethers/lib/utils'
+import { WalletsCreator, ChainType } from '@unipasswallet/provider'
+import { Wallet } from '@unipasswallet/wallet'
 
 const { hexlify } = utils
 
@@ -49,7 +59,9 @@ export const useSign = () => {
     }
 
     const masterKeyAddress = await getMasterKeyAddress()
-    const masterKeySig = await signMsgWithMM(hexlify(digestHash), masterKeyAddress)
+    const sig = await signMsgWithMM(hexlify(digestHash), masterKeyAddress)
+
+    const masterKeySig = solidityPack(['bytes', 'uint8'], [sig, signType])
 
     return masterKeySig
   }
@@ -97,17 +109,36 @@ export const useSign = () => {
 
       const {
         keyset: { keysetJson },
+        address,
       } = userStore.accountInfo
-      const keyset = await addSignCapabilityToKeyset(keysetJson, signFunc)
+      const keyset = Keyset.fromJson(keysetJson)
 
       const gasLimit = feeItems.value.find((x) => x.coin.symbol === signStore.feeSymbol)?.fee
         .gasLimit
 
-      const res = await userStore.unipassWallet.transaction({
-        ...transaction.value,
-        keyset,
-        gasLimit: BigNumber.from(gasLimit ?? '0'),
-      } as TransactionProps)
+      await snapConnect()
+
+      const rpcRes = await sendTransactionWithMM(
+        {
+          env: sdkConfig.net,
+          url_config: sdkConfig.urlConfig,
+          oauthUserInfo: getOAuthUserInfo(),
+        },
+        {
+          ...transaction.value,
+          keyset,
+          gasLimit: BigNumber.from(gasLimit ?? '0'),
+        },
+      )
+
+      const { signedTransaction, feeToken } = JSON.parse(rpcRes)
+      BigNumberParser(signedTransaction)
+      const instance = WalletsCreator.getInstance(keyset, address, {
+        env: sdkConfig.net,
+        url_config: sdkConfig.urlConfig,
+      })
+      const wallet = instance[transaction.value.chain as ChainType] as Wallet
+      const res = await wallet.sendSignedTransaction(signedTransaction, feeToken)
       const timeout = chain === 'eth' ? 120 : 60
       const receipt = await (res.wait as any)(1, timeout)
       const hash = receipt.transactionHash
@@ -290,7 +321,7 @@ export const useSign = () => {
     } = userStore.accountInfo
 
     try {
-      const keyset = await addSignCapabilityToKeyset(keysetJson, signFunc)
+      const keyset = addSignCapabilityToKeyset(keysetJson, signFunc)
       const sig = await userStore.unipassWallet.signMessage(message, keyset, isEIP191Prefix)
       return sig
     } catch (e: any) {

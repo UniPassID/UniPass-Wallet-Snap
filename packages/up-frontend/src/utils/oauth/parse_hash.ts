@@ -35,6 +35,7 @@ export enum OAuthProvider {
 }
 
 interface UnipassInfo {
+  keyType?: number
   keyset: string
   address: string
   keystore: string
@@ -174,14 +175,6 @@ export const parseOAuthHash = async (loading: any) => {
           const data = await blockchain.getAccountInfo(unipassInfo.address)
           oauthStore.initAccountStatus(data.isPending)
         }
-        upGA('login_enter_password', {
-          email: decoded.email,
-          account: unipassInfo?.address || '-',
-          appName: sessionStorage.appName || 'UniPassWallet',
-          referrer: sessionStorage.referrer || 'UniPassWallet',
-          uniqueID: `${accountType}_${hashMessage(decoded.email)}`,
-          accountType,
-        })
 
         if (LocalStorageService.get('AUTHORIZATION_REQUIRE_STATE')) {
           await checkKeysetHash()
@@ -191,7 +184,7 @@ export const parseOAuthHash = async (loading: any) => {
           LocalStorageService.remove('AUTHORIZATION_REQUIRE_STATE')
         } else {
           LocalStorageService.set('OAUTH_INFO', JSON.stringify(oauthUserInfo))
-          router.replace('/password-login')
+          oauthStore.encryptLogin()
         }
       } else {
         upGA('register_create_password', {
@@ -202,8 +195,6 @@ export const parseOAuthHash = async (loading: any) => {
           uniqueID: `${accountType}_${hashMessage(decoded.email)}`,
           accountType,
         })
-        console.log(`provider: ${provider}`)
-        console.log(`_provider: ${_provider}`)
 
         if (provider === OAuthProvider.GOOGLE && _provider === OAuthProvider.AUTH0) {
           loading?.close()
@@ -232,7 +223,7 @@ export const parseOAuthHash = async (loading: any) => {
           return
         }
         LocalStorageService.set('OAUTH_INFO', JSON.stringify(oauthUserInfo))
-        router.replace('/password-register')
+        oauthStore.encryptSignUp()
       }
     } else {
       router.replace('/login')

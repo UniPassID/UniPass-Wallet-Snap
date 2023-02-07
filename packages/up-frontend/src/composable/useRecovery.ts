@@ -7,7 +7,7 @@ import { ElMessageBox, FormInstance } from 'element-plus'
 import dayjs from 'dayjs'
 import { useUserStore } from '@/store/user'
 import router from '@/plugins/router'
-import { upGA, useUniPass } from '@/utils/useUniPass'
+import { upGA, useUniPass, upError } from '@/utils/useUniPass'
 import { calculateGuardianWeight, getGuardianEmailData } from '@/utils/rbac'
 import { GuardiansStatus } from '@/composable/useGuardian'
 import { useChainAccountStore } from '@/store/chain-account'
@@ -46,23 +46,24 @@ export const useRecovery = () => {
     recoveryStore.step = 3
   }
 
-  const submitPassword = () => {
-    if (!formElement.value) return
-    formElement.value.validate(async (ok) => {
-      if (ok) {
-        recoveryStore.loading = true
-        await recoveryStore.uploadCloudKey()
-        recoveryStore.loading = false
+  const recovery = async () => {
+    recoveryStore.loading = true
+    try {
+      await recoveryStore.uploadCloudKey()
+    } catch (e: any) {
+      recoveryStore.loading = false
+      if (e?.message) {
+        upError(e?.message)
+        return
       }
-    })
+    }
   }
 
-  // export
   return {
     checkConfirmPassword,
     recoveryStore,
     submitEmail,
-    submitPassword,
+    recovery,
     formElement,
     getToken,
   }

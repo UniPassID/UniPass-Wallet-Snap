@@ -1,19 +1,21 @@
 {
-  "version": "0.0.4",
-  "description": "up-snap: Metamask snap for UniPass Wallet",
-  "proposedName": "up-snap",
+  "version": "0.0.3",
+  "description": "up-snap-ui: Metamask snap for UniPass Wallet",
+  "proposedName": "up-snap-ui",
   "source": {
-    "shasum": "IjwiG4aYvbh0TBAc6y7etWQmP/2Kpb2F9FE9Xzp+69k=",
+    "shasum": "Z2NnNbuVGLuo9795d8H1SqD6JRX1QL/k+Km71GhfOOM=",
     "location": {
       "npm": {
         "filePath": "dist/bundle.js",
-        "packageName": "up-snap",
+        "packageName": "up-snap-ui",
         "registry": "https://registry.npmjs.org"
       }
     }
   },
   "initialPermissions": {
+    "endowment:network-access": {},
     "snap_confirm": {},
+    "snap_manageState": {},
     "snap_getBip44Entropy": [
       {
         "coinType": 60

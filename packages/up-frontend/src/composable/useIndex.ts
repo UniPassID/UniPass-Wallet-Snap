@@ -53,7 +53,7 @@ export const useIndex = () => {
     recovering.loading = true
 
     try {
-      const ok = await recoveryStore.sendCancelRecovery(auth.password)
+      const ok = await recoveryStore.sendCancelRecovery()
       if (ok) {
         const date = dayjs().add(2, 'minute')
         polling = setInterval(async () => {
