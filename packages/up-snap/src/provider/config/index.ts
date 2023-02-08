@@ -1,5 +1,3 @@
-import { UnipassWalletProps } from '../interface/unipassWalletProvider';
-
 export const chain_config = {
   'eth-mainnet': {
     rpc_url: 'https://node.wallet.unipass.id/eth-mainnet',

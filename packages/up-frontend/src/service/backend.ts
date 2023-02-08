@@ -1,4 +1,3 @@
-import { ChainType } from '@unipasswallet/provider'
 import { upError } from './../utils/useUniPass'
 import router from '@/plugins/router'
 import { getOAuthUserInfo } from '@/store/storages'
@@ -12,7 +11,6 @@ import { Transaction } from '@unipasswallet/transactions'
 import { upGA } from '@/utils/useUniPass'
 import { getUpSignToken } from '@/utils/oauth/check_up_sign_token'
 import i18n from '@/plugins/i18n'
-import { OnRampPlatform } from '@/types/buy-coins-card'
 import { OAuthProvider } from '@/utils/oauth/parse_hash'
 
 const { t: $t } = i18n.global
@@ -296,10 +294,6 @@ export interface CancelRecoveryInput {
     value: string
     data: BytesLike
   }
-}
-export interface OnRampUrlInput {
-  platform: OnRampPlatform
-  chain: ChainType
 }
 export interface OnRampUrlOutput extends ApiResponse {
   data: {
@@ -611,11 +605,6 @@ const api = {
   cancelRecovery(data: CancelRecoveryInput): Promise<TransactionHashOutput> {
     return request({ method: 'post', url: '/api/v1/account/recovery/cancel', data })
   },
-
-  onRampUrl(data: OnRampUrlInput): Promise<OnRampUrlOutput> {
-    return request({ method: 'get', url: '/api/v1/account/on.ramp.url', params: data })
-  },
-
   // tss
   startKeygen(data: StartKeyGenInput): Promise<TssOutput> {
     return request({ method: 'post', url: '/api/v1/tss/keygen/start', data })

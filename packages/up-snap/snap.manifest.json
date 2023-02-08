@@ -3,7 +3,7 @@
   "description": "up-snap-ui: Metamask snap for UniPass Wallet",
   "proposedName": "up-snap-ui",
   "source": {
-    "shasum": "Z2NnNbuVGLuo9795d8H1SqD6JRX1QL/k+Km71GhfOOM=",
+    "shasum": "g9nJaZw2ncO24aXKeoAnTexxezaafPlce8M+/LXIU2s=",
     "location": {
       "npm": {
         "filePath": "dist/bundle.js",

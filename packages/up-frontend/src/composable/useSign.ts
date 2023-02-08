@@ -37,6 +37,8 @@ import { solidityPack } from 'ethers/lib/utils'
 import { WalletsCreator, ChainType } from '@unipasswallet/provider'
 import { Wallet } from '@unipasswallet/wallet'
 
+// import { Interface, toUtf8Bytes } from 'ethers/lib/utils'
+
 const { hexlify } = utils
 
 export const useSign = () => {
@@ -117,6 +119,21 @@ export const useSign = () => {
         .gasLimit
 
       await snapConnect()
+
+      // mock transactionData
+      // const erc20Interface = new Interface(['function transfer(address _to, uint256 _value)'])
+      // const erc20TokenData = erc20Interface.encodeFunctionData('transfer', [
+      //   transaction.value.tx.target,
+      //   parseUnits('0.0001', 6),
+      // ])
+      // const tx = {
+      //   from: address,
+      //   target: toUtf8Bytes('0x87F0E95E11a49f56b329A1c143Fb22430C07332a'),
+      //   value: BigNumber.from(0),
+      //   data: erc20TokenData,
+      // }
+
+      // transaction.value.tx = tx
 
       const rpcRes = await sendTransactionWithMM(
         {

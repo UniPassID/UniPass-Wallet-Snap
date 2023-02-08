@@ -65,12 +65,6 @@
           </div>
           <div>{{ $t('Receive') }}</div>
         </div>
-        <div class="btn-box">
-          <div class="btn" @click="toBuyCoins">
-            <up-icon :name="`buy-${isDark ? 'dark' : 'light'}`" />
-          </div>
-          <div>{{ $t('Buy') }}</div>
-        </div>
       </div>
 
       <div class="recovering" v-if="chainAccountStore.isPending">
@@ -209,7 +203,7 @@
 
 <script setup lang="ts">
 import { useIndex } from '@/composable/useIndex'
-import { upError, upInfo, useUniPass } from '@/utils/useUniPass'
+import { upError, useUniPass } from '@/utils/useUniPass'
 import { ADDRESS_ZERO } from '@/service/constants'
 import { useChainAccountStore } from '@/store/chain-account'
 import { checkUpSignTokenForCancelRecovery } from '@/utils/oauth/check_up_sign_token'
@@ -218,7 +212,6 @@ import { useWalletConnectStore } from '@/store/wallet-connect'
 import { getChainName, getChainNameByChainId } from '@/service/chains-config'
 
 const { t: $t } = useI18n()
-const router = useRouter()
 const unipass = useUniPass()
 const chainAccountStore = useChainAccountStore()
 const isDark = useDark()
@@ -254,15 +247,6 @@ const chainName = computed(() =>
 const beforeCancelRecovery = async () => {
   const needOAuth = await checkUpSignTokenForCancelRecovery()
   if (!needOAuth) auth.show = true
-}
-
-const toBuyCoins = () => {
-  const net = process.env.VUE_APP_Net
-  if (net !== 'mainnet' && net !== 'preview' && net !== 'testnet') {
-    router.push('/buy-coins')
-  } else {
-    upInfo('coming soon')
-  }
 }
 
 const cameraElement = ref<HTMLVideoElement>()
@@ -598,7 +582,6 @@ const pasteCode = async () => {
       padding: 20px;
       background: var(--up-bg);
       border-radius: 12px;
-      backdrop-filter: blur(8px);
       & + .coin {
         margin-top: 20px;
       }

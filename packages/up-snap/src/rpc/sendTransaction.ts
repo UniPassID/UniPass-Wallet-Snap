@@ -6,6 +6,7 @@ import { hexlify, arrayify, isHexString, solidityPack } from 'ethers/lib/utils';
 import { extractMasterPrivateKey } from './getMasterKeyAddress';
 import UnipassWalletProvider from '../provider';
 import { AccountInfo } from '../provider/interface';
+import { txDecoder } from '../util/transaction-decoder';
 
 export async function sendTransaction(
   params: SendTransactionRequest,
@@ -33,8 +34,9 @@ export async function sendTransaction(
     params: ['get'],
   }) as AccountInfo;
 
-  const contentText = 
-    `from: ${accountInfo?.address}\nto: ${transactionParams.tx.target}\nchainType: ${transactionParams.chain}\ntx: ${JSON.stringify(transactionParams.tx)}`
+  const contentText = `from: ${accountInfo?.address}\nto: ${transactionParams.tx.target}\nchainType: ${transactionParams.chain}\ntx: ${JSON.stringify(transactionParams.tx)}`
+  const decodedData = await txDecoder(transactionParams)
+  console.log('decodedData: ', decodedData)
 
   const result = await wallet.request({
     method: 'snap_confirm',

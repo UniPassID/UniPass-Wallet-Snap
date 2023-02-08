@@ -5,7 +5,6 @@ import '@vue/runtime-core'
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    BuyCoinsCard: typeof import('./components/buy-coins-card.vue')['default']
     DialogHeaderMore: typeof import('./components/dialog-header-more.vue')['default']
     DialogOauth: typeof import('./components/dialog-oauth.vue')['default']
     DialogSupportEmail: typeof import('./components/dialog-support-email.vue')['default']
