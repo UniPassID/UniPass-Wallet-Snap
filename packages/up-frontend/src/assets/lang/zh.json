@@ -255,7 +255,7 @@
   "SignWithEmail": "前往邮箱验证",
   "WCSwitchChain": "切链成功，请重新请求操作",
   "LoginFailed": "登录失败",
-  "SnapEnvFailed": "Snap 创建失败",
+  "SnapEnvFailed": "未找到 Flask",
   "InstallSnap": "马上安装",
   "SnapGuide": "运行 snap 需要安装 Metamask flask",
   "LoginFailedGuide": "您的账户无法登录 UniPass Snap, 您可以重置账户后重试或登录 MPC 模式的 UniPass",

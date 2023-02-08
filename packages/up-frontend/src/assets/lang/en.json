@@ -254,9 +254,9 @@
   "SignWithGoogle": "Continue with Google",
   "SignWithEmail": "Continue with Email",
   "WCSwitchChain": "Switching chain successfully, please request the operation again",
-  "SnapEnvFailed": "Failed to generate",
+  "SnapEnvFailed": "Flask not found",
   "InstallSnap": "Install now",
-  "SnapGuide": "Metamask flask is required to run snap",
+  "SnapGuide": "You need to install Metamask(Flask) before proceeding",
   "LoginFailedGuide": "Your account cannot log in to the UniPass(Snap version), you can restore your account and try again or go to UniPass(MPC version) to log in",
   "RestoreWallet": "Restore my wallet",
   "LoginUniPass": "Login to UniPass (MPC)"
