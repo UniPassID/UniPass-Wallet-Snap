@@ -6,7 +6,8 @@ import { hexlify, arrayify, isHexString, solidityPack } from 'ethers/lib/utils';
 import { extractMasterPrivateKey } from './getMasterKeyAddress';
 import UnipassWalletProvider from '../provider';
 import { AccountInfo } from '../provider/interface';
-import { txDecoder } from '../util/transaction-decoder';
+import { txDecoder, feeDecoder } from '../util/decoder';
+import { getFunctionText } from '../util';
 
 export async function sendTransaction(
   params: SendTransactionRequest,
@@ -34,10 +35,36 @@ export async function sendTransaction(
     params: ['get'],
   }) as AccountInfo;
 
-  const contentText = `from: ${accountInfo?.address}\nto: ${transactionParams.tx.target}\nchainType: ${transactionParams.chain}\ntx: ${JSON.stringify(transactionParams.tx)}`
-  const decodedData = await txDecoder(transactionParams)
-  console.log('decodedData: ', decodedData)
 
+  const decodedData = await txDecoder(transactionParams, unipassWalletProps.env)
+  const decodedFee = await feeDecoder(transactionParams.fee, transactionParams.chain, unipassWalletProps.env)
+  let contentText
+
+  if (decodedData.type === 'contract-call') {
+    contentText = 
+      `From: ${accountInfo?.address}\n` + 
+      `Interacted With (To): ${transactionParams.tx.target}\n` + 
+      `Chain: ${transactionParams.chain}\n` +
+      `Gasfee:\n` + 
+      `  cointype: ${decodedFee.symbol}\n` + 
+      `  amount: ${decodedFee.value}\n` + 
+      `Function: ${decodedData.function}\n` +
+        getFunctionText(decodedData.name, decodedData.args[0], decodedData.amount) + 
+      `Hex Data:\n` +
+      `${transactionParams.tx.data}`
+  } else {
+    contentText = 
+      `From: ${accountInfo?.address}\n` + 
+      `To: ${transactionParams.tx.target}\n` + 
+      `Amount ${decodedData.amount}\n` +
+      `Chain: ${transactionParams.chain}\n` +
+      `Gasfee:\n` + 
+      `  cointype: ${decodedFee.symbol}\n` + 
+      `  amount: ${decodedFee.value}\n` + 
+      `Hex Data:\n` +
+      `0x`
+  }
+  
   const result = await wallet.request({
     method: 'snap_confirm',
     params: [
