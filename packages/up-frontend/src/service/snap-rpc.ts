@@ -5,7 +5,6 @@ const snapId = process.env.VUE_APP_SNAP_ID as string
 const snapVersion = process.env.VUE_APP_SNAP_VERSION as string
 
 export async function snapConnect() {
-  console.log(snapId, snapVersion)
   return await window.ethereum.request({
     method: 'wallet_enable',
     params: [
@@ -48,7 +47,7 @@ export async function manageState(
   })
 }
 
-export async function getMasterKeyAddress(): Promise<string> {
+export async function getMasterKeyAddress(email: string): Promise<string> {
   const state = await checkSnaps()
   if (!state) {
     await snapConnect()
@@ -59,12 +58,13 @@ export async function getMasterKeyAddress(): Promise<string> {
       snapId,
       {
         method: 'up_getMasterKeyAddress',
+        params: { email },
       },
     ],
   })
 }
 
-export async function signMsgWithMM(message: string, from: string): Promise<string> {
+export async function signMsgWithMM(message: string, from: string, email: string): Promise<string> {
   const state = await checkSnaps()
   if (!state) {
     await snapConnect()
@@ -75,7 +75,7 @@ export async function signMsgWithMM(message: string, from: string): Promise<stri
       snapId,
       {
         method: 'up_signMessage',
-        params: { from, message },
+        params: { from, message, email },
       },
     ],
   })
@@ -84,6 +84,7 @@ export async function signMsgWithMM(message: string, from: string): Promise<stri
 export async function sendTransactionWithMM(
   unipassWalletProps: UnipassWalletProps & { oauthUserInfo: OAuthUserInfo | undefined },
   transactionParams: TransactionProps,
+  email: string,
 ) {
   const state = await checkSnaps()
   if (!state) {
@@ -95,7 +96,7 @@ export async function sendTransactionWithMM(
       snapId,
       {
         method: 'up_sendTransaction',
-        params: { unipassWalletProps, transactionParams },
+        params: { unipassWalletProps, transactionParams, email },
       },
     ],
   })

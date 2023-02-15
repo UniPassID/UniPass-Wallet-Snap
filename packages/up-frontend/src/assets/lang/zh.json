@@ -258,7 +258,12 @@
   "SnapEnvFailed": "未找到 Flask",
   "InstallSnap": "马上安装",
   "SnapGuide": "运行 snap 需要安装 Metamask flask",
-  "LoginFailedGuide": "您的账户无法登录 UniPass Snap, 您可以重置账户后重试或登录 MPC 模式的 UniPass",
+  "LoginFailedGuide": "您的账户无法登录 UniPass (Snap 版）, 您可以重置账户后重试或登录 UniPass 正式版",
   "RestoreWallet": "恢复我的钱包",
-  "LoginUniPass": "登录 UniPass (MPC)"
+  "LoginUniPass": "登录 UniPass 正式版",
+  "AddressNotSameGuide": "签名验证失败，请确保您使用登录授权的钱包进行签名",
+  "TryItAgain": "重试",
+  "LostWallet": "无法找回钱包？",
+  "RecoveryTip": "此恢复应该有48小时的锁定期，但UniPass已实现恢复协助，将为您实现立即恢复。恢复协助将在近期永久删除，恢复后请尽快添加更多的监护人，以保护您的帐户安全",
+  "IKnow": "我知道了"
 }

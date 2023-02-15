@@ -258,7 +258,12 @@
   "InstallSnap": "Install now",
   "SnapGuide": "You need to install Metamask(Flask) before proceeding",
   "LoginFailed": "Login failed",
-  "LoginFailedGuide": "Your account cannot log in to the UniPass(Snap version), you can restore your account and try again or go to UniPass(MPC version) to log in",
+  "LoginFailedGuide": "Your account cannot log in to the UniPass(Snap version), you can restore your account and try again or go to UniPass(official version) to log in",
   "RestoreWallet": "Restore my wallet",
-  "LoginUniPass": "Login to UniPass (MPC)"
+  "LoginUniPass": "Go to official UniPass",
+  "AddressNotSameGuide": "Signature verification failed, please make sure to use the wallet with login permissions to sign",
+  "TryItAgain": "Try it again",
+  "LostWallet": "Can't found wallet?",
+  "RecoveryTip": "This recovery should have a 48-hour time lock, but UniPass has implemented recovery assistance to realize the immediate recovery for you. Recovery assistance will be permanently removed in the near future, please add more guardians as soon as possible after recovery to protect your account security",
+  "IKnow": "I already know"
 }

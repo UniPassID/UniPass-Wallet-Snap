@@ -17,7 +17,7 @@ import i18n from '@/plugins/i18n'
 import DB from './index_db'
 import { clearUpSignToken } from '@/utils/oauth/check_up_sign_token'
 import { signMsgWithMM, getMasterKeyAddress } from '@/service/snap-rpc'
-import dayjs from 'dayjs'
+import { prepareSignMessage } from '@/utils/string-utils'
 
 const { t: $t } = i18n.global
 
@@ -97,18 +97,18 @@ export const useRecoveryStore = defineStore({
 
       this.email = email
 
-      const masterKeyAddress = await getMasterKeyAddress()
+      const masterKeyAddress = await getMasterKeyAddress(email)
       const newKeyset = updateKeyset(keyset, masterKeyAddress)
-      const timestamp = dayjs().add(10, 'minute').unix()
-      const sig = await signMsgWithMM('login UniPass:' + timestamp, masterKeyAddress)
+      const message = prepareSignMessage('recovery', masterKeyAddress)
+      const sig = await signMsgWithMM(message, masterKeyAddress, email)
 
       const resToken = await api.uploadRecoveryMasterKey({
         masterKey: {
           masterKeyAddress,
           keyType: 1,
           keySig: {
-            timestamp,
             sig,
+            message: message,
           },
         },
       })
@@ -152,7 +152,7 @@ export const useRecoveryStore = defineStore({
       }
 
       if (auditRes.ok && auditRes.data.approveStatus === AuditStatus.Approved) {
-        const signature = await signMsgWithMM(digestHash, _keyset.masterKeyAddress)
+        const signature = await signMsgWithMM(digestHash, _keyset.masterKeyAddress, email)
         const keyset = await addSignCapabilityToKeyset(_keyset.keysetJson, () =>
           Promise.resolve(signature),
         )
@@ -167,12 +167,10 @@ export const useRecoveryStore = defineStore({
           provider: blockchain.getProvider(),
           relayer: relayer,
         })
-        console.log(keyWallet)
         const nonce = await keyWallet.relayer?.getNonce(keyWallet.address)
 
         let tx = (await txBuilder.generateSignature(keyWallet, [0])).build()
 
-        console.log({ tx })
         const transactionData = await keyWallet.toTransaction(
           {
             type: 'Execute',
@@ -183,9 +181,7 @@ export const useRecoveryStore = defineStore({
           nonce,
         )
         tx = transactionData[0]
-        console.log({ transactionData })
         txBuilder.signature
-        console.log({ signature: txBuilder.signature, gasLimit: tx.gasLimit })
         const cancelResData = await api.cancelRecovery({
           email,
           metaNonce,

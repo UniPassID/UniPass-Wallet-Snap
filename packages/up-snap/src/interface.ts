@@ -5,11 +5,12 @@ import { SignType } from '@unipasswallet/keys';
 export type SignRequest = {
   message: string;
   from: string;
+  email?: string
 };
 
 export type MessageRequest = {
   method: string;
-  params?: SignRequest | ManageStateRequest | SendTransactionRequest;
+  params?: unknown;
 };
 
 export type RpcRequest = {
@@ -32,4 +33,9 @@ export type SendTransactionRequest = {
   transactionParams: TransactionProps & {
     signFunc: SignFunc;
   };
+  email: string
 };
+
+export type MasterKeyAddressRequest = {
+  email: string
+}

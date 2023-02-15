@@ -27,12 +27,7 @@ import api, { SyncStatusEnum } from '@/service/backend'
 import { getAuthNodeChain } from '@/service/chains-config'
 import { checkStatusForSendTransaction, checkUpSignToken } from '@/utils/oauth/check_up_sign_token'
 import { useWalletConnectStore } from '@/store/wallet-connect'
-import {
-  getMasterKeyAddress,
-  signMsgWithMM,
-  sendTransactionWithMM,
-  snapConnect,
-} from '@/service/snap-rpc'
+import { getMasterKeyAddress, signMsgWithMM, sendTransactionWithMM } from '@/service/snap-rpc'
 import { solidityPack } from 'ethers/lib/utils'
 import { WalletsCreator, ChainType } from '@unipasswallet/provider'
 import { Wallet } from '@unipasswallet/wallet'
@@ -60,8 +55,8 @@ export const useSign = () => {
       return ''
     }
 
-    const masterKeyAddress = await getMasterKeyAddress()
-    const sig = await signMsgWithMM(hexlify(digestHash), masterKeyAddress)
+    const masterKeyAddress = await getMasterKeyAddress(accountInfo.email)
+    const sig = await signMsgWithMM(hexlify(digestHash), masterKeyAddress, accountInfo.email)
 
     const masterKeySig = solidityPack(['bytes', 'uint8'], [sig, signType])
 
@@ -110,6 +105,7 @@ export const useSign = () => {
       }
 
       const {
+        email,
         keyset: { keysetJson },
         address,
       } = userStore.accountInfo
@@ -117,23 +113,6 @@ export const useSign = () => {
 
       const gasLimit = feeItems.value.find((x) => x.coin.symbol === signStore.feeSymbol)?.fee
         .gasLimit
-
-      await snapConnect()
-
-      // mock transactionData
-      // const erc20Interface = new Interface(['function transfer(address _to, uint256 _value)'])
-      // const erc20TokenData = erc20Interface.encodeFunctionData('transfer', [
-      //   transaction.value.tx.target,
-      //   parseUnits('0.0001', 6),
-      // ])
-      // const tx = {
-      //   from: address,
-      //   target: toUtf8Bytes('0x87F0E95E11a49f56b329A1c143Fb22430C07332a'),
-      //   value: BigNumber.from(0),
-      //   data: erc20TokenData,
-      // }
-
-      // transaction.value.tx = tx
 
       const rpcRes = await sendTransactionWithMM(
         {
@@ -146,6 +125,7 @@ export const useSign = () => {
           keyset,
           gasLimit: BigNumber.from(gasLimit ?? '0'),
         },
+        email,
       )
 
       const { signedTransaction, feeToken } = JSON.parse(rpcRes)

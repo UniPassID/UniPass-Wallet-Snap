@@ -343,24 +343,6 @@ export interface AccountInfo {
   keystore: string;
 }
 
-export interface AccountInfo {
-  email: string;
-  id_token: string;
-  user_key: {
-    encrypted_key: string;
-    aes_key: CryptoKey;
-  };
-  address: string;
-  oauth_provider: OAuthProvider;
-  expires_at: string;
-  keyset: {
-    hash: string;
-    masterKeyAddress: string;
-    keysetJson: string;
-  };
-  keystore: string;
-}
-
 export interface IdTokenParams {
   email: string;
   name: string;

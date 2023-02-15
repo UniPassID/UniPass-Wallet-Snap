@@ -8,7 +8,7 @@ export async function signMessage(
   signRequest: SignRequest,
   wallet: SnapProvider
 ) {
-  const masterPrivateKey = await extractMasterPrivateKey(wallet);
+  const masterPrivateKey = await extractMasterPrivateKey(wallet, signRequest.email);
   const ethersWallet = new Wallet(masterPrivateKey);
 
   const { from, message } = signRequest;

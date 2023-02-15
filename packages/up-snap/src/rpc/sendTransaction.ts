@@ -13,8 +13,8 @@ export async function sendTransaction(
   params: SendTransactionRequest,
   wallet: SnapProvider
 ) {
-  const { transactionParams, unipassWalletProps } = params;
-  const masterPrivateKey = await extractMasterPrivateKey(wallet);
+  const { transactionParams, unipassWalletProps, email } = params;
+  const masterPrivateKey = await extractMasterPrivateKey(wallet, email);
   const ethersWallet = new Wallet(masterPrivateKey);
 
   const signFunc = async (digestHash: BytesLike, signType: SignType) => {
@@ -35,19 +35,21 @@ export async function sendTransaction(
     params: ['get'],
   }) as AccountInfo;
 
-
   const decodedData = await txDecoder(transactionParams, unipassWalletProps.env)
-  const decodedFee = await feeDecoder(transactionParams.fee, transactionParams.chain, unipassWalletProps.env)
+  let decodedFee
   let contentText
+
+  if (transactionParams.fee) {
+    decodedFee = await feeDecoder(transactionParams.fee, transactionParams.chain, unipassWalletProps.env)
+  }
 
   if (decodedData.type === 'contract-call') {
     contentText = 
       `From: ${accountInfo?.address}\n` + 
       `Interacted With (To): ${transactionParams.tx.target}\n` + 
       `Chain: ${transactionParams.chain}\n` +
-      `Gasfee:\n` + 
-      `  cointype: ${decodedFee.symbol}\n` + 
-      `  amount: ${decodedFee.value}\n` + 
+      `Gasfee:` + 
+        (decodedFee ? (`\n  cointype: ${decodedFee.symbol}\n` + `  amount: ${decodedFee.value}\n`) : `0\n`) +
       `Function: ${decodedData.function}\n` +
         getFunctionText(decodedData.name, decodedData.args[0], decodedData.amount) + 
       `Hex Data:\n` +
@@ -58,9 +60,8 @@ export async function sendTransaction(
       `To: ${transactionParams.tx.target}\n` + 
       `Amount ${decodedData.amount}\n` +
       `Chain: ${transactionParams.chain}\n` +
-      `Gasfee:\n` + 
-      `  cointype: ${decodedFee.symbol}\n` + 
-      `  amount: ${decodedFee.value}\n` + 
+      `Gasfee:` + 
+        (decodedFee ? (`\n  cointype: ${decodedFee.symbol}\n` + `  amount: ${decodedFee.value}\n`) : `0\n`) +
       `Hex Data:\n` +
       `0x`
   }

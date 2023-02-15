@@ -218,6 +218,8 @@ export const useSignStore = defineStore({
     },
     async updateGasFee() {
       const accountInfo = await DB.getAccountInfo()
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      /* @ts-ignore */
       UnipassWalletProvider.getInstance().setAccountInfo(accountInfo)
       const sponsored = await this.checkGasSponsored()
       if (!sponsored) {
@@ -230,7 +232,6 @@ export const useSignStore = defineStore({
     async checkGasSponsored() {
       const userStore = useUserStore()
       const accountInfo = await DB.getAccountInfo()
-      console.log('accountInfo: ', accountInfo)
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       /* @ts-ignore */
       const wallet = await userStore.unipassWallet.wallet(this.chain, accountInfo)

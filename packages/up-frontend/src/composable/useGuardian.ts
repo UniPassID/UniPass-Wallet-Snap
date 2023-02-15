@@ -270,6 +270,7 @@ export const useGuardian = () => {
     if (!accountInfo) return
 
     const {
+      email,
       address,
       keyset: { keysetJson, masterKeyAddress },
     } = accountInfo
@@ -304,7 +305,7 @@ export const useGuardian = () => {
       clearUpSignToken()
       if (auditRes.data.approveStatus === AuditStatus.Approved) {
         try {
-          const sig = await signMsgWithMM(digestHash, masterKeyAddress)
+          const sig = await signMsgWithMM(digestHash, masterKeyAddress, email)
           const masterKeySig = solidityPack(['bytes', 'uint8'], [sig, SignTypeUP.EthSign])
 
           const updateGuardianKeysetRes = await api.updateGuardian({ masterKeySig })

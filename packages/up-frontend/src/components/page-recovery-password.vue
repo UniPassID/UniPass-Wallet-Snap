@@ -4,7 +4,7 @@
     <up-supported-by />
 
     <up-confirm
-      v-model="loginFailed"
+      v-model="sourceFailed"
       :title="$t('LoginFailed')"
       destroy-on-close
       @closed="back()"
@@ -25,6 +25,28 @@
         </div>
       </template>
     </up-confirm>
+    <up-confirm
+      v-model="addressFailed"
+      :title="$t('LoginFailed')"
+      destroy-on-close
+      @closed="back()"
+      class="dialog-show-oauth"
+    >
+      <div class="el-dialog__subtitle">
+        {{ $t('AddressNotSameGuide') }}
+      </div>
+
+      <template #footer>
+        <up-button type="primary" @click="back">
+          {{ $t('TryAgain') }}
+        </up-button>
+        <div class="dialog-footer-extension">
+          <a class="underline" @click="recovery">
+            {{ $t('LostWallet') }}
+          </a>
+        </div>
+      </template>
+    </up-confirm>
   </div>
 </template>
 
@@ -34,7 +56,10 @@ import router from '@/plugins/router'
 import { clearStorage } from '@/utils/clear'
 const APP_LOCATION = process.env.VUE_APP_LOCATION as string
 
-const loginFailed = ref(true)
+const route = useRoute()
+
+const addressFailed = ref(route.query.type === 'address')
+const sourceFailed = ref(route.query.type === 'source')
 
 const { recovery } = useRecovery()
 

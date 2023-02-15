@@ -13,10 +13,10 @@ import { genGoogleOAuthUrl } from '@/utils/oauth/google-oauth'
 import { AUTH0_CONFIG } from '@/utils/oauth/auth0-config'
 import { OAuthProvider } from '@/utils/oauth/parse_hash'
 import { upError, upGA } from '@/utils/useUniPass'
-import { getMasterKeyAddress, signMsgWithMM } from '@/service/snap-rpc'
-import dayjs from 'dayjs'
+import { getMasterKeyAddress, signMsgWithMM, snapConnect } from '@/service/snap-rpc'
 import DB from './index_db'
-import { isSameAddress } from '@/utils/string-utils'
+import { prepareSignMessage } from '@/utils/string-utils'
+// import { verifyMessageSignature } from '@unipasswallet/popup-utils'
 
 const { t: $t } = i18n.global
 
@@ -93,10 +93,9 @@ export const useOAuthLoginStore = defineStore({
 
         const policyKeysetJson = sessionStorage.policyKeysetJson
         const pepper = Wallet.createRandom().privateKey
-        const masterKeyAddress = await getMasterKeyAddress()
-
-        const timestamp = dayjs().add(10, 'minute').unix()
-        const sig = await signMsgWithMM('login UniPass:' + timestamp, masterKeyAddress)
+        const masterKeyAddress = await getMasterKeyAddress(email)
+        const message = prepareSignMessage('signUp', masterKeyAddress)
+        const sig = await signMsgWithMM(message, masterKeyAddress, email)
 
         const keyset = getAccountKeysetJson(
           [],
@@ -113,8 +112,8 @@ export const useOAuthLoginStore = defineStore({
             masterKeyAddress,
             keyType: 1,
             keySig: {
-              timestamp,
               sig,
+              message: message,
             },
           },
           pepper,
@@ -161,40 +160,67 @@ export const useOAuthLoginStore = defineStore({
         const { email, id_token, expires_at, unipass_info, oauth_provider } = oauthUserInfo
         upGA('login_click_login', { account: unipass_info.address, email }, oauth_provider)
 
-        const masterKeyAddress = await getMasterKeyAddress()
         const keyset = Keyset.fromJson(unipass_info.keyset)
-        if (
-          unipass_info.keyType === 1 &&
-          isSameAddress((keyset.keys[0] as KeySecp256k1).address, masterKeyAddress)
-        ) {
-          const user: AccountInfo = {
-            email,
-            id_token,
-            address: unipass_info.address,
-            oauth_provider,
-            expires_at,
-            keyset: {
-              hash: keyset.hash(),
-              masterKeyAddress: (keyset.keys[0] as KeySecp256k1).address,
-              keysetJson: keyset.obscure().toJson(),
+        // is snap source
+        if (unipass_info.keyType === 1) {
+          // is same address
+          await snapConnect()
+          const masterKeyAddress = await getMasterKeyAddress(email)
+
+          const message = prepareSignMessage('signIn', masterKeyAddress)
+          const sig = await signMsgWithMM(message, masterKeyAddress, email)
+
+          const res = await api.signCheck({
+            masterKeyAddress: (keyset.keys[0] as KeySecp256k1).address,
+            keyType: 1,
+            keySig: {
+              sig,
+              message,
             },
-          }
-          await DB.setAccountInfo(user)
-          const userStore = useUserStore()
-          sessionStorage.removeItem('newborn')
-          if (sessionStorage.redirectUrl) {
-            const redirectUrl = new URL(sessionStorage.redirectUrl)
-            sessionStorage.removeItem('redirectUrl')
-            redirectUrl.searchParams.delete('connectType')
-            location.href = redirectUrl.toString()
+          })
+          if (res.ok && res.data && res.data.isVerify) {
+            const user: AccountInfo = {
+              email,
+              id_token,
+              address: unipass_info.address,
+              oauth_provider,
+              expires_at,
+              keyset: {
+                hash: keyset.hash(),
+                masterKeyAddress: (keyset.keys[0] as KeySecp256k1).address,
+                keysetJson: keyset.obscure().toJson(),
+              },
+            }
+            await DB.setAccountInfo(user)
+            const userStore = useUserStore()
+            sessionStorage.removeItem('newborn')
+            if (sessionStorage.redirectUrl) {
+              const redirectUrl = new URL(sessionStorage.redirectUrl)
+              sessionStorage.removeItem('redirectUrl')
+              redirectUrl.searchParams.delete('connectType')
+              location.href = redirectUrl.toString()
+            } else {
+              await router.replace(sessionStorage.path || '/')
+            }
+            upGA('login_success', { account: unipass_info.address, email }, oauth_provider)
+            userStore.init()
           } else {
-            await router.replace(sessionStorage.path || '/')
+            // not same address
+            router.replace({
+              path: '/recovery',
+              query: {
+                type: 'address',
+              },
+            })
           }
-          upGA('login_success', { account: unipass_info.address, email }, oauth_provider)
-          userStore.init()
         } else {
-          // TODO 错误处理
-          router.replace('/recovery')
+          // not snap source
+          router.replace({
+            path: '/recovery',
+            query: {
+              type: 'source',
+            },
+          })
         }
       } catch (e: any) {
         if (e?.message === 'invalid password') {

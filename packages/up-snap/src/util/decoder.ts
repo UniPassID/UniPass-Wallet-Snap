@@ -59,8 +59,6 @@ export const txDecoder = async (transaction: TransactionProps, env: Environment)
       amount = formatUnits(BigNumber.from(decodedData.args[1]), decimals)
     }
 
-    console.log('decodedData: ', decodedData)
-   
     return {
       type: 'contract-call',
       name: decodedData.name,

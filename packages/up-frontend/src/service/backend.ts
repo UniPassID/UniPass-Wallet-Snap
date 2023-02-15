@@ -167,8 +167,8 @@ export interface SignUpAccountInput {
     masterKeyAddress: string
     keyType: number
     keySig: {
-      timestamp: number
       sig: string
+      message: string
     }
   }
   pepper: string
@@ -243,7 +243,7 @@ export interface UploadRecoveryCloudKeyInput {
     keyType: number
     keySig: {
       sig: string
-      timestamp: number
+      message: string
     }
   }
 }
@@ -535,6 +535,22 @@ export interface GetAccountTokensOutput extends ApiResponse {
   data: APIChainInfo[]
 }
 
+export interface SignCheckInput {
+  masterKeyAddress: string
+  keyStore?: string
+  keyType: number
+  keySig: {
+    sig: string
+    message: string
+  }
+}
+
+export interface SignCheckOutput extends ApiResponse {
+  data: {
+    isVerify: boolean
+  }
+}
+
 const request = (requestConfig: AxiosRequestConfig, polling = false) => {
   if (polling === false) {
     const { data } = requestConfig
@@ -568,6 +584,12 @@ const api = {
   getPasswordToken(data: GetPasswordTokenInput): Promise<PasswordTokenOutput> {
     return request({ method: 'post', url: '/api/v1/account/password.token', data })
   },
+
+  // check auth for snap
+  signCheck(data: SignCheckInput): Promise<SignCheckOutput> {
+    return request({ method: 'post', url: '/api/v1/account/snap/sign.check', data })
+  },
+
   login(data: LoginInput): Promise<LoginOutput> {
     return request({ method: 'post', url: '/api/v1/account/signIn', data })
   },
