@@ -340,11 +340,11 @@ export const useWalletConnectStore = defineStore({
         this.currentDappName = peerMeta?.url ?? ''
         userStore.appIcon = icon
         userStore.chain = getChainNameByChainId(chainId)
-        if (chainId && !getSupportedChainIds().includes(chainId)) {
-          upTip($t('WCWrongChain'), 10000, true)
-          router.replace('/')
-          return
-        }
+        // if (chainId && !getSupportedChainIds().includes(chainId)) {
+        //   upTip($t('WCWrongChain'), 10000, true)
+        //   router.replace('/')
+        //   return
+        // }
         this.approveType = 'V1'
         this.legacyProposal = payload
         router.push({
