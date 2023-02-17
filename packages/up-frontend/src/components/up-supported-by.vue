@@ -19,7 +19,7 @@
   line-height: 20px;
   color: var(--up-text-secondary);
 
-  display: none;
+  // display: none;
   align-items: center;
   justify-content: center;
 

@@ -130,8 +130,20 @@ init()
 </script>
 
 <style lang="scss">
+#app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.main-container {
+  position: relative;
+  max-width: 1180px;
+  padding: 20px;
+  width: 100%;
+}
 .up-banner {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
@@ -164,23 +176,18 @@ init()
 
 // app
 .up-app {
-  min-height: 100vh;
   background: var(--up-app-background);
+  width: 100%;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex: 1;
 
   > .page {
-    width: 100%;
-    // max-width: 480px;
-    min-height: 100vh;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
     overflow: hidden;
-    padding: 24px;
     text-align: center;
-    background-color: var(--up-background);
-    // background-image: url('./assets/img/bg-light.svg');
-    // background-size: cover;
-    position: relative;
   }
 
   > .under-construction {
@@ -209,15 +216,7 @@ init()
 @media screen and (min-width: 480px) {
   // app
   .up-app {
-    padding-top: 60px;
-    padding-bottom: 60px;
-
-    > .page {
-      min-height: 800px;
-      border-radius: 28px;
-      padding-left: 40px;
-      padding-right: 40px;
-    }
+    padding-top: 30px;
   }
 
   // dark

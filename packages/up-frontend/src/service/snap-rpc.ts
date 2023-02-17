@@ -6,17 +6,12 @@ const snapVersion = process.env.VUE_APP_SNAP_VERSION as string
 
 export async function snapConnect() {
   return await window.ethereum.request({
-    method: 'wallet_enable',
-    params: [
-      {
-        wallet_snap: {
-          [snapId]: {
-            version: snapVersion,
-          },
-        },
-        eth_accounts: {},
+    method: 'wallet_requestSnaps',
+    params: {
+      [snapId]: {
+        version: snapVersion,
       },
-    ],
+    },
   })
 }
 
@@ -37,13 +32,13 @@ export async function manageState(
   }
   return window.ethereum.request({
     method: 'wallet_invokeSnap',
-    params: [
+    params: {
       snapId,
-      {
+      request: {
         method: 'up_manageState',
         params: { type, data },
       },
-    ],
+    },
   })
 }
 
@@ -52,32 +47,39 @@ export async function getMasterKeyAddress(email: string): Promise<string> {
   if (!state) {
     await snapConnect()
   }
+  console.log('wallet_invokeSnap', 'up_getMasterKeyAddress')
   return window.ethereum.request({
     method: 'wallet_invokeSnap',
-    params: [
+    params: {
       snapId,
-      {
+      request: {
         method: 'up_getMasterKeyAddress',
         params: { email },
       },
-    ],
+    },
   })
 }
 
-export async function signMsgWithMM(message: string, from: string, email: string): Promise<string> {
+export async function signMsgWithMM(
+  message: string,
+  from: string,
+  email: string,
+  prefix?: string,
+): Promise<string> {
   const state = await checkSnaps()
   if (!state) {
     await snapConnect()
   }
+  console.log('wallet_invokeSnap', 'up_signMessage')
   return window.ethereum.request({
     method: 'wallet_invokeSnap',
-    params: [
+    params: {
       snapId,
-      {
+      request: {
         method: 'up_signMessage',
-        params: { from, message, email },
+        params: { from, message, email, prefix },
       },
-    ],
+    },
   })
 }
 
@@ -92,13 +94,13 @@ export async function sendTransactionWithMM(
   }
   return window.ethereum.request({
     method: 'wallet_invokeSnap',
-    params: [
+    params: {
       snapId,
-      {
+      request: {
         method: 'up_sendTransaction',
         params: { unipassWalletProps, transactionParams, email },
       },
-    ],
+    },
   })
 }
 

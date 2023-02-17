@@ -156,6 +156,7 @@ export const useOAuthLoginStore = defineStore({
     async encryptLogin() {
       try {
         const oauthUserInfo = getOAuthUserInfo()
+
         if (!oauthUserInfo || !oauthUserInfo.unipass_info) return
         const { email, id_token, expires_at, unipass_info, oauth_provider } = oauthUserInfo
         upGA('login_click_login', { account: unipass_info.address, email }, oauth_provider)
@@ -164,7 +165,6 @@ export const useOAuthLoginStore = defineStore({
         // is snap source
         if (unipass_info.keyType === 1) {
           // is same address
-          await snapConnect()
           const masterKeyAddress = await getMasterKeyAddress(email)
 
           const message = prepareSignMessage('signIn', masterKeyAddress)

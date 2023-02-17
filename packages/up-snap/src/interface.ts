@@ -1,11 +1,13 @@
 import { TransactionProps, UnipassWalletProps } from '@unipasswallet/provider';
 import { BytesLike } from 'ethers';
 import { SignType } from '@unipasswallet/keys';
+import { Json } from '@metamask/snaps-types';
 
 export type SignRequest = {
   message: string;
   from: string;
-  email?: string
+  email: string;
+  prefix?: string;
 };
 
 export type MessageRequest = {
@@ -20,7 +22,7 @@ export type RpcRequest = {
 
 export type ManageStateRequest = {
   type: 'update' | 'get' | 'clear';
-  data?: Record<string, unknown> | void;
+  data?: Record<string, Json>;
 };
 
 export type SignFunc = (

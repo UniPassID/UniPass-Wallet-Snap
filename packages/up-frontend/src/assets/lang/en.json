@@ -156,7 +156,7 @@
   "SendTitle": "Send assets",
   "SendTo": "Send to",
   "SendToken": "Send token",
-  "Setting": "Account Settings",
+  "Setting": "Settings",
   "Setting2faPhoneTitle": "SMS authentication adds another layer of security to your wallet",
   "SettingGuardianSubtitle": "Guardians can help you retrieve your account through email-based social recovery when you forget your password",
   "Sign": "Sign",
@@ -175,6 +175,8 @@
   "ToLogin": "Log in",
   "ToSignUp": "Sign up",
   "Token": "Tokens",
+  "TokenName": "Token Name",
+  "TokenPrice": "Token Price",
   "SendNFT": "Send NFT",
   "TotalAmount": "Net Worth",
   "Transfer": "Send",
@@ -264,6 +266,6 @@
   "AddressNotSameGuide": "Signature verification failed, please make sure to use the wallet with login permissions to sign",
   "TryItAgain": "Try it again",
   "LostWallet": "Can't found wallet?",
-  "RecoveryTip": "This recovery should have a 48-hour time lock, but UniPass has implemented recovery assistance to realize the immediate recovery for you. Recovery assistance will be permanently removed in the near future, please add more guardians as soon as possible after recovery to protect your account security",
+  "RecoveryTip": "Typically, it takes 48 hours to recover an account with just one guardian, the immediate recovery is because of the temporary recovery assistance module which will soon be phased out, so it's recommended to add extra guardians to protect your account",
   "IKnow": "I already know"
 }

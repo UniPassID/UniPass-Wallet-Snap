@@ -1,13 +1,15 @@
-import { SnapProvider } from '@metamask/snap-types';
 import { ManageStateRequest } from '../interface';
+import { ManageStateOperation } from '@metamask/rpc-methods'
 
 export async function manageState(
   params: ManageStateRequest,
-  wallet: SnapProvider
 ) {
-  const result = await wallet.request({
+  const result = await snap.request({
     method: 'snap_manageState',
-    params: [params.type, params.data],
+    params: {
+      operation: params.type as ManageStateOperation,
+      newState: params.data
+    },
   });
   return result;
 }

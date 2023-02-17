@@ -1,6 +1,6 @@
 {
   "name": "up-snap-ui",
-  "version": "0.0.6",
+  "version": "0.0.8",
   "license": "Apache 2.0",
   "author": "johnz",
   "main": "dist/bundle.js",
@@ -31,12 +31,15 @@
   },
   "dependencies": {
     "@metamask/key-tree": "^4.0.0",
-    "@metamask/snap-types": "^0.20.0",
-    "ethers": "^5.7.0",
+    "@metamask/rpc-methods": "^0.29.0",
+    "@metamask/snap-types": "^0.23.0",
+    "@metamask/snaps-types": "^0.29.0",
+    "@metamask/snaps-ui": "^0.29.0",
     "@unipasswallet/provider": "^0.2.2-alpha.0",
     "@unipasswallet/relayer": "^0.2.2-alpha.0",
     "@unipasswallet/sdk": "^0.2.2-alpha.0",
-    "@unipasswallet/wallet": "^0.2.2-alpha.0"
+    "@unipasswallet/wallet": "^0.2.2-alpha.0",
+    "ethers": "^5.7.0"
   },
   "publishConfig": {
     "access": "public",

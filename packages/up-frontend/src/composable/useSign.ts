@@ -27,7 +27,12 @@ import api, { SyncStatusEnum } from '@/service/backend'
 import { getAuthNodeChain } from '@/service/chains-config'
 import { checkStatusForSendTransaction, checkUpSignToken } from '@/utils/oauth/check_up_sign_token'
 import { useWalletConnectStore } from '@/store/wallet-connect'
-import { getMasterKeyAddress, signMsgWithMM, sendTransactionWithMM } from '@/service/snap-rpc'
+import {
+  getMasterKeyAddress,
+  signMsgWithMM,
+  sendTransactionWithMM,
+  snapConnect,
+} from '@/service/snap-rpc'
 import { solidityPack } from 'ethers/lib/utils'
 import { WalletsCreator, ChainType } from '@unipasswallet/provider'
 import { Wallet } from '@unipasswallet/wallet'

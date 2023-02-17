@@ -1,6 +1,6 @@
 <template>
   <div class="page-login">
-    <img class="logo" src="@/assets/img/register/logo.svg" />
+    <!-- <img class="logo" src="@/assets/img/register/logo.svg" /> -->
     <h1>{{ isLogin ? $t('LoginTitle') : $t('RegisterTitle') }}</h1>
     <div class="to-continue-to" v-if="appName">
       {{ $t('ToContinueTo') }} <span>{{ appName }}</span>
@@ -135,7 +135,12 @@ const appName = computed(() => sessionStorage.appName)
 
 <style lang="scss">
 .page-login {
+  width: 480px;
   padding-bottom: 60px;
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  flex-direction: column;
 
   .logo {
     margin-top: 60px;

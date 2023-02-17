@@ -1,7 +1,7 @@
 <template>
-  <div id="page-login">
+  <div id="page-login" class="header-bg-img">
     <up-header hide-back />
     <page-login />
-    <up-supported-by />
+    <!-- <up-supported-by /> -->
   </div>
 </template>

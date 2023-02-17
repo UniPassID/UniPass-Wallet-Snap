@@ -1,6 +1,7 @@
 <template>
   <div class="up-header">
     <div class="left">
+      <img class="unipass-logo" src="@/assets/img/logo.png" />
       <up-icon v-if="props.hideBack" name="UniPass" width="96px" height="16px"></up-icon>
       <up-icon
         v-else-if="props.close"
@@ -13,20 +14,46 @@
       <div v-if="props.title" class="title">{{ props.title }}</div>
     </div>
     <div class="right">
-      <up-icon
+      <!-- <up-icon
         v-if="!props.title"
         name="more"
         @click="userStore.showHeaderMore = !userStore.showHeaderMore"
-      />
+      /> -->
+      <div class="one" @click="toggleDark()">
+        <div class="left">
+          <up-icon name="theme" />
+          <div>{{ isDark ? $t('ThemeLight') : $t('ThemeDark') }}</div>
+        </div>
+        <div class="right">
+          <up-icon name="cutover" />
+        </div>
+      </div>
+      <div class="one" @click="changeLanguage">
+        <div class="left">
+          <up-icon name="english" />
+          <!-- <div>{{ $t('Language') }}</div> -->
+        </div>
+        <div class="right">
+          <div class="now">{{ $t('LanguageNow') }}</div>
+          <up-icon name="jump" />
+        </div>
+      </div>
       <slot name="right" />
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { useUserStore } from '@/store/user'
+const isDark = useDark()
+const i18n = useI18n()
+const { t: $t } = useI18n()
 
-const userStore = useUserStore()
+const changeLanguage = () => {
+  i18n.locale.value = i18n.locale.value === 'en' ? 'zh' : 'en'
+  localStorage.setItem('language', i18n.locale.value)
+}
+
+const toggleDark = useToggle(isDark)
 
 interface Props {
   hideBack?: boolean
@@ -54,13 +81,23 @@ const goBack = () => {
 
 <style lang="scss">
 .up-header {
+  width: 100%;
+  height: 60px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  // height: 50px;
+  background: rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid #79797f;
+  box-shadow: 0px 4px 12px rgba(34, 34, 47, 0.2);
+  padding: 0 20px;
   > .left {
     display: flex;
     align-items: center;
+    > .unipass-logo {
+      width: 40px;
+      height: 40px;
+      margin-right: 12px;
+    }
     > .iconpark {
       cursor: pointer;
     }
@@ -80,6 +117,44 @@ const goBack = () => {
     > .icon-more {
       cursor: pointer;
       font-size: 24px;
+    }
+    > .one {
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;
+      line-height: 60px;
+      cursor: pointer;
+      user-select: none;
+
+      .iconpark {
+        font-size: 24px;
+      }
+      .left {
+        display: flex;
+        align-items: center;
+        .iconpark {
+          margin-right: 6px;
+        }
+      }
+      .right {
+        display: flex;
+        align-items: center;
+        .icon-cutover {
+          font-size: 20x;
+        }
+        .icon-jump {
+          margin-left: 6px;
+          font-size: 14px;
+        }
+        .now {
+          font-size: 16px;
+          font-weight: 400;
+          color: var(--up-text-third);
+          line-height: 16px;
+        }
+      }
     }
   }
 }

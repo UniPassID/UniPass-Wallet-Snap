@@ -3,9 +3,11 @@ import { AccountInfo } from "../interface";
 const DB = {
   async getAccountInfo() {
     try {
-      const _account_info  = await wallet.request({
+      const _account_info  = await snap.request({
         method: 'snap_manageState',
-        params: ['get'],
+        params: {
+          operation: 'get'
+        },
       });
       if (!_account_info) {
         return;

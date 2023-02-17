@@ -1,12 +1,10 @@
 import {
   getBIP44AddressKeyDeriver,
-  JsonBIP44CoinTypeNode,
+  // JsonBIP44CoinTypeNode,
 } from '@metamask/key-tree';
-import { SnapProvider } from '@metamask/snap-types';
-import { getMetamaskVersion, isNewerVersion } from '../util/version'
+// import { getMetamaskVersion, isNewerVersion } from '../util/version'
 import { hexlify, sha256, toUtf8Bytes } from 'ethers/lib/utils';
 import { Wallet } from 'ethers';
-import { AccountInfo } from '../provider/interface';
 import { MasterKeyAddressRequest } from '../interface';
 
 /**
@@ -14,40 +12,32 @@ import { MasterKeyAddressRequest } from '../interface';
  * @param wallet
  */
 export async function extractMasterPrivateKey(
-  wallet: SnapProvider,
   email: string,
 ): Promise<string> {
   let emailForAddress = ''
-  if (email) {
-    emailForAddress = email
-  } else {
-    const account = await wallet.request({
-      method: 'snap_manageState',
-      params: ['get'],
-    }) as AccountInfo;
-    emailForAddress = account.email
-  }
+  emailForAddress = email
   const emailHash = sha256(toUtf8Bytes(email))
   const bip44Code = '60';
   const account = '100';
   const change = emailHash.substring(emailHash.length - 4, emailHash.length - 2)
   const addressIndex = emailHash.substring(emailHash.length - 2)
 
-  let bip44Node: JsonBIP44CoinTypeNode;
+  // let bip44Node: JsonBIP44CoinTypeNode;
 
-  const currentVersion = await getMetamaskVersion(wallet);
-  if (isNewerVersion("MetaMask/v10.18.99-flask.0", currentVersion))
-    bip44Node = (await wallet.request({
+
+  // const currentVersion = await getMetamaskVersion();
+  // if (isNewerVersion("MetaMask/v10.18.99-flask.0", currentVersion))
+  let bip44Node = (await snap.request({
       method: "snap_getBip44Entropy",
       params: {
         coinType: Number(bip44Code),
       },
-    })) as JsonBIP44CoinTypeNode;
-  else
-    bip44Node = (await wallet.request({
-      method: `snap_getBip44Entropy_${bip44Code}`,
-      params: [],
-    })) as JsonBIP44CoinTypeNode;
+    }))
+  // else
+  //   bip44Node = (await ethereum.request({
+  //     method: `snap_getBip44Entropy_${bip44Code}`,
+  //     params: [],
+  //   })) as JsonBIP44CoinTypeNode;
 
   const addressKeyDeriver = await getBIP44AddressKeyDeriver(bip44Node, {
     account: parseInt(account),
@@ -62,11 +52,9 @@ export async function extractMasterPrivateKey(
 
 /**
  * Return UniPass master key address from seed.
- * @param wallet
  */
-// export async function getMasterKeyAddress() {
-export async function getMasterKeyAddress(params: MasterKeyAddressRequest, wallet: SnapProvider) {
-  const masterPrivateKey = await extractMasterPrivateKey(wallet, params.email);
+export async function getMasterKeyAddress(params: MasterKeyAddressRequest) {
+  const masterPrivateKey = await extractMasterPrivateKey(params.email);
 
   const ethersWallet = new Wallet(masterPrivateKey);
 

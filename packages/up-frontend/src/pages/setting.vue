@@ -1,17 +1,17 @@
 <template>
-  <div id="page-setting">
+  <div id="page-setting" class="header-bg-img">
     <up-header :title="$t('Setting')" :back="back"></up-header>
-
-    <router-link class="one" to="/setting/2FA">
-      <div class="left">
-        <up-icon name="identity" />
-        <div>{{ $t('DualAuthentication') }}</div>
-      </div>
-      <div class="right">
-        <up-icon name="jump" />
-      </div>
-    </router-link>
-    <!-- <router-link class="one" to="/setting/chain">
+    <div class="main-container">
+      <router-link class="one" to="/setting/2FA">
+        <div class="left">
+          <up-icon name="identity" />
+          <div>{{ $t('DualAuthentication') }}</div>
+        </div>
+        <div class="right">
+          <up-icon name="jump" />
+        </div>
+      </router-link>
+      <!-- <router-link class="one" to="/setting/chain">
       <div class="left">
         <up-icon name="from" />
         <div>{{ $t('Network') }}</div>
@@ -21,17 +21,17 @@
         <up-icon name="jump" />
       </div>
     </router-link> -->
-    <router-link class="one" to="/setting/guardian">
-      <div class="left">
-        <up-icon name="email" />
-        <div>{{ $t('SetGuardians') }}</div>
-      </div>
-      <div class="right">
-        <div class="now"></div>
-        <up-icon name="jump" />
-      </div>
-    </router-link>
-    <!-- <router-link class="one" to="/setting/change-password">
+      <router-link class="one" to="/setting/guardian">
+        <div class="left">
+          <up-icon name="email" />
+          <div>{{ $t('SetGuardians') }}</div>
+        </div>
+        <div class="right">
+          <div class="now"></div>
+          <up-icon name="jump" />
+        </div>
+      </router-link>
+      <!-- <router-link class="one" to="/setting/change-password">
       <div class="left">
         <up-icon name="change-password" />
         <div>{{ $t('ChangePassword') }}</div>
@@ -40,31 +40,31 @@
         <up-icon name="jump" />
       </div>
     </router-link> -->
-    <div class="line"></div>
-    <div class="one" @click="toggleDark()">
-      <div class="left">
-        <up-icon name="theme" />
-        <div>{{ isDark ? $t('ThemeLight') : $t('ThemeDark') }}</div>
+      <div class="line"></div>
+      <div class="one" @click="toggleDark()">
+        <div class="left">
+          <up-icon name="theme" />
+          <div>{{ isDark ? $t('ThemeLight') : $t('ThemeDark') }}</div>
+        </div>
+        <div class="right">
+          <up-icon name="cutover" />
+        </div>
       </div>
-      <div class="right">
-        <up-icon name="cutover" />
+      <div class="one" @click="changeLanguage">
+        <div class="left">
+          <up-icon name="english" />
+          <div>{{ $t('Language') }}</div>
+        </div>
+        <div class="right">
+          <div class="now">{{ $t('LanguageNow') }}</div>
+          <up-icon name="jump" />
+        </div>
       </div>
+      <up-button class="exit" type="info" @click="unipass.userExit">
+        <up-icon name="exit" />
+        <span>{{ $t('LogOut') }}</span>
+      </up-button>
     </div>
-    <div class="one" @click="changeLanguage">
-      <div class="left">
-        <up-icon name="english" />
-        <div>{{ $t('Language') }}</div>
-      </div>
-      <div class="right">
-        <div class="now">{{ $t('LanguageNow') }}</div>
-        <up-icon name="jump" />
-      </div>
-    </div>
-
-    <up-button class="exit" type="info" @click="unipass.userExit">
-      <up-icon name="exit" />
-      <span>{{ $t('LogOut') }}</span>
-    </up-button>
   </div>
 </template>
 
@@ -89,6 +89,10 @@ const toggleDark = useToggle(isDark)
 
 <style lang="scss">
 #page-setting {
+  // .main-container {
+  //   width: 100%;
+  //   max-width: 1180px;
+  // }
   .line {
     width: 100%;
     height: 1px;

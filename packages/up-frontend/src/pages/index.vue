@@ -1,22 +1,51 @@
 <template>
   <div id="page-index" class="header-bg-img">
+    <up-header hide-back />
     <div class="main-container">
       <div class="header">
-        <div class="user">
-          <div class="left">
-            <img src="@/assets/img/index/avatar.svg" />
+        <div class="header-left">
+          <div class="user">
+            <div class="left">
+              <img src="@/assets/img/index/avatar.svg" />
+            </div>
+            <div class="right">
+              <div class="email">{{ userStore.accountInfo.email }}</div>
+              <div class="address" @click="unipass.copy(userStore.accountInfo.address)">
+                <span>{{ unipass.formatAddress(userStore.accountInfo.address) }}</span>
+                <up-icon name="copy" />
+              </div>
+            </div>
           </div>
-          <div class="right">
-            <div class="email">{{ userStore.accountInfo.email }}</div>
-            <div class="address" @click="unipass.copy(userStore.accountInfo.address)">
-              <span>{{ unipass.formatAddress(userStore.accountInfo.address) }}</span>
-              <up-icon name="copy" />
+          <div class="lump-sum">
+            <div class="worth">
+              <span>${{ showLumpSum ? netWorth : '*****' }}</span>
+              <up-icon
+                @click="showLumpSum = !showLumpSum"
+                :name="showLumpSum ? 'eyes-open' : 'eyes-close'"
+              />
             </div>
           </div>
         </div>
-        <router-link class="setting" to="/setting">
-          <up-icon name="setting" />
-        </router-link>
+        <div class="shortcut">
+          <div class="btn-box">
+            <div class="btn" @click="openScanModal">
+              <up-icon :name="`scan-${isDark ? 'dark' : 'light'}`" />
+            </div>
+            <div>{{ $t('Scan') }}</div>
+          </div>
+          <div class="btn-box" @click="showReceive = true">
+            <div class="btn">
+              <up-icon name="receive-dark" />
+            </div>
+            <div>{{ $t('Receive') }}</div>
+          </div>
+          <div class="btn-box" @click="goSetting">
+            <div class="btn">
+              <up-icon name="setting" />
+            </div>
+            <div>{{ $t('Setting') }}</div>
+          </div>
+        </div>
       </div>
       <router-link
         v-if="walletConnectStore.sessions.length > 0 || walletConnectStore.legacySessions"
@@ -36,36 +65,6 @@
           <div class="right up-chain" :class="chainName">{{ chainName }}</div>
         </div>
       </router-link>
-      <div class="lump-sum-box">
-        <div class="title">{{ $t('TotalAmount') }}</div>
-        <div class="lump-sum">
-          <div class="worth">
-            <span>${{ showLumpSum ? netWorth : '*****' }}</span>
-            <up-icon
-              @click="showLumpSum = !showLumpSum"
-              :name="showLumpSum ? 'eyes-open' : 'eyes-close'"
-            />
-          </div>
-        </div>
-        <!-- <div class="gain">
-          <up-icon name="rise" />
-          <span>+5.64 (1%)</span>
-        </div> -->
-      </div>
-      <div class="shortcut">
-        <div class="btn-box">
-          <div class="btn" @click="openScanModal">
-            <up-icon :name="`scan-${isDark ? 'dark' : 'light'}`" />
-          </div>
-          <div>{{ $t('Scan') }}</div>
-        </div>
-        <div class="btn-box active" @click="showReceive = true">
-          <div class="btn">
-            <up-icon name="receive-dark" />
-          </div>
-          <div>{{ $t('Receive') }}</div>
-        </div>
-      </div>
 
       <div class="recovering" v-if="chainAccountStore.isPending">
         <div class="progress">
@@ -89,7 +88,47 @@
       </div>
       <div class="coin-box">
         <div class="coin-title">{{ $t('Token') }}</div>
-        <template v-for="(coin, i) in userStore.coins" :key="i">
+        <el-table
+          :data="userStore.coins"
+          height="520px"
+          header-cell-class-name="coin-box-title"
+          row-class-name="coin-row"
+        >
+          <el-table-column :label="$t('TokenName')" width="300px">
+            <template v-slot="scope">
+              <up-token
+                :name="scope.row.symbol"
+                :chain="scope.row.chain"
+                :icon="scope.row.icon"
+                type="index"
+              />
+            </template>
+          </el-table-column>
+          <el-table-column :label="$t('TokenPrice')" align="center">
+            <template v-slot="scope">
+              <div class="balance">
+                <up-dollar
+                  :symbol="scope.row.symbol"
+                  :price="scope.row.price"
+                  :amount="scope.row.balance"
+                />
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column :label="$t('Balance')" align="center">
+            <template v-slot="scope">
+              <div class="balance">
+                <div>{{ unipass.formatBalance(scope.row.balance) }}</div>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column align="right">
+            <template v-slot="scope">
+              <div class="send-btn" @click="handleSend(scope.$index)">{{ $t('Send') }}</div>
+            </template>
+          </el-table-column>
+        </el-table>
+        <!-- <template v-for="(coin, i) in userStore.coins" :key="i">
           <div
             v-show="
               Number(coin.balance) > 0 ||
@@ -110,7 +149,7 @@
               <up-button type="primary" @click="sendCoin(i)">{{ $t('Transfer') }}</up-button>
             </div>
           </div>
-        </template>
+        </template> -->
       </div>
     </div>
 
@@ -210,6 +249,7 @@ import { checkUpSignTokenForCancelRecovery } from '@/utils/oauth/check_up_sign_t
 import jsQR from 'jsqr'
 import { useWalletConnectStore } from '@/store/wallet-connect'
 import { getChainName, getChainNameByChainId } from '@/service/chains-config'
+import router from '@/plugins/router'
 
 const { t: $t } = useI18n()
 const unipass = useUniPass()
@@ -235,10 +275,19 @@ const {
   auth,
 } = useIndex()
 
+const handleSend = (index: number) => {
+  coinActive.value = index
+  sendCoin(index)
+}
+
 onBeforeMount(() => {
   walletConnectStore.init()
   sessionStorage.removeItem('path')
 })
+
+const goSetting = () => {
+  router.replace('/setting')
+}
 
 const chainName = computed(() =>
   getChainName(getChainNameByChainId(walletConnectStore.currentChainId)),
@@ -362,15 +411,16 @@ const pasteCode = async () => {
 
 <style lang="scss">
 #page-index {
-  .main-container {
-    position: relative;
+  .el-table--enable-row-hover .el-table__body tr:hover > td {
+    background-color: rgba(0, 0, 0, 0.06);
   }
-
   .header {
     display: flex;
     justify-content: space-between;
+    background-color: var(--up-bg);
+    padding: 28px 40px;
+    border-radius: 12px;
     align-items: center;
-    height: 50px;
     margin-bottom: 20px;
     .user {
       text-align: left;
@@ -405,6 +455,32 @@ const pasteCode = async () => {
           .icon-copy {
             margin-left: 6px;
           }
+        }
+      }
+    }
+    .lump-sum {
+      display: flex;
+      align-items: center;
+      padding: 16px 0;
+      font-size: 36px;
+      line-height: 36px;
+
+      font-family: Futura, PingFang SC, Source Sans, Microsoft Yahei, sans-serif;
+      font-weight: bold;
+
+      .worth {
+        position: relative;
+
+        .iconpark {
+          position: absolute;
+          right: -44px;
+          top: 0;
+          bottom: 0;
+
+          cursor: pointer;
+          padding: 10px;
+          font-size: 18px;
+          color: var(--up-text-third);
         }
       }
     }
@@ -473,33 +549,6 @@ const pasteCode = async () => {
       color: var(--up-text-secondary);
       line-height: 16px;
     }
-    .lump-sum {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 16px 0;
-      font-size: 36px;
-      line-height: 36px;
-
-      font-family: Futura, PingFang SC, Source Sans, Microsoft Yahei, sans-serif;
-      font-weight: bold;
-
-      .worth {
-        position: relative;
-
-        .iconpark {
-          position: absolute;
-          right: -44px;
-          top: 0;
-          bottom: 0;
-
-          cursor: pointer;
-          padding: 10px;
-          font-size: 18px;
-          color: var(--up-text-third);
-        }
-      }
-    }
     .gain {
       display: flex;
       align-items: center;
@@ -527,6 +576,7 @@ const pasteCode = async () => {
       font-weight: 400;
       color: var(--up-text-secondary);
       line-height: 16px;
+      margin-left: 40px;
       & + .btn-box {
         margin-left: 40px;
       }
@@ -569,6 +619,21 @@ const pasteCode = async () => {
     }
   }
   .coin-box {
+    .coin-box-title {
+      font-size: 12px;
+      background-color: transparent;
+      color: var(--up-text-third);
+      padding: 10px;
+    }
+    .coin-row {
+      height: 80px;
+    }
+    .coin-row:hover {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+    .send-btn {
+      cursor: pointer;
+    }
     .coin-title {
       margin-top: 44px;
       margin-bottom: 24px;

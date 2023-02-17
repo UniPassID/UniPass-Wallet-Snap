@@ -156,7 +156,7 @@
   "SendTitle": "发送资产",
   "SendTo": "发送至",
   "SendToken": "发送代币",
-  "Setting": "账户设置",
+  "Setting": "设置",
   "Setting2faPhoneTitle": "短信验证将为您的钱包增加一重保障",
   "SettingGuardianSubtitle": "守护者能在您忘记密码时，通过邮件社交恢复帮助您找回账户",
   "Sign": "签名",
@@ -175,6 +175,8 @@
   "ToLogin": "去登录",
   "ToSignUp": "立即注册",
   "Token": "资产",
+  "TokenName": "资产名称",
+  "TokenPrice": "资产价值",
   "SendNFT": "发送 NFT",
   "TotalAmount": "资产净值",
   "Transfer": "发送",
@@ -264,6 +266,6 @@
   "AddressNotSameGuide": "签名验证失败，请确保您使用登录授权的钱包进行签名",
   "TryItAgain": "重试",
   "LostWallet": "无法找回钱包？",
-  "RecoveryTip": "此恢复应该有48小时的锁定期，但UniPass已实现恢复协助，将为您实现立即恢复。恢复协助将在近期永久删除，恢复后请尽快添加更多的监护人，以保护您的帐户安全",
+  "RecoveryTip": "此恢复通常有48小时的锁定期，但UniPass已实现恢复协助，将为您实现立即恢复。恢复协助将在近期永久删除，恢复后请尽快添加更多的监护人，以保护您的帐户安全",
   "IKnow": "我知道了"
 }

@@ -1,9 +1,5 @@
-import { SnapProvider } from "@metamask/snap-types";
-
-export const getMetamaskVersion = async (
-  wallet: SnapProvider
-): Promise<string> =>
-  (await wallet.request({
+export const getMetamaskVersion = async (): Promise<string> =>
+  (await ethereum.request({
     method: "web3_clientVersion",
     params: [],
   })) as string;

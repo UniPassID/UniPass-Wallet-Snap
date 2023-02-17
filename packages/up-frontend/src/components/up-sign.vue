@@ -1,5 +1,5 @@
 <template>
-  <div class="up-sign">
+  <div class="up-sign main-container">
     <slot name="main">
       <div v-if="referrerHost" class="up-sign-card from-box">
         <el-image :src="userStore.appIcon" style="width: 20px; height: 20px">

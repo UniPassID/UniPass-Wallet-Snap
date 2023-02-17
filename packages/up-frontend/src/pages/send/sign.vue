@@ -1,5 +1,5 @@
 <template>
-  <div id="page-send-sign">
+  <div id="page-send-sign" class="header-bg-img">
     <up-header :title="$t('Sign')" :back="back" />
     <up-sign :cancel="back" class="transaction" />
   </div>

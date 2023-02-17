@@ -25,6 +25,8 @@ declare module '@vue/runtime-core' {
     ElResult: typeof import('element-plus/es')['ElResult']
     ElSelect: typeof import('element-plus/es')['ElSelect']
     ElSwitch: typeof import('element-plus/es')['ElSwitch']
+    ElTable: typeof import('element-plus/es')['ElTable']
+    ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     Loading: typeof import('element-plus/es')['ElLoadingDirective']
     PageLogin: typeof import('./components/page-login.vue')['default']
     PageRecoveryGuardian: typeof import('./components/page-recovery-guardian.vue')['default']

@@ -562,7 +562,7 @@ const request = (requestConfig: AxiosRequestConfig, polling = false) => {
 // Request
 const api = {
   getConfig(): Promise<SuffixesOutput> {
-    return request({ method: 'get', url: '/api/v1/config' })
+    return request({ method: 'get', url: '/api/v1/config?isSnap=true' })
   },
   sendOtpCode(data: SendOtpCodeInput): Promise<ApiResponse> {
     return request({ method: 'post', url: '/api/v1/otp/send', data })

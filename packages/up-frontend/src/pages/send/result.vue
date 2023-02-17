@@ -1,5 +1,5 @@
 <template>
-  <div id="page-send-result">
+  <div id="page-send-result" class="header-bg-img">
     <up-header :back="back"></up-header>
     <el-result v-if="icon" :icon="icon" :title="$t('SendSuccess')">
       <template #extra>

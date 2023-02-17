@@ -1,7 +1,7 @@
 <template>
-  <div id="page-send" class="page-sign">
+  <div id="page-send" class="page-sign header-bg-img">
     <up-header :title="$t('Send')" />
-    <el-form @submit.prevent ref="formElement" :model="form" class="send-form">
+    <el-form @submit.prevent ref="formElement" :model="form" class="send-form main-container">
       <div class="label">{{ $t('SendTitle') }}</div>
       <div class="token">
         <up-token

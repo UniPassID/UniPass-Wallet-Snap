@@ -1,28 +1,30 @@
 <template>
-  <div id="page-setting-2FA">
+  <div id="page-setting-2FA" class="header-bg-img">
     <up-header :title="$t('DualAuthentication')" />
-    <div class="subtitle">{{ $t('ChangePasswordTitle') }}</div>
-    <div class="box">
-      <div class="one bound" @click="$router.push('/setting/2FA/email')">
-        <div class="img-box">
-          <up-icon :name="`email-${isDark ? 'dark' : 'light'}`" class="img" />
-          <up-icon name="success" />
+    <div class="main-container">
+      <div class="subtitle">{{ $t('ChangePasswordTitle') }}</div>
+      <div class="box">
+        <div class="one bound" @click="$router.push('/setting/2FA/email')">
+          <div class="img-box">
+            <up-icon :name="`email-${isDark ? 'dark' : 'light'}`" class="img" />
+            <up-icon name="success" />
+          </div>
+          <span>{{ $t('EmailVerify') }}</span>
         </div>
-        <span>{{ $t('EmailVerify') }}</span>
-      </div>
-      <div class="one bound" @click="bindPhone">
-        <div class="img-box">
-          <up-icon :name="`phone-${isDark ? 'dark' : 'light'}`" class="img" />
-          <up-icon v-if="phone.status === 1" name="success" />
+        <div class="one bound" @click="bindPhone">
+          <div class="img-box">
+            <up-icon :name="`phone-${isDark ? 'dark' : 'light'}`" class="img" />
+            <up-icon v-if="phone.status === 1" name="success" />
+          </div>
+          <span>{{ $t('PhoneVerify') }}</span>
         </div>
-        <span>{{ $t('PhoneVerify') }}</span>
-      </div>
-      <div class="one" @click="bindGoogle">
-        <div class="img-box">
-          <up-icon :name="`google-${isDark ? 'dark' : 'light'}`" class="img" />
-          <up-icon v-if="google.status === 1" name="success" />
+        <div class="one" @click="bindGoogle">
+          <div class="img-box">
+            <up-icon :name="`google-${isDark ? 'dark' : 'light'}`" class="img" />
+            <up-icon v-if="google.status === 1" name="success" />
+          </div>
+          <span>{{ $t('GoogleVerify') }}</span>
         </div>
-        <span>{{ $t('GoogleVerify') }}</span>
       </div>
     </div>
   </div>

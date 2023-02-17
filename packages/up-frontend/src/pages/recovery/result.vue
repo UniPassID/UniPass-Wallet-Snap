@@ -1,28 +1,29 @@
 <template>
-  <div id="page-recovery-result">
+  <div id="page-recovery-result" class="header-bg-img">
     <up-header :back="back" />
     <up-supported-by />
-
-    <template v-if="isPending">
-      <h2>{{ $t('RecoveringTitle') }}</h2>
-      <div class="address-box">
-        <div class="address">{{ unipass.formatAddress(address) }}</div>
-      </div>
-      <h4>{{ $t('RecoveringSubtitle') }}</h4>
-      <div class="countdown">{{ countdown }}</div>
-      <div class="subtitle">{{ $t('RecoveringTip') }}</div>
-    </template>
-    <template v-else>
-      <h2>{{ $t('RecoveringNotPending') }}</h2>
-      <div class="address-box">
-        <div class="address">{{ unipass.formatAddress(address) }}</div>
-      </div>
-      <img class="success" src="@/assets/img/recovery/success.png" />
-      <div class="tip">{{ $t('PleaseLoginNewPassword') }}</div>
-    </template>
-    <router-link to="/login">
-      <up-button type="primary" class="submit">{{ $t('Confirm') }}</up-button>
-    </router-link>
+    <div class="main-container">
+      <template v-if="isPending">
+        <h2>{{ $t('RecoveringTitle') }}</h2>
+        <div class="address-box">
+          <div class="address">{{ unipass.formatAddress(address) }}</div>
+        </div>
+        <h4>{{ $t('RecoveringSubtitle') }}</h4>
+        <div class="countdown">{{ countdown }}</div>
+        <div class="subtitle">{{ $t('RecoveringTip') }}</div>
+      </template>
+      <template v-else>
+        <h2>{{ $t('RecoveringNotPending') }}</h2>
+        <div class="address-box">
+          <div class="address">{{ unipass.formatAddress(address) }}</div>
+        </div>
+        <img class="success" src="@/assets/img/recovery/success.png" />
+        <div class="tip">{{ $t('PleaseLoginNewPassword') }}</div>
+      </template>
+      <router-link to="/login">
+        <up-button type="primary" class="submit">{{ $t('Confirm') }}</up-button>
+      </router-link>
+    </div>
   </div>
 </template>
 

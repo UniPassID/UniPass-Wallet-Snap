@@ -1,14 +1,13 @@
 <template>
-  <div id="page-recovery-guardian">
+  <div id="page-recovery-guardian" class="header-bg-img">
     <up-supported-by />
-
+    <up-header :back="back" />
     <page-recovery-guardian-verify
       v-if="recoveryStore.the2FA.show"
       @back="recoveryStore.the2FA.show = false"
       @token="getToken"
     />
-    <div class="main-content" v-else>
-      <up-header :back="back" />
+    <div class="main-container" v-else>
       <h2>{{ $t('RecoveryGuardianTitle') }}</h2>
       <div class="send-box">
         <img class="send" src="@/assets/img/recovery/send.png" />
@@ -170,7 +169,7 @@ const back = () => router.replace('/login')
 
 <style lang="scss">
 #page-recovery-guardian {
-  .main-content {
+  .main-container {
     h2 {
       margin-top: 40px;
     }

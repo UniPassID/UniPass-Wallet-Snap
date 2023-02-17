@@ -305,7 +305,8 @@ export const useGuardian = () => {
       clearUpSignToken()
       if (auditRes.data.approveStatus === AuditStatus.Approved) {
         try {
-          const sig = await signMsgWithMM(digestHash, masterKeyAddress, email)
+          const prefix = 'You are currently updating the guardian details for your UniPass wallet'
+          const sig = await signMsgWithMM(digestHash, masterKeyAddress, email, prefix)
           const masterKeySig = solidityPack(['bytes', 'uint8'], [sig, SignTypeUP.EthSign])
 
           const updateGuardianKeysetRes = await api.updateGuardian({ masterKeySig })

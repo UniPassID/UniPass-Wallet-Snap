@@ -1,7 +1,9 @@
 <template>
-  <div id="page-setting-guardian">
-    <up-header :title="$t('SetGuardians')" :back="back">
-      <template #right>
+  <div id="page-setting-guardian" class="header-bg-img">
+    <up-header :title="$t('SetGuardians')" :back="back" />
+    <div class="main-container">
+      <div class="guardian-title">
+        <div class="subtitle">{{ $t('SettingGuardianSubtitle') }}</div>
         <div
           v-if="form.guardians.filter((e) => e.added).length > 0"
           class="delete-btn"
@@ -9,78 +11,78 @@
         >
           {{ form.isDelete ? $t('Cancel') : $t('Delete') }}
         </div>
-      </template>
-    </up-header>
-    <div class="subtitle">{{ $t('SettingGuardianSubtitle') }}</div>
-    <el-checkbox-group v-model="deleteChecked">
-      <div class="one">
-        <div class="top">
-          <div class="name">{{ $t('RegisterAccount') }}</div>
-          <!-- <div class="score">60</div> -->
-        </div>
-        <div class="email">{{ userStore.accountInfo.email }}</div>
       </div>
-      <el-checkbox
-        v-for="(guardian, i) in form.guardians"
-        :key="guardian.recoveryEmail"
-        :label="guardian.recoveryEmail"
-      >
-        <div class="one">
+      <el-checkbox-group v-model="deleteChecked">
+        <div class="guardian-one">
           <div class="top">
-            <div class="name">{{ $t('Guardian') }} {{ i + 1 }}</div>
-            <template v-if="!guardian.added">
-              <div v-if="guardian.type === 'success'" class="success">
-                <up-icon name="correct" />
-                <span>{{ $t('Finish') }}</span>
-              </div>
-              <div v-else class="waiting">
-                <up-icon name="loading" class="is-loading" />
-                <span>{{ $t('Waiting') }}</span>
-              </div>
-              <up-icon name="close" class="close" @click="closeGuardian(i)"></up-icon>
-            </template>
-            <!-- <div v-else class="score">40</div> -->
+            <div class="name">{{ $t('RegisterAccount') }}</div>
+            <!-- <div class="score">60</div> -->
           </div>
-          <el-form v-if="!guardian.added" class="email-box">
-            <up-form-item :label="$t('Email')">
-              <up-input :value="guardian.recoveryEmail" readonly>
-                <template #suffix v-if="guardian.type !== 'success'">
-                  <el-button
-                    class="send-code"
-                    :loading="guardian.loading"
-                    :disabled="guardian.count > 0 || guardian.loading"
-                    link
-                    @click="sendLink(i)"
-                  >
-                    <!-- TODO reSendInvitationLink 有问题 -->
-                    <template v-if="guardian.count > 0">{{ guardian.count }}s</template>
-                    <template v-else>{{ $t('SendInvitationLink') }}</template>
-                  </el-button>
-                </template>
-              </up-input>
-            </up-form-item>
-          </el-form>
-          <div v-else class="email">{{ guardian.recoveryEmail }}</div>
-          <div v-if="guardian.added && form.isDelete" class="delete-box">
-            <div class="check">
-              <img class="dot" src="@/assets/img/check.svg" />
+          <div class="email">{{ userStore.accountInfo.email }}</div>
+        </div>
+        <el-checkbox
+          v-for="(guardian, i) in form.guardians"
+          :key="guardian.recoveryEmail"
+          :label="guardian.recoveryEmail"
+        >
+          <div class="guardian-one">
+            <div class="top">
+              <div class="name">{{ $t('Guardian') }} {{ i + 1 }}</div>
+              <template v-if="!guardian.added">
+                <div v-if="guardian.type === 'success'" class="success">
+                  <up-icon name="correct" />
+                  <span>{{ $t('Finish') }}</span>
+                </div>
+                <div v-else class="waiting">
+                  <up-icon name="loading" class="is-loading" />
+                  <span>{{ $t('Waiting') }}</span>
+                </div>
+                <up-icon name="close" class="close" @click="closeGuardian(i)"></up-icon>
+              </template>
+              <!-- <div v-else class="score">40</div> -->
+            </div>
+            <el-form v-if="!guardian.added" class="email-box">
+              <up-form-item :label="$t('Email')">
+                <up-input :value="guardian.recoveryEmail" readonly>
+                  <template #suffix v-if="guardian.type !== 'success'">
+                    <el-button
+                      class="send-code"
+                      :loading="guardian.loading"
+                      :disabled="guardian.count > 0 || guardian.loading"
+                      link
+                      @click="sendLink(i)"
+                    >
+                      <!-- TODO reSendInvitationLink 有问题 -->
+                      <template v-if="guardian.count > 0">{{ guardian.count }}s</template>
+                      <template v-else>{{ $t('SendInvitationLink') }}</template>
+                    </el-button>
+                  </template>
+                </up-input>
+              </up-form-item>
+            </el-form>
+            <div v-else class="email">{{ guardian.recoveryEmail }}</div>
+            <div v-if="guardian.added && form.isDelete" class="delete-box">
+              <div class="check">
+                <img class="dot" src="@/assets/img/check.svg" />
+              </div>
             </div>
           </div>
-        </div>
-      </el-checkbox>
-    </el-checkbox-group>
+        </el-checkbox>
+      </el-checkbox-group>
 
-    <div class="bottom-box" v-if="form.isDelete">
-      <up-button type="primary" :disabled="deleteChecked.length <= 0" @click="submit('delete')">
-        {{ $t('Delete') }} {{ deleteChecked.length ? `(${deleteChecked.length})` : '' }}
-      </up-button>
+      <div class="bottom-box" v-if="form.isDelete">
+        <up-button type="primary" :disabled="deleteChecked.length <= 0" @click="submit('delete')">
+          {{ $t('Delete') }} {{ deleteChecked.length ? `(${deleteChecked.length})` : '' }}
+        </up-button>
+      </div>
+      <div class="bottom-box edit" v-else>
+        <up-button type="info" @click="addGuardian">{{ $t('Add') }}</up-button>
+        <up-button type="primary" v-show="!submitDisabled" @click="submit('add')">
+          {{ $t('Submit') }}
+        </up-button>
+      </div>
     </div>
-    <div class="bottom-box edit" v-else>
-      <up-button type="info" @click="addGuardian">{{ $t('Add') }}</up-button>
-      <up-button type="primary" v-show="!submitDisabled" @click="submit('add')">
-        {{ $t('Submit') }}
-      </up-button>
-    </div>
+
     <up-confirm
       :title="$t('AddGuardian')"
       v-model="form.show"
@@ -205,8 +207,14 @@ const {
     line-height: 20px;
   }
 
-  .subtitle {
+  .guardian-title {
     margin-top: 23px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .subtitle {
     font-size: 14px;
     font-weight: 400;
     color: var(--up-text-third);
@@ -214,7 +222,7 @@ const {
     text-align: left;
     hyphens: auto;
   }
-  .one {
+  .guardian-one {
     margin-top: 20px;
     background: var(--up-bg);
     border-radius: 12px;
