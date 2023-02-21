@@ -14,13 +14,12 @@ import {
   isRedirectEnv,
 } from '@/service/check-environment'
 import { UPMessage, UPResponse } from '@unipasswallet/popup-types'
-import { signTypedDataMessageHash } from '@unipasswallet/popup-utils'
+import { encodeTypedDataDigest } from '@unipasswallet/popup-utils'
 import { ADDRESS_ZERO } from '@/service/constants'
 import { postMessage } from '@unipasswallet/popup-utils'
 import { SignType, Keyset } from '@unipasswallet/keys'
 import { formatUnits, hashMessage, parseUnits } from 'ethers/lib/utils'
 import { addSignCapabilityToKeyset } from '@/utils/rbac'
-import { BigNumberParser } from '@/utils/BigNumberParser'
 import { sdkConfig } from '@/service/chains-config'
 import DB from '@/store/index_db'
 import api, { SyncStatusEnum } from '@/service/backend'
@@ -35,9 +34,8 @@ import {
 } from '@/service/snap-rpc'
 import { solidityPack } from 'ethers/lib/utils'
 import { WalletsCreator, ChainType } from '@unipasswallet/provider'
-import { Wallet } from '@unipasswallet/wallet'
-
-// import { Interface, toUtf8Bytes } from 'ethers/lib/utils'
+import { BundledExecuteCall, MainExecuteCall, Wallet } from '@unipasswallet/wallet'
+import { generateTransaction } from '@/service/tx-data-analyzer'
 
 const { hexlify } = utils
 
@@ -133,14 +131,20 @@ export const useSign = () => {
         email,
       )
 
-      const { signedTransaction, feeToken } = JSON.parse(rpcRes)
-      BigNumberParser(signedTransaction)
+      const { chainId, nonce, executeJSON } = JSON.parse(rpcRes)
+      const execute = JSON.parse(executeJSON)
+      let executeObj: BundledExecuteCall | MainExecuteCall
+      if (execute._isMainExecuteCall) {
+        executeObj = MainExecuteCall.fromJsonObj(execute)
+      } else {
+        executeObj = BundledExecuteCall.fromJsonObj(execute)
+      }
       const instance = WalletsCreator.getInstance(keyset, address, {
         env: sdkConfig.net,
         url_config: sdkConfig.urlConfig,
       })
       const wallet = instance[transaction.value.chain as ChainType] as Wallet
-      const res = await wallet.sendSignedTransaction(signedTransaction, feeToken)
+      const res = await wallet.sendSignedTransactions(executeObj, chainId, BigNumber.from(nonce))
       const timeout = chain === 'eth' ? 120 : 60
       const receipt = await (res.wait as any)(1, timeout)
       const hash = receipt.transactionHash
@@ -302,7 +306,7 @@ export const useSign = () => {
   }
 
   const transaction = computed(() => {
-    return signStore.getTransaction()
+    return generateTransaction()
   })
 
   const updateGasFee = async () => {
@@ -340,8 +344,7 @@ export const useSign = () => {
 
     try {
       const keyset = await addSignCapabilityToKeyset(keysetJson, signFunc)
-      const messageHash = signTypedDataMessageHash(data)
-      // const messageHash = encodeTypedDataDigest(data)
+      const messageHash = encodeTypedDataDigest(data)
 
       const sig = await userStore.unipassWallet.signTypedDataMessage(data, messageHash, keyset)
       return sig

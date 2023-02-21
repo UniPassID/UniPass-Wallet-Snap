@@ -1,6 +1,6 @@
 <template>
   <div id="page-index" class="header-bg-img">
-    <up-header hide-back />
+    <up-header hide-back @toggleTheme="setTheme" />
     <div class="main-container">
       <div class="header">
         <div class="header-left">
@@ -29,13 +29,13 @@
         <div class="shortcut">
           <div class="btn-box">
             <div class="btn" @click="openScanModal">
-              <up-icon :name="`scan-${isDark ? 'dark' : 'light'}`" />
+              <up-icon :name="`scan-${isDark ? 'dark' : 'light'}`" class="img" />
             </div>
             <div>{{ $t('Scan') }}</div>
           </div>
           <div class="btn-box" @click="showReceive = true">
             <div class="btn">
-              <up-icon name="receive-dark" />
+              <up-icon :name="`receive-${isDark ? 'dark' : 'light'}`" />
             </div>
             <div>{{ $t('Receive') }}</div>
           </div>
@@ -243,7 +243,6 @@
 <script setup lang="ts">
 import { useIndex } from '@/composable/useIndex'
 import { upError, useUniPass } from '@/utils/useUniPass'
-import { ADDRESS_ZERO } from '@/service/constants'
 import { useChainAccountStore } from '@/store/chain-account'
 import { checkUpSignTokenForCancelRecovery } from '@/utils/oauth/check_up_sign_token'
 import jsQR from 'jsqr'
@@ -255,6 +254,7 @@ const { t: $t } = useI18n()
 const unipass = useUniPass()
 const chainAccountStore = useChainAccountStore()
 const isDark = useDark()
+const theme = ref(isDark)
 const walletConnectStore = useWalletConnectStore()
 
 const showLumpSum = ref(true)
@@ -274,6 +274,10 @@ const {
   // cancel recovery
   auth,
 } = useIndex()
+
+const setTheme = (isDark: boolean) => {
+  theme.value = isDark
+}
 
 const handleSend = (index: number) => {
   coinActive.value = index

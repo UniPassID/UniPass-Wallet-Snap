@@ -12,16 +12,16 @@ import { getChainName } from '@/service/chains-config'
 import { upGA } from '@/utils/useUniPass'
 const { t: $t } = useI18n()
 
-const { updateGasFee, signStore, userStore } = useSign()
+const { signStore, userStore } = useSign()
 
 const back = () => router.replace('/')
 
 onBeforeMount(async () => {
+  console.log('sign vue signStore.cards.length')
   if (signStore.cards.length === 0) {
     router.replace('/')
     return
   }
-  updateGasFee()
   signStore.signMassage.referrer = ''
   userStore.appIcon = ''
 })

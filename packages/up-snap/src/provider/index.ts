@@ -1,13 +1,14 @@
+import { BundledExecuteCall, MainExecuteCall } from '@unipasswallet/wallet';
 import { BigNumber } from 'ethers';
+import { BigNumberParser } from '../util';
 import {
   TransactionProps,
   UnipassWalletProps,
-  SignedTransaction,
 } from './interface/unipassWalletProvider';
 import {
   innerGenerateTransferTx,
-  innerEstimateTransferGas,
   sendTransaction,
+  operateToRawExecuteCall,
 } from './operate';
 
 export default class UnipassWalletProvider {
@@ -30,27 +31,25 @@ export default class UnipassWalletProvider {
 
   public async transaction(
     props: TransactionProps
-  ): Promise<{ signedTransaction: SignedTransaction; feeToken?: string }> {
-    const { tx, chain, fee, keyset, timeout, gasLimit } = props;
+  ): Promise<{
+    execute: BundledExecuteCall | MainExecuteCall;
+    chainId: number;
+    nonce: BigNumber;
+}> {
+    BigNumberParser(props)
+    const { tx, chain, fee, keyset, signFunc } = props;
+    console.log('tx:', tx)
     tx.value = BigNumber.from(tx.value);
     const _chain = chain ?? 'polygon';
-    const generatedTx = await innerGenerateTransferTx(tx, _chain, this.config);
-    const transactions = await innerEstimateTransferGas(
-      generatedTx,
-      _chain,
-      this.config,
-      fee,
-      gasLimit
-    );
+    console.log('before generatedTx', fee, fee.receiver)
+    const generatedTx = await innerGenerateTransferTx(tx, _chain, this.config, keyset, fee);
+    console.log('before operateToRawExecuteCall')
 
-    if (_chain === 'rangers') transactions.gasLimit = BigNumber.from('1000000');
+    const execute = await operateToRawExecuteCall(generatedTx);
+    console.log('after operateToRawExecuteCall ', execute)
 
-    return sendTransaction(
-      transactions,
-      chain,
-      this.config,
-      props.signFunc,
-      fee?.token
-    );
+    return sendTransaction(execute, chain, this.config, props.signFunc);
   }
 }
+
+

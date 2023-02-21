@@ -146,7 +146,7 @@ const chainName = computed(() => {
 
 interface Props {
   cancel?: () => void
-  syncMode: boolean
+  syncMode?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), { cancel: undefined, syncMode: false })

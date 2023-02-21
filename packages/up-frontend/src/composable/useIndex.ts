@@ -4,11 +4,11 @@ import dayjs from 'dayjs'
 import { useRecoveryStore } from '@/store/recovery'
 import { useUniPass } from '@/utils/useUniPass'
 import { parseUnits, formatUnits } from 'ethers/lib/utils'
+import { BigNumber } from 'ethers'
 import { useChainAccountStore } from '@/store/chain-account'
+import router from '@/plugins/router'
 
 export const useIndex = () => {
-  const router = useRouter()
-
   const unipass = useUniPass()
   const showReceive = ref(false)
   const userStore = useUserStore()
@@ -22,13 +22,15 @@ export const useIndex = () => {
   const netWorth = computed(() => {
     const totalWorth = userStore.coins
       .map((x) => {
+        if (x.balance === '-') {
+          return BigNumber.from(0)
+        }
         const value = parseUnits(x.balance, 18)
           .div(10 ** 12)
           .mul(parseUnits(x.price && x.price !== -1 ? x.price.toString() : '0', 18).div(10 ** 12))
         return value
       })
       .reduce((a, b) => a.add(b))
-
     return Number(formatUnits(totalWorth, 12)).toFixed(2)
   })
 

@@ -47,7 +47,8 @@ export const convertSelector = async (data: string): Promise<string> => {
     const resJson = await res.json()
 
     const contract = new Contract('0x44691b39d1a75dc4e0a0346cbb15e310e6ed1e86', abi)
-    const utf8Selector = contract.interface.decodeFunctionResult('entries', resJson.data.result)
+
+    const utf8Selector = contract.interface.decodeFunctionResult('entries', resJson.result)
     if (!utf8Selector || utf8Selector.toString() === '') return 'unknown'
     const functionName = utf8Selector.toString().split('(')[0] ?? 'unknown'
     return functionName

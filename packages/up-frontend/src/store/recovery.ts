@@ -4,11 +4,10 @@ import { Keyset, KeyOpenIDWithEmail } from '@unipasswallet/keys'
 import api, { AuditStatus, AuthType, SignType } from '@/service/backend'
 import blockchain, { genUnipassWalletContext } from '@/service/blockchain'
 import { addSignCapabilityToKeyset, updateKeyset } from '@/utils/rbac'
-import { Wallet } from '@unipasswallet/wallet'
+import { Wallet, RawMainExecuteCall, MainExecuteTransaction } from '@unipasswallet/wallet'
 import { CancelLockKeysetHashTxBuilder } from '@unipasswallet/transaction-builders'
 import { useUserStore } from './user'
 import { RpcRelayer } from '@unipasswallet/relayer'
-import { constants } from 'ethers'
 import { sdkConfig } from '@/service/chains-config'
 import { getOAuthUserInfo } from './storages'
 import { IdTokenParams, OAuthProvider } from '@/utils/oauth/parse_hash'
@@ -167,31 +166,27 @@ export const useRecoveryStore = defineStore({
           provider: blockchain.getProvider(),
           relayer: relayer,
         })
-        const nonce = await keyWallet.relayer?.getNonce(keyWallet.address)
+        const nonce = await keyWallet.getNonce()
+        const { chainId } = await blockchain.getProvider().getNetwork()
 
-        let tx = (await txBuilder.generateSignature(keyWallet, [0])).build()
+        const tx = (await txBuilder.generateSignature(keyWallet, [0])).build()
 
-        const transactionData = await keyWallet.toTransaction(
-          {
-            type: 'Execute',
-            transactions: [tx],
-            sessionKeyOrSignerIndex: [],
-            gasLimit: constants.Zero,
-          },
-          nonce,
-        )
-        tx = transactionData[0]
-        txBuilder.signature
+        const rawExecuteCall = new RawMainExecuteCall(tx, nonce, [])
+        const { execute } = await keyWallet.signRawMainExecuteCall(rawExecuteCall, chainId, nonce)
+        const { callType, gasLimit, target, data } = new MainExecuteTransaction({
+          executeCall: execute,
+          target: keyWallet.address,
+        }).toTransaction()
         const cancelResData = await api.cancelRecovery({
           email,
           metaNonce,
           signature: txBuilder.signature,
           transaction: {
-            callType: tx.callType,
-            gasLimit: tx.gasLimit.toHexString(),
-            target: tx.target,
-            value: tx.gasLimit.toHexString(),
-            data: tx.data,
+            callType: callType,
+            gasLimit: gasLimit.toHexString(),
+            target: target,
+            value: gasLimit.toHexString(),
+            data: data,
           },
         })
         return cancelResData.ok

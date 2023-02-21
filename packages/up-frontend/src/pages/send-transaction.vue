@@ -12,7 +12,7 @@ import { useWalletConnectStore } from '@/store/wallet-connect'
 import { upGA } from '@/utils/useUniPass'
 import { getChainName } from '@/service/chains-config'
 
-const { signStore, updateGasFee } = useSign()
+const { signStore } = useSign()
 const walletConnectStore = useWalletConnectStore()
 
 const init = async () => {
@@ -21,8 +21,6 @@ const init = async () => {
 
   // Make sure the unreal callback function is before the async function
   await sdkHandle.initUserStoreFromSDK()
-
-  await updateGasFee()
 
   await walletConnectStore.init()
 }

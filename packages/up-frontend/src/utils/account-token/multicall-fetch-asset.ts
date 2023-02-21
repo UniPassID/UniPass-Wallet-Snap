@@ -5,7 +5,11 @@ import { ADDRESS_ZERO, multicallAddress } from '@/service/constants'
 import { CHAIN_ERC20_LIST, getNativeTokenSymbolByChainId, getRpcByChainID } from './cmc/init-tokens'
 import { ChainType } from '@unipasswallet/provider'
 
-export async function multicallGetAsset(account: string, chainId: number): Promise<TokenInfo[]> {
+export async function multicallGetAsset(
+  account: string,
+  chainId: number,
+  onlyNativeToken = false,
+): Promise<TokenInfo[]> {
   try {
     const configChainInfo = CHAIN_ERC20_LIST.find((x) => x.chainId === chainId)
     if (!configChainInfo) return []
@@ -18,17 +22,19 @@ export async function multicallGetAsset(account: string, chainId: number): Promi
       },
     ]
 
-    for (let i = 0; i < configChainInfo.tokens.length; i++) {
-      const token = configChainInfo.tokens[i]
+    if (!onlyNativeToken) {
+      for (let i = 0; i < configChainInfo.tokens.length; i++) {
+        const token = configChainInfo.tokens[i]
 
-      const contractAddress = token.address
-      if (!contractAddress) continue
+        const contractAddress = token.address
+        if (!contractAddress) continue
 
-      calls.push({
-        target: contractAddress,
-        call: ['balanceOf(address)(uint256)', account],
-        returns: [[`TOKEN_BALANCE_${i}`, (val: any) => val]],
-      })
+        calls.push({
+          target: contractAddress,
+          call: ['balanceOf(address)(uint256)', account],
+          returns: [[`TOKEN_BALANCE_${i}`, (val: any) => val]],
+        })
+      }
     }
 
     const ret = await aggregate(calls, {

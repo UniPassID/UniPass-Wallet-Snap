@@ -56,7 +56,11 @@ export const useUserStore = defineStore({
       const account_info = await DB.getAccountInfo()
       if (!account_info) return
       await this.update(account_info)
-      this.pollNetWorth()
+      try {
+        this.pollNetWorth()
+      } catch (e) {
+        console.log('user Init e: ', e)
+      }
     },
     initAppSetting(appSetting?: AppSettings) {
       if (appSetting) {

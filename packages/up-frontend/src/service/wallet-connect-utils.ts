@@ -37,14 +37,12 @@ const isAccountSyncedOnChain = async (chain: ChainType) => {
       })
         .then(() => {
           signStore.fromWalletConnectSign = true
-          signStore.initPopUp(
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+          signStore.initTransactionData(
             { chain },
             {
               from: userStore.accountInfo.address,
               to: userStore.accountInfo.address,
-              value: BigNumber.from(0),
+              value: '0x',
               data: '0x',
             },
           )
@@ -146,7 +144,7 @@ export async function handleWalletConnectSignTypedDataV1(data: {
   router.push('/sign-message')
 }
 
-export function handleWalletConnectSendTransaction(
+export async function handleWalletConnectSendTransaction(
   requestEvent: SignClientTypes.EventArguments['session_request'],
 ) {
   const { params, id, topic } = requestEvent
@@ -156,9 +154,7 @@ export function handleWalletConnectSendTransaction(
     const signStore = useSignStore()
     signStore.walletConnectId = id
     signStore.walletConnectTopic = topic
-    signStore.initPopUp(
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+    signStore.initTransactionData(
       { chain: getChainNameByChainId(chainId.split(':')[1]) },
       {
         from,
@@ -175,7 +171,7 @@ export function handleWalletConnectSendTransaction(
   }
 }
 
-export function handleWalletConnectSendTransactionV1(payload: {
+export async function handleWalletConnectSendTransactionV1(payload: {
   id: number
   params: any[]
   chainId: number
@@ -191,9 +187,7 @@ export function handleWalletConnectSendTransactionV1(payload: {
     signStore.signMassage.referrer = payload.hostUrl
     signStore.walletConnectId = payload.id
     signStore.walletConnectTopic = 'handleWalletConnectSendTransactionV1'
-    signStore.initPopUp(
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+    await signStore.initTransactionData(
       { chain: getChainNameByChainId(chainId) },
       {
         from,

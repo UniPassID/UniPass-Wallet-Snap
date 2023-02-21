@@ -34,6 +34,8 @@ const { userStore } = useIndex()
 
 <style lang="scss">
 .up-header-connect {
+  width: 100%;
+  max-width: 1180px;
   .header {
     display: flex;
     justify-content: space-between;

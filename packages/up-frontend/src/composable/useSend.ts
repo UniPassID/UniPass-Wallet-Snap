@@ -5,6 +5,7 @@ import { ChainType } from '@unipasswallet/provider'
 import { isAddress } from 'ethers/lib/utils'
 import { convertDomainToAddress } from '@/service/domain-convert'
 import { ADDRESS_ZERO } from '@/service/constants'
+import { encodeTransactionData } from '@/service/tx-data-analyzer'
 
 type IconType = 'success' | 'warning' | 'info' | 'error' | ''
 
@@ -39,19 +40,14 @@ export const useSend = () => {
     if (!formElement.value) return
     formElement.value.validate(async (ok: boolean) => {
       if (ok) {
-        signStore.initCards([
-          {
-            show: true,
-            type: 'send-token',
-            data: {
-              amount: form.toAmount,
-              address: form.toAddress,
-              symbol: signStore.symbol,
-              chain: signStore.chain,
-              price: signStore.coin?.price || -1,
-            },
-          },
-        ])
+        const tx = encodeTransactionData({
+          amount: form.toAmount,
+          address: form.toAddress,
+          symbol: signStore.symbol,
+          chain: signStore.chain,
+        })
+        if (!tx) return
+        await signStore.initTransactionData({ chain: signStore.chain }, tx)
         signStore.feeSymbol = ''
         router.push('/send/sign')
       }

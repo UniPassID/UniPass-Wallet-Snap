@@ -1,15 +1,15 @@
 import jwt_decode from 'jwt-decode'
 import { TransactionType, upError } from '@/utils/useUniPass'
 import { useUserStore } from '@/store/user'
-import { TokenInfo } from '@/service/chains-config'
+import { getChainIdByChainType, TokenInfo } from '@/service/chains-config'
 import router from '@/plugins/router'
 import { AppSettings, UPTransactionMessage } from '@unipasswallet/popup-types'
-import { formatEther } from 'ethers/lib/utils'
+import { formatEther, parseUnits } from 'ethers/lib/utils'
 import { BigNumber, utils } from 'ethers'
-import UnipassWalletProvider, { ChainType, TransactionProps } from '@unipasswallet/provider'
+import { ChainType, TransactionProps } from '@unipasswallet/provider'
 import { etherToWei } from '@/service/format-bignumber'
 import { ADDRESS_ZERO } from '@/service/constants'
-import { FeeOption } from '@unipasswallet/relayer'
+import { SimulateResult } from '@unipasswallet/relayer'
 import { IdTokenParams } from '@/utils/oauth/parse_hash'
 import DB from './index_db'
 import {
@@ -19,7 +19,18 @@ import {
 } from '@/utils/oauth/check_up_sign_token'
 import { isSameAddress } from '@/utils/string-utils'
 import { formatUnits } from 'ethers/lib/utils'
+import { useCoinStore } from '@/store/coin'
+import { initTheme } from '@/utils/init-theme'
 import { convertSelector } from '@/service/convert-selector'
+import { analyzeTransactionData, generateTransaction } from '@/service/tx-data-analyzer'
+import i18n from '@/plugins/i18n'
+
+export interface TransactionCard {
+  show: boolean
+  type: TransactionType
+  data: any
+  actionName?: string
+}
 
 interface Card {
   show: boolean
@@ -54,8 +65,12 @@ export interface SignStoreState {
   feeSymbol: string
   feeOptions: FeeItem[]
   loading: boolean
+  appIcon: string
+  appName: string
+  referrer: string
   chain: ChainType
   symbol: string
+  transaction: UPTransactionMessage
   gasFeeLoading: boolean
   redirectUrl?: string
   signMassage: SignMessage
@@ -72,8 +87,17 @@ export const useSignStore = defineStore({
       feeOptions: [],
       feeSymbol: '',
       loading: false,
+      appIcon: '',
+      appName: '',
+      referrer: '',
       chain: 'polygon',
       symbol: 'MATIC',
+      transaction: {
+        from: '',
+        data: '',
+        to: '',
+        value: '',
+      },
       gasFeeLoading: true,
       redirectUrl: '', // for third part sdk redirect
       signMassage: {
@@ -121,6 +145,36 @@ export const useSignStore = defineStore({
         }
       } catch (e) {
         return
+      }
+    },
+    async initTransactionData(appSetting: AppSettings, payload: UPTransactionMessage) {
+      console.log('initTransactionData')
+      this.feeOptions = []
+      this.initAppSetting(appSetting)
+      const transactionCards = await analyzeTransactionData(payload, appSetting.chain)
+      if (!transactionCards) return
+      this.transaction = payload
+      this.cards = transactionCards
+      await this.updateGasFee()
+    },
+    initAppSetting(appSetting?: AppSettings) {
+      if (appSetting) {
+        const { theme, chain, appName, appIcon } = appSetting
+        if (!sessionStorage.theme && theme) {
+          sessionStorage.theme = theme
+          initTheme(theme)
+        }
+        if (chain) {
+          sessionStorage.chain = chain
+          this.chain = chain
+        }
+        if (appName) {
+          sessionStorage.appName = appName
+          this.appName = appName
+        }
+        if (appIcon) {
+          this.appIcon = appIcon
+        }
       }
     },
     // TODO check payload is valid
@@ -216,79 +270,103 @@ export const useSignStore = defineStore({
     initCards(cards: Card[]) {
       this.cards = cards
     },
+    updateSymbolAndChain(chain: ChainType, symbol?: string) {
+      if (symbol) {
+        this.symbol = symbol
+      }
+      this.chain = chain
+      if (!this.coin) {
+        router.back()
+      }
+    },
     async updateGasFee() {
-      const accountInfo = await DB.getAccountInfo()
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      /* @ts-ignore */
-      UnipassWalletProvider.getInstance().setAccountInfo(accountInfo)
-      const sponsored = await this.checkGasSponsored()
-      if (!sponsored) {
-        const gasLimit = await this.estimateGasLimit()
-        await this.updateFeeItemsByGasLimit(gasLimit ?? BigNumber.from(200000))
-      } else {
-        this.feeOptions = []
-      }
-    },
-    async checkGasSponsored() {
-      const userStore = useUserStore()
-      const accountInfo = await DB.getAccountInfo()
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      /* @ts-ignore */
-      const wallet = await userStore.unipassWallet.wallet(this.chain, accountInfo)
-      const feeOptions = await wallet.relayer?.getFeeOptions(BigNumber.from(600_000).toHexString())
-      if (feeOptions?.options?.length && feeOptions?.options?.length > 0) {
-        return false
-      }
-      return true
-    },
-    async estimateGasLimit() {
-      const userStore = useUserStore()
-      const transaction = this.getTransaction()
-      if (!transaction) return
-
-      let gasLimit = BigNumber.from(500000)
-      if (transaction.chain === 'rangers') return gasLimit
+      console.log('updateGasFee')
+      const { t: $t } = i18n.global
       try {
-        const ret = await userStore.unipassWallet.estimateTransferTransactionsGasLimits(transaction)
-        gasLimit = ret.gasLimit
-      } catch (err) {
-        // TODO: for account sync, return default gas limit 500000
-        console.log('Need Account Sync', err)
-      }
-
-      return gasLimit
-    },
-    async updateFeeItemsByGasLimit(gasLimit: BigNumber) {
-      const userStore = useUserStore()
-      const wallet = await userStore.unipassWallet.wallet(this.chain)
-      const feeOptions = await wallet.relayer?.getFeeOptions(gasLimit.toHexString())
-      if (feeOptions?.options) {
         this.feeOptions = []
-
-        // FIX: relayer returned token symbol is camel case
-        for (const option of feeOptions.options) {
-          const feeOption = option as FeeOption
-          const contractAddress = feeOption.token.contractAddress ?? ADDRESS_ZERO
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          const transferGas = BigNumber.from(feeOption.token.transferGas ?? 20000).add(
-            BigNumber.from(feeOption.gasLimit),
-          )
-
-          const amount = transferGas
-            .mul(BigNumber.from(feeOption.amount))
-            .div(BigNumber.from(feeOption.gasLimit))
-
-          const token = userStore.coins.find(
+        this.gasFeeLoading = true
+        await this._updateGasFee()
+      } catch (e) {
+        console.error(`Loading Gas Failed: ${JSON.stringify(e)}`)
+        console.error(e)
+        upError($t('GasFeeLoadingFailed'))
+      } finally {
+        this.gasFeeLoading = false
+      }
+    },
+    async _updateGasFee() {
+      const coinStore = useCoinStore()
+      const userStore = useUserStore()
+      console.log('_updateGasFee')
+      coinStore.getAccountAssets(userStore.accountInfo.address, getChainIdByChainType(this.chain))
+      if (this.chain === 'rangers') {
+        return
+      }
+      const { isFeeRequired, feeTokens, feeReceiver, discount, gasPrice } =
+        await this._simulateTransaction()
+      if (isFeeRequired) {
+        feeTokens.forEach(({ token, gasUsed, nativeTokenPrice, tokenPrice }) => {
+          const coinToken = coinStore.coins.find(
             (x) =>
-              x.chain === this.chain &&
-              x.contractAddress.toLowerCase() === contractAddress.toLowerCase(),
+              x.chain === this.chain && x.contractAddress.toLowerCase() === token.toLowerCase(),
           )
 
           // TODO: show fee tokens not in useStore.coins
-          if (token) {
-            this.feeOptions.push({ ...feeOption, token: token, amount: amount.toHexString() })
+          if (coinToken) {
+            let gasFee
+            let transFee: BigNumber
+            if (this.chain === 'rangers') {
+              gasFee = BigNumber.from(1000000)
+              transFee = utils.parseEther('0.0001')
+            } else {
+              gasFee = BigNumber.from(gasUsed)
+              transFee = gasFee.mul(gasPrice)
+            }
+            const amount = transFee
+              .mul(Math.ceil(nativeTokenPrice * 10 ** 8))
+              .div(Math.ceil(tokenPrice * 10 ** 8))
+              .mul(discount)
+              .div(100)
+              .div(10 ** (18 - coinToken.decimals))
+            this.feeOptions.push({
+              to: feeReceiver,
+              gasLimit: gasFee.toNumber(),
+              token: coinToken,
+              amount: amount.toHexString(),
+            })
           }
+        })
+      }
+    },
+    async _simulateTransaction(): Promise<SimulateResult> {
+      const userStore = useUserStore()
+      const transaction = generateTransaction()
+      if (!transaction) {
+        throw new Error('Expected Transaction For Simulating Transaction')
+      }
+      try {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        userStore.unipassWallet.setAccountInfo(userStore.accountInfo)
+        const simulateResult = await userStore.unipassWallet.simulateTransactions(transaction)
+        return simulateResult
+      } catch (err) {
+        // TODO: for account sync, return default gas limit 500000
+        console.log('Need Account Sync', err)
+
+        return {
+          feeTokens: [
+            {
+              token: '0x0000000000000000000000000000000000000000',
+              gasUsed: BigNumber.from(5000).toHexString(),
+              tokenPrice: 1,
+              nativeTokenPrice: 1,
+            },
+          ],
+          discount: 100,
+          feeReceiver: '',
+          isFeeRequired: true,
+          gasPrice: parseUnits('10', 'gwei').toHexString(),
         }
       }
     },

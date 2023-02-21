@@ -153,12 +153,15 @@ export const useRecoveryGuardian = () => {
         })
         .catch(() => {})
     } else {
-      ElMessageBox.alert($t('RecoveryTip'), $t('Notification'), {
-        confirmButtonClass: $t('IKnow'),
-      }).then(() => {
+      if (form.guardians.length === 1) {
+        ElMessageBox.alert($t('RecoveryTip'), $t('Notification'), {
+          confirmButtonClass: $t('IKnow'),
+        }).then(() => {
+          recovery()
+        })
+      } else {
         recovery()
-      })
-      // recovery()
+      }
     }
   }
 

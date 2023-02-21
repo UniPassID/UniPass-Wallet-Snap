@@ -9,10 +9,15 @@ import {
 import { formatUnits } from 'ethers/lib/utils'
 import { multicallGetAsset } from '../multicall-fetch-asset'
 
-const wrapTokenWithCmcId = (apiChainInfoList: APIChainInfo[]): ILocalTokenInfo[] => {
+const wrapTokenWithCmcId = (
+  apiChainInfoList: APIChainInfo[],
+  chainId: number,
+): ILocalTokenInfo[] => {
   const allTokens = []
 
-  const configChainInfoList = CHAIN_ERC20_LIST.filter((x) => MAINNET_CHAIN_IDS.includes(x.chainId))
+  const configChainInfoList = CHAIN_ERC20_LIST.filter((x) => x.chainId === chainId).filter((x) =>
+    MAINNET_CHAIN_IDS.includes(x.chainId),
+  )
 
   for (const { chainId, cmcId, tokens } of configChainInfoList) {
     const name = getChainNameByChainId(chainId) as string
@@ -58,42 +63,65 @@ const delTokensWithNoBalance = (tokens: APIERC20TokenInfo[]): APIERC20TokenInfo[
   return result
 }
 
-const getAccountTokens = async (address: string) => {
-  const allTokenList = await api.getAccountTokens({
-    address,
-    chainIds: MAINNET_CHAIN_IDS,
-  })
-  for (const apiChainInfo of allTokenList.data) {
-    apiChainInfo.data = delTokensWithNoBalance(apiChainInfo.data)
-  }
+export const getAccountTokens = async (address: string, chainId: number) => {
+  try {
+    const allTokenList = await api.getAccountTokens({
+      address,
+      chainIds: [chainId],
+    })
+    for (const apiChainInfo of allTokenList.data) {
+      apiChainInfo.data = delTokensWithNoBalance(apiChainInfo.data)
+    }
 
-  const tokenList = wrapTokenWithCmcId(allTokenList.data)
-  return tokenList
+    const tokenList = wrapTokenWithCmcId(allTokenList.data, chainId)
+    return tokenList
+  } catch (err) {
+    console.error(`[apiGetAccountToken] get account token failed for chain = ${chainId}`, err)
+    return []
+  }
 }
 
 export const getMainnetAssets = async (address: string): Promise<TokenInfo[]> => {
-  let tokens = await getAccountTokens(address)
+  const chainIds = MAINNET_CHAIN_IDS.filter((x) => x !== RANGERS_MAINNET)
 
-  // filter rangers because chainbase api does not support rangers tokens
-  tokens = tokens.filter((x) => getChainNameByChainId(x.chainId) !== 'rangers')
+  const [apiTokens, nativeTokens, rangersTokens] = await Promise.all([
+    Promise.all(chainIds.map((x) => getAccountTokens(address, x))), // api tokens
+    Promise.all(chainIds.map((x) => multicallGetAsset(address, x, true))), // native tokens
+    multicallGetAsset(address, RANGERS_MAINNET), // rangers tokens
+  ])
+
+  console.log('apiTokens', apiTokens)
 
   const coins: TokenInfo[] = []
-  for (const token of tokens) {
-    const coin: TokenInfo = {
-      chain: getChainNameByChainId(token.chainId),
-      symbol: token.symbol,
-      price: token.price || 0,
-      decimals: token.decimals || 18,
-      balance: formatUnits(token.balance || '0', token.decimals || 18),
-      contractAddress: token.address,
-      icon: token.logoURI,
-      cmcId: token.cmcId || 0,
+
+  // process api tokens
+  for (const tokens of apiTokens) {
+    for (const token of tokens) {
+      const coin: TokenInfo = {
+        chain: getChainNameByChainId(token.chainId),
+        symbol: token.symbol,
+        price: token.price || 0,
+        decimals: token.decimals || 18,
+        balance: formatUnits(token.balance || '0', token.decimals || 18),
+        contractAddress: token.address,
+        icon: token.logoURI,
+        cmcId: token.cmcId || 0,
+      }
+      coins.push(coin)
     }
-    coins.push(coin)
   }
 
-  // fetch rangers token balance by multicall on chain
-  const rangersTokens = await multicallGetAsset(address, RANGERS_MAINNET)
+  // replace native tokens value
+  for (const [newNativeToken] of nativeTokens) {
+    const oldNativeToken = coins.find(
+      (x) =>
+        x.chain === newNativeToken.chain && x.contractAddress === newNativeToken.contractAddress,
+    )
+    if (oldNativeToken) {
+      oldNativeToken.balance = newNativeToken.balance
+    }
+  }
+
   coins.push(...rangersTokens)
 
   return coins

@@ -19,6 +19,7 @@
         name="more"
         @click="userStore.showHeaderMore = !userStore.showHeaderMore"
       /> -->
+      <!-- <div class="one" @click="toggleDark()"> -->
       <div class="one" @click="toggleDark()">
         <div class="left">
           <up-icon name="theme" />
@@ -31,10 +32,9 @@
       <div class="one" @click="changeLanguage">
         <div class="left">
           <up-icon name="english" />
-          <!-- <div>{{ $t('Language') }}</div> -->
         </div>
         <div class="right">
-          <div class="now">{{ $t('LanguageNow') }}</div>
+          <div>{{ $t('LanguageNow') }}</div>
           <up-icon name="jump" />
         </div>
       </div>
@@ -47,13 +47,22 @@
 const isDark = useDark()
 const i18n = useI18n()
 const { t: $t } = useI18n()
+let themeColor = isDark.value
 
 const changeLanguage = () => {
   i18n.locale.value = i18n.locale.value === 'en' ? 'zh' : 'en'
   localStorage.setItem('language', i18n.locale.value)
 }
 
-const toggleDark = useToggle(isDark)
+const emit = defineEmits(['toggleTheme'])
+
+// const toggleDark = useToggle(isDark)
+
+const toggleDark = () => {
+  useToggle(isDark)()
+  themeColor = !themeColor
+  emit('toggleTheme', themeColor)
+}
 
 interface Props {
   hideBack?: boolean

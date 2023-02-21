@@ -40,13 +40,9 @@ export async function sendTransaction(
   let decodedFee
   let contentText
 
-  console.log('transactionParams.fee')
-
   if (transactionParams.fee) {
     decodedFee = await feeDecoder(transactionParams.fee, transactionParams.chain, unipassWalletProps.env)
   }
-
-  console.log(decodedFee)
 
   if (decodedData.type === 'contract-call') {
     contentText = 
@@ -71,8 +67,6 @@ export async function sendTransaction(
       `0x`
   }
 
-  console.log(contentText)
-  
   const result = await snap.request({
     method: 'snap_dialog',
     params: {
@@ -90,7 +84,10 @@ export async function sendTransaction(
     transactionParams.signFunc = signFunc;
     const unipassWallet = UnipassWalletProvider.getInstance(unipassWalletProps);
     const res = await unipassWallet.transaction(transactionParams);
-    return JSON.stringify(res);
+    return JSON.stringify({
+      ...res,
+      executeJSON: res.execute.toJson()
+    });
   } else {
     throw new Error('user reject the transaction');
   }

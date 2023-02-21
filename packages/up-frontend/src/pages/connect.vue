@@ -1,49 +1,51 @@
 <template>
   <div id="page-connect" class="page-sign header-bg-img">
-    <up-header-connect />
-    <div class="up-connect">
-      <div class="user-from">
-        <img src="@/assets/img/index/avatar.svg" />
-        <div class="to-box">
-          <div class="dot"></div>
-          <div class="dot"></div>
-          <div class="dot"></div>
+    <div class="main-container">
+      <up-header-connect />
+      <div class="up-connect main-container">
+        <div class="user-from">
+          <img src="@/assets/img/index/avatar.svg" />
+          <div class="to-box">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+          </div>
+          <div class="app-icon">
+            <el-image :src="userStore.appIcon" style="width: 74px; height: 74px">
+              <template #error>
+                <div class="image-slot">
+                  <img src="@/assets/img/connect/from.svg" />
+                </div>
+              </template>
+            </el-image>
+          </div>
         </div>
-        <div class="app-icon">
-          <el-image :src="userStore.appIcon" style="width: 74px; height: 74px">
-            <template #error>
-              <div class="image-slot">
-                <img src="@/assets/img/connect/from.svg" />
-              </div>
-            </template>
-          </el-image>
+        <div class="info-box">
+          <div class="t1">{{ $t('ConnectTitle') }}</div>
+          <div class="t2">{{ userStore.referrer }}</div>
+          <div class="t3">{{ $t('ConnectSubtitle') }}</div>
+          <div class="line"></div>
+          <div class="t4">
+            <up-icon name="view" />
+            <span>{{ userStore.returnEmail ? $t('ConnectTip1_E') : $t('ConnectTip1') }}</span>
+          </div>
+          <div class="t4">
+            <up-icon name="empty" />
+            <span>{{ $t('ConnectTip2') }}</span>
+          </div>
+          <div class="t4">
+            <up-icon name="safe" />
+            <span>{{ $t('ConnectTip3') }}</span>
+          </div>
         </div>
-      </div>
-      <div class="info-box">
-        <div class="t1">{{ $t('ConnectTitle') }}</div>
-        <div class="t2">{{ userStore.referrer }}</div>
-        <div class="t3">{{ $t('ConnectSubtitle') }}</div>
-        <div class="line"></div>
-        <div class="t4">
-          <up-icon name="view" />
-          <span>{{ userStore.returnEmail ? $t('ConnectTip1_E') : $t('ConnectTip1') }}</span>
+        <div class="btns">
+          <up-button type="info" @click="reject">{{ $t('Cancel') }}</up-button>
+          <up-button type="primary" @click="approve">{{ $t('Connect') }}</up-button>
         </div>
-        <div class="t4">
-          <up-icon name="empty" />
-          <span>{{ $t('ConnectTip2') }}</span>
+        <div class="tip" v-if="route.query.type !== 'wallet-connect'">
+          {{ $t('ConnectTip4') }}<br />
+          <div class="tips">{{ userStore.referrer }}</div>
         </div>
-        <div class="t4">
-          <up-icon name="safe" />
-          <span>{{ $t('ConnectTip3') }}</span>
-        </div>
-      </div>
-      <div class="btns">
-        <up-button type="info" @click="reject">{{ $t('Cancel') }}</up-button>
-        <up-button type="primary" @click="approve">{{ $t('Connect') }}</up-button>
-      </div>
-      <div class="tip" v-if="route.query.type !== 'wallet-connect'">
-        {{ $t('ConnectTip4') }}<br />
-        <div class="tips">{{ userStore.referrer }}</div>
       </div>
     </div>
   </div>

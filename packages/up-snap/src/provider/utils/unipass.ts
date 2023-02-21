@@ -1,5 +1,5 @@
 import { providers } from 'ethers';
-import { GasEstimatingWallet, Wallet } from '@unipasswallet/wallet';
+import { Wallet } from '@unipasswallet/wallet';
 import { Keyset } from '@unipasswallet/keys';
 import { RpcRelayer } from '@unipasswallet/relayer';
 import {
@@ -12,7 +12,6 @@ import {
   MAINNET_UNIPASS_WALLET_CONTEXT,
   TESTNET_UNIPASS_WALLET_CONTEXT,
 } from '@unipasswallet/network';
-import { dkimParams } from '@unipasswallet/sdk';
 import {
   chain_config,
   mainnet_api_config,
@@ -198,16 +197,6 @@ export class WalletsCreator {
 
   public arbitrum: Wallet;
 
-  public ethGasEstimator: GasEstimatingWallet;
-
-  public polygonGasEstimator: GasEstimatingWallet;
-
-  public bscGasEstimator: GasEstimatingWallet;
-
-  public scrollGasEstimator: GasEstimatingWallet;
-
-  public arbitrumGasEstimator: GasEstimatingWallet;
-
   static getInstance(
     keyset: Keyset,
     address: string,
@@ -313,49 +302,6 @@ export class WalletsCreator {
       address,
       context,
     });
-
-    this.ethGasEstimator = GasEstimatingWallet.create({
-      address,
-      keyset,
-      emailType: dkimParams.EmailType.CallOtherContract,
-      provider: ethProvider,
-      relayer: ethRelayer,
-      context,
-    });
-    this.bscGasEstimator = GasEstimatingWallet.create({
-      address,
-      keyset,
-      emailType: dkimParams.EmailType.CallOtherContract,
-      provider: bscProvider,
-      relayer: bscRelayer,
-      context,
-    });
-    this.polygonGasEstimator = GasEstimatingWallet.create({
-      address,
-      keyset,
-      emailType: dkimParams.EmailType.CallOtherContract,
-      provider: polygonProvider,
-      relayer: polygonRelayer,
-      context,
-    });
-    this.arbitrumGasEstimator = GasEstimatingWallet.create({
-      address,
-      keyset,
-      emailType: dkimParams.EmailType.CallOtherContract,
-      provider: arbitrumProvider,
-      relayer: arbitrumRelayer,
-      context,
-    });
-    this.scrollGasEstimator = scrollProvider
-      ? GasEstimatingWallet.create({
-          address,
-          keyset,
-          emailType: dkimParams.EmailType.CallOtherContract,
-          provider: scrollProvider,
-          relayer: scrollRelayer,
-          context,
-        })
-      : undefined;
   }
 
   static getPolygonProvider(keyset: Keyset, env: Environment): Wallet {
