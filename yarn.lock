@@ -3283,6 +3283,21 @@
     "@unipasswallet/wallet" "^0.3.0-alpha.9"
     "ethers" "^5.7.1"
 
+"@unipasswallet/smart-wallet-snap@file:/Users/yangyusen/Documents/unipass/UniPass-Wallet-Snap/packages/up-snap":
+  "resolved" "file:packages/up-snap"
+  "version" "0.1.0-alpha.0"
+  dependencies:
+    "@metamask/key-tree" "^4.0.0"
+    "@metamask/rpc-methods" "^0.29.0"
+    "@metamask/snap-types" "^0.23.0"
+    "@metamask/snaps-types" "^0.29.0"
+    "@metamask/snaps-ui" "^0.29.0"
+    "@unipasswallet/provider" "^0.3.0-alpha.9"
+    "@unipasswallet/relayer" "^0.3.0-alpha.9"
+    "@unipasswallet/sdk" "^0.3.0-alpha.9"
+    "@unipasswallet/wallet" "^0.3.0-alpha.9"
+    "ethers" "^5.7.0"
+
 "@unipasswallet/transaction-builders@^0.3.0-alpha.9":
   "integrity" "sha512-yE0ui2aP3xCQxJ0kG0sO11K6CcgTgZJVsn5P5s1LwnA0BT3ZHeZliIxO5CjnXggnhR7b5Kr3LF133J77cFEPJQ=="
   "resolved" "https://registry.npmjs.org/@unipasswallet/transaction-builders/-/transaction-builders-0.3.0-alpha.9.tgz"
@@ -15048,10 +15063,10 @@
     "@siddomains/sidjs" "0.1.17"
     "@unipasswallet/popup-types" "^1.1.0"
     "@unipasswallet/popup-utils" "^1.1.0"
-    "@unipasswallet/provider" "^0.3.0-alpha.5"
-    "@unipasswallet/relayer" "^0.3.0-alpha.5"
-    "@unipasswallet/sdk" "^0.3.0-alpha.5"
-    "@unipasswallet/wallet" "^0.3.0-alpha.5"
+    "@unipasswallet/provider" "^0.3.0-alpha.9"
+    "@unipasswallet/relayer" "^0.3.0-alpha.9"
+    "@unipasswallet/sdk" "^0.3.0-alpha.9"
+    "@unipasswallet/wallet" "^0.3.0-alpha.9"
     "@walletconnect/client" "1.8.0"
     "@walletconnect/legacy-types" "^2.0.0-rc.0"
     "@walletconnect/sign-client" "^2.1.4"
@@ -15087,21 +15102,6 @@
     "vue-i18n" "^9.2.2"
     "vue-json-viewer" "3.0.4"
     "vue-router" "^4.0.16"
-
-"@unipasswallet/smart-wallet-snap@file:/Users/yangyusen/Documents/unipass/UniPass-Wallet-Snap/packages/up-snap":
-  "resolved" "file:packages/up-snap"
-  "version" "0.0.9"
-  dependencies:
-    "@metamask/key-tree" "^4.0.0"
-    "@metamask/rpc-methods" "^0.29.0"
-    "@metamask/snap-types" "^0.23.0"
-    "@metamask/snaps-types" "^0.29.0"
-    "@metamask/snaps-ui" "^0.29.0"
-    "@unipasswallet/provider" "^0.3.0-alpha.5"
-    "@unipasswallet/relayer" "^0.3.0-alpha.5"
-    "@unipasswallet/sdk" "^0.3.0-alpha.5"
-    "@unipasswallet/wallet" "^0.3.0-alpha.5"
-    "ethers" "^5.7.0"
 
 "upath@^1.2.0":
   "integrity" "sha512-aZwGpamFO61g3OlfT7OQCHqhGnW43ieH9WZeP7QxN/G/jS4jfqUkZxoryvJgVPEcrl5NL/ggHsSmLMHuH64Lhg=="

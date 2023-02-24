@@ -45,6 +45,6 @@ Run the application in development mode (with live reload enabled in the backend
 yarn run start:dev
 ```
 
-Point your browser at http://localhost:1903 to see the frontend.
+Point your browser at http://localhost:1901 to see the frontend.
 
 
