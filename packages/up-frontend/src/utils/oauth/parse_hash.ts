@@ -86,6 +86,11 @@ export const parseOAuthHash = async (loading: any) => {
       LocalStorageService.remove('SIGN_TX_ORIGIN_STATE')
       const signStore = useSignStore()
       await signStore.restoreSignState(signOriginState, id_token, 'sendTx')
+      if (signStore.chain === 'eth') {
+        await new Promise((resolve) => {
+          setTimeout(resolve, 5000)
+        })
+      }
       await useUserStore().init()
       await useUserStore().fetchBalances()
       await useUserStore().checkKeysetHash()
