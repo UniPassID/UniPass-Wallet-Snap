@@ -1,7 +1,6 @@
 <template>
   <div id="page-recovery-password">
     <up-header :back="back" />
-    <up-supported-by />
 
     <up-confirm
       v-model="sourceFailed"

@@ -38,15 +38,11 @@ export default class UnipassWalletProvider {
 }> {
     BigNumberParser(props)
     const { tx, chain, fee, keyset, signFunc } = props;
-    console.log('tx:', tx)
     tx.value = BigNumber.from(tx.value);
     const _chain = chain ?? 'polygon';
-    console.log('before generatedTx', fee, fee.receiver)
     const generatedTx = await innerGenerateTransferTx(tx, _chain, this.config, keyset, fee);
-    console.log('before operateToRawExecuteCall')
 
     const execute = await operateToRawExecuteCall(generatedTx);
-    console.log('after operateToRawExecuteCall ', execute)
 
     return sendTransaction(execute, chain, this.config, props.signFunc);
   }

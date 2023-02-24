@@ -1,7 +1,6 @@
 <template>
   <div id="page-recovery-result" class="header-bg-img">
     <up-header :back="back" />
-    <up-supported-by />
     <div class="main-container">
       <template v-if="isPending">
         <h2>{{ $t('RecoveringTitle') }}</h2>

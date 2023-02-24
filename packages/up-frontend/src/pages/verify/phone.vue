@@ -1,5 +1,5 @@
 <template>
-  <div id="page-verify-phone">
+  <div id="page-verify-phone" class="header-bg-img">
     <up-header :title="$t('PhoneVerify')" />
     <img
       class="up-illustration"

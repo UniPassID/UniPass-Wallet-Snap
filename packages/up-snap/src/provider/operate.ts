@@ -27,7 +27,6 @@ export type OperateTransaction = {
 export const operateToRawExecuteCall = async (
   operateTransaction: OperateTransaction,
 ): Promise<RawBundledExecuteCall | RawMainExecuteCall> => {
-  console.log('in operateToRawExecuteCall ', operateTransaction)
   const { deployTx, syncAccountExecute, callExecute: callExecuteCall, feeTx } = operateTransaction;
 
   const user = await getUser();
@@ -121,12 +120,10 @@ export const getFeeTx = (to: string, feeToken: string, feeValue: BigNumber) => {
   let feeTx: Transaction;
 
   if (feeToken !== ADDRESS_ZERO) {
-    console.log('feeToken not ADDRESS_ZERO', to)
     const erc20Interface = new ethers.utils.Interface(["function transfer(address _to, uint256 _value)"]);
     const tokenData = erc20Interface.encodeFunctionData("transfer", [to, feeValue]);
     feeTx = new CallTxBuilder(true, BigNumber.from(0), feeToken, BigNumber.from(0), tokenData).build();
   } else {
-    console.log('feeToken is ADDRESS_ZERO', to)
     feeTx = new CallTxBuilder(true, BigNumber.from(0), to, feeValue, "0x").build();
   }
   return feeTx;

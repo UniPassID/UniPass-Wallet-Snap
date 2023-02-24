@@ -1,6 +1,5 @@
 <template>
   <div id="page-recovery-guardian-verify">
-    <up-header :back="() => $emit('back')" />
     <h2>{{ $t('SecurityVerification') }}</h2>
     <h4>{{ $t('VerifySubtitle') }}</h4>
     <div class="two-step">

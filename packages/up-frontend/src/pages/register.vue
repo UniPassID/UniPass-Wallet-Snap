@@ -1,7 +1,6 @@
 <template>
-  <div id="page-register">
+  <div id="page-register" class="header-bg-img">
     <up-header hide-back />
     <page-login />
-    <up-supported-by />
   </div>
 </template>

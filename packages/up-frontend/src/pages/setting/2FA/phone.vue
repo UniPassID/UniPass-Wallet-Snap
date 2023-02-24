@@ -1,5 +1,5 @@
 <template>
-  <div id="page-setting-2FA-phone">
+  <div id="page-setting-2FA-phone" class="header-bg-img">
     <up-header :title="$t('PhoneVerify')" />
     <img
       class="up-illustration"

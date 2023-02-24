@@ -46,7 +46,6 @@ export const txDecoder = async (transaction: TransactionProps, env: Environment)
   
   if (tx.data && tx.data !== '0x') {
     const functionName = await convertSelector(tx.data as string)
-    console.log('functionName: ', functionName)
     const ABI_TX = [
       'function transfer(address _to, uint256 _value)', // ERC20
       'function safeTransferFrom(address _from, address _to, uint256 _tokenId)', // ERC721
@@ -65,8 +64,6 @@ export const txDecoder = async (transaction: TransactionProps, env: Environment)
         const decimals = await contract.decimals()
         amount = formatUnits(BigNumber.from(decodedData.args[1]), decimals)
       }
-
-      console.log('decodedData: ', decodedData)
 
       return {
         type: 'contract-call',

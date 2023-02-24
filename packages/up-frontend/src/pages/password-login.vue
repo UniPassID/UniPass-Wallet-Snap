@@ -1,7 +1,6 @@
 <template>
   <div id="page-password-login">
     <up-header :back="back" />
-    <up-supported-by />
 
     <div v-if="oauthStore.isPending" class="account-recovering">
       <div class="left">

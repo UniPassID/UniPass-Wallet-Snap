@@ -3285,7 +3285,7 @@
 
 "@unipasswallet/smart-wallet-snap@file:/Users/yangyusen/Documents/unipass/UniPass-Wallet-Snap/packages/up-snap":
   "resolved" "file:packages/up-snap"
-  "version" "0.1.0-alpha.0"
+  "version" "0.1.0-alpha.1"
   dependencies:
     "@metamask/key-tree" "^4.0.0"
     "@metamask/rpc-methods" "^0.29.0"

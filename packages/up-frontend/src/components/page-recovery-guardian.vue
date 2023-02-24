@@ -1,6 +1,5 @@
 <template>
   <div id="page-recovery-guardian" class="header-bg-img">
-    <up-supported-by />
     <up-header :back="back" />
     <page-recovery-guardian-verify
       v-if="recoveryStore.the2FA.show"

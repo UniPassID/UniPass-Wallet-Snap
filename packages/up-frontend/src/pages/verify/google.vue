@@ -1,48 +1,50 @@
 <template>
-  <div id="page-verify-google">
+  <div id="page-verify-google" class="header-bg-img">
     <up-header :title="$t('GoogleVerify')" :back="back" />
-    <template v-if="step === 1">
-      <img
-        class="up-illustration"
-        :src="require(`@/assets/img/verify/google${isDark ? '' : '-light'}.png`)"
-      />
-      <h6>{{ $t('VerifyGoogleTitle1') }}</h6>
-      <!-- <div class="up-setting">
+    <div class="main-container">
+      <template v-if="step === 1">
+        <img
+          class="up-illustration"
+          :src="require(`@/assets/img/verify/google${isDark ? '' : '-light'}.png`)"
+        />
+        <h6>{{ $t('VerifyGoogleTitle1') }}</h6>
+        <!-- <div class="up-setting">
         <div class="one">
           <span>{{ $t('VerifyGoogleTip') }}</span>
           <up-icon name="jump" />
         </div>
       </div> -->
-      <up-button class="submit" type="primary" @click="step = 2">{{ $t('ToBind') }}</up-button>
-    </template>
-    <template v-else>
-      <div class="qrcode">
-        <img v-if="form.secertQRCode" :src="form.secertQRCode" class="qr-code" />
-      </div>
-      <div class="secert-box">
-        <div class="secert" @click="unipass.copy(form.secert)">
-          <span>{{ form.secert }}</span>
-          <up-icon name="copy" />
+        <up-button class="submit" type="primary" @click="step = 2">{{ $t('ToBind') }}</up-button>
+      </template>
+      <template v-else>
+        <div class="qrcode">
+          <img v-if="form.secertQRCode" :src="form.secertQRCode" class="qr-code" />
         </div>
-      </div>
-      <h6>{{ $t('VerifyGoogleTitle2') }}</h6>
-      <up-input
-        class="google-code"
-        v-model="form.code"
-        :disabled="form.loading"
-        :placeholder="$t('EnterGoogleCode')"
-        clearable
-      ></up-input>
-      <up-button
-        class="submit"
-        type="primary"
-        :disabled="!form.code"
-        :loading="form.loading"
-        @click="bindGoogle"
-      >
-        {{ $t('Confirm') }}
-      </up-button>
-    </template>
+        <div class="secert-box">
+          <div class="secert" @click="unipass.copy(form.secert)">
+            <span>{{ form.secert }}</span>
+            <up-icon name="copy" />
+          </div>
+        </div>
+        <h6>{{ $t('VerifyGoogleTitle2') }}</h6>
+        <up-input
+          class="google-code"
+          v-model="form.code"
+          :disabled="form.loading"
+          :placeholder="$t('EnterGoogleCode')"
+          clearable
+        ></up-input>
+        <up-button
+          class="submit"
+          type="primary"
+          :disabled="!form.code"
+          :loading="form.loading"
+          @click="bindGoogle"
+        >
+          {{ $t('Confirm') }}
+        </up-button>
+      </template>
+    </div>
   </div>
 </template>
 
