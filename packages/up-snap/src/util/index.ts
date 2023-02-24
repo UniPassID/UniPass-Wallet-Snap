@@ -5,13 +5,13 @@ export function getFunctionText (type: string, addr: string, amount: string): st
   if (type === 'transfer') {
     // erc20 transfer
     res = 
-      `recipient: ${addr}\n\n` +
-      `\t\tamount: ${amount}\n\n`
+      `__recipient: ${addr}\n\n` +
+      `__amount: ${amount}\n\n`
   } else if (type === 'approve') {
     // approve
     res = 
-      `spender: ${addr}\n\n` +
-      `amount: ${amount}\n\n`
+      `__spender: ${addr}\n\n` +
+      `__amount: ${amount}\n\n`
   } else {
     // others
     res = ``

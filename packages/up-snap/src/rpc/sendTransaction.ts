@@ -50,7 +50,7 @@ export async function sendTransaction(
       `Interacted With (To): ${transactionParams.tx.target}\n\n` + 
       `Chain: ${transactionParams.chain}\n\n` +
       `Gasfee:\n\n` + 
-        (decodedFee ? (`cointype: ${decodedFee.symbol}\n\n` + `amount: ${decodedFee.value}\n\n`) : '0\n\n') +
+        (decodedFee ? (`__cointype: ${decodedFee.symbol}\n\n` + `__amount: ${decodedFee.value}\n\n`) : '0\n\n') +
       `Function: ${decodedData.function}\n\n` +
         getFunctionText(decodedData.name, decodedData.args[0], decodedData.amount) + 
       `Hex Data:\n\n` +
@@ -62,7 +62,7 @@ export async function sendTransaction(
       `Amount ${decodedData.amount}\n\n` +
       `Chain: ${transactionParams.chain}\n\n` +
       `Gasfee:\n\n` + 
-        (decodedFee ? (`cointype: ${decodedFee.symbol}\n\n` + `amount: ${decodedFee.value}\n\n`) : `0\n\n`) +
+        (decodedFee ? (`__cointype: ${decodedFee.symbol}\n\n` + `__amount: ${decodedFee.value}\n\n`) : `0\n\n`) +
       `Hex Data:\n\n` +
       `0x`
   }

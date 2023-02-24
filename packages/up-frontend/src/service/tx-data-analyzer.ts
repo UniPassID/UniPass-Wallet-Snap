@@ -67,6 +67,7 @@ export const analyzeTransactionData = async (
             {
               show: true,
               type: 'send-token',
+              tokenType: 'erc20',
               data: {
                 amount,
                 address,
@@ -84,6 +85,7 @@ export const analyzeTransactionData = async (
             {
               show: true,
               type: 'send-nft',
+              tokenType: 'erc721',
               data: {
                 chain,
                 symbol: coin.symbol,
@@ -102,10 +104,10 @@ export const analyzeTransactionData = async (
             {
               show: true,
               type: 'send-nft',
+              tokenType: 'erc1155',
               data: {
                 chain,
                 symbol: coin.symbol,
-                // tokenType: 'erc1155',
                 address: decodedData.args[1],
                 contractAddress: payload.to,
                 tokenId: BigNumber.from(decodedData.args[2]),
@@ -123,6 +125,7 @@ export const analyzeTransactionData = async (
       {
         show: true,
         type: 'contract-call',
+        tokenType: 'contract',
         data: {
           data: payload.data,
           to: payload.to,
@@ -138,6 +141,7 @@ export const analyzeTransactionData = async (
       {
         show: true,
         type: 'send-token',
+        tokenType: 'native',
         data: {
           amount: formatEther(!payload.value || payload.value === '0x' ? 0 : payload.value),
           address: payload.to,
@@ -240,5 +244,60 @@ export const generateTransaction = (): TransactionProps | undefined => {
     },
     fee,
     chain,
+  }
+}
+
+export const generateSimulateTransaction = (): TransactionProps | undefined => {
+  const signStore = useSignStore()
+  const { transaction, feeOptions, feeSymbol, chain, cards } = signStore
+  const { data, to, value } = transaction
+  if (!data) return
+  const feeCoin = feeOptions.find((e) => e.token.symbol === feeSymbol)
+  let fee
+  if (feeCoin && chain !== 'rangers') {
+    fee = {
+      token: feeCoin.token.contractAddress || ADDRESS_ZERO,
+      value: BigNumber.from(feeCoin.amount),
+      receiver: feeCoin.to,
+    }
+  }
+  if (cards[0].tokenType === 'native') {
+    return {
+      tx: {
+        target: to,
+        value: BigNumber.from(1),
+        revertOnError: true,
+        data,
+      },
+      fee,
+      chain,
+    }
+  } else if (cards[0].tokenType === 'erc20') {
+    const erc20Interface = new utils.Interface(['function transfer(address _to, uint256 _value)'])
+    const erc20TokenData = erc20Interface.encodeFunctionData('transfer', [
+      cards[0].data.address,
+      BigNumber.from(1),
+    ])
+    return {
+      tx: {
+        target: to,
+        value: BigNumber.from(0),
+        revertOnError: true,
+        data: erc20TokenData,
+      },
+      fee,
+      chain,
+    }
+  } else {
+    return {
+      tx: {
+        target: to,
+        value: !value || value === '0x' ? BigNumber.from(0) : BigNumber.from(value),
+        revertOnError: true,
+        data,
+      },
+      fee,
+      chain,
+    }
   }
 }

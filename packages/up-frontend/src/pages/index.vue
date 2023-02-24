@@ -72,7 +72,7 @@
             :text-inside="true"
             :format="(percentage: number) => `${percentage}% ${$t('Recovering')}...`"
             :stroke-width="24"
-            :percentage="Number(chainAccountStore.percentage)"
+            :percentage="Number(chainAccountStore.progress)"
           >
           </el-progress>
         </div>

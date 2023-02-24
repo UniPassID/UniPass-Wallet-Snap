@@ -3,7 +3,7 @@
   "version": "0.0.3",
   "description": "An example for UniPass Wallet integrated with Metamask snaps.",
   "scripts": {
-    "start:dev": "concurrently  --raw --kill-others \"yarn workspace up-snap-ui run start:dev\" \"yarn workspace up-frontend run start:test\"",
+    "start:dev": "concurrently  --raw --kill-others \"yarn workspace @unipasswallet/smart-wallet-snap run start:dev\" \"yarn workspace up-frontend run start:testnet\"",
     "build": "yarn workspaces run build"
   },
   "private": true,

@@ -22,12 +22,13 @@ import { formatUnits } from 'ethers/lib/utils'
 import { useCoinStore } from '@/store/coin'
 import { initTheme } from '@/utils/init-theme'
 import { convertSelector } from '@/service/convert-selector'
-import { analyzeTransactionData, generateTransaction } from '@/service/tx-data-analyzer'
+import { analyzeTransactionData, generateSimulateTransaction } from '@/service/tx-data-analyzer'
 import i18n from '@/plugins/i18n'
 
 export interface TransactionCard {
   show: boolean
   type: TransactionType
+  tokenType: 'native' | 'erc20' | 'erc721' | 'erc1155' | 'contract'
   data: any
   actionName?: string
 }
@@ -61,7 +62,7 @@ interface SignMessage {
 }
 
 export interface SignStoreState {
-  cards: Card[]
+  cards: TransactionCard[]
   feeSymbol: string
   feeOptions: FeeItem[]
   loading: boolean
@@ -155,7 +156,7 @@ export const useSignStore = defineStore({
       if (!transactionCards) return
       this.transaction = payload
       this.cards = transactionCards
-      await this.updateGasFee()
+      this.updateGasFee()
     },
     initAppSetting(appSetting?: AppSettings) {
       if (appSetting) {
@@ -215,6 +216,7 @@ export const useSignStore = defineStore({
               {
                 show: true,
                 type: 'send-token',
+                tokenType: 'erc20',
                 data: {
                   amount,
                   address,
@@ -234,6 +236,7 @@ export const useSignStore = defineStore({
           {
             show: true,
             type: 'contract-call',
+            tokenType: 'contract',
             data: {
               data: payload.data,
               to: payload.to,
@@ -249,6 +252,7 @@ export const useSignStore = defineStore({
           {
             show: true,
             type: 'send-token',
+            tokenType: 'native',
             data: {
               amount: formatEther(BigNumber.from(payload.value)),
               address: payload.to,
@@ -267,7 +271,7 @@ export const useSignStore = defineStore({
         router.back()
       }
     },
-    initCards(cards: Card[]) {
+    initCards(cards: TransactionCard[]) {
       this.cards = cards
     },
     updateSymbolAndChain(chain: ChainType, symbol?: string) {
@@ -340,7 +344,7 @@ export const useSignStore = defineStore({
     },
     async _simulateTransaction(): Promise<SimulateResult> {
       const userStore = useUserStore()
-      const transaction = generateTransaction()
+      const transaction = generateSimulateTransaction()
       if (!transaction) {
         throw new Error('Expected Transaction For Simulating Transaction')
       }

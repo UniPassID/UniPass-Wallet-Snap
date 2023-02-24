@@ -90,6 +90,7 @@ export const parseOAuthHash = async (loading: any) => {
       await useUserStore().fetchBalances()
       await useUserStore().checkKeysetHash()
       await router.replace(sessionStorage.path || '/send/sign')
+      signStore.updateGasFee()
       return
     }
 

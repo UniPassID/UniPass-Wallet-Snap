@@ -3188,32 +3188,32 @@
     "@typescript-eslint/types" "5.50.0"
     "eslint-visitor-keys" "^3.3.0"
 
-"@unipasswallet/abi@^0.3.0-alpha.5":
-  "integrity" "sha512-UFsTIXpJWsJ1Y/XbkqaBs9WQ86C3UCZiKU0ys7bJzwdprxMj3NnKXfDfPrS/N+O8NFc95giC0U596XNjpGbhcg=="
-  "resolved" "https://registry.npmjs.org/@unipasswallet/abi/-/abi-0.3.0-alpha.5.tgz"
-  "version" "0.3.0-alpha.5"
+"@unipasswallet/abi@^0.3.0-alpha.9":
+  "integrity" "sha512-K00gTCpbflpPxs2+gDuDE5mYV8xuy+RnJ3Lj34JIgp08bL93J0R33D2Ax9lUMTPo32TbKoClhnhnS4OoU1EU9A=="
+  "resolved" "https://registry.npmjs.org/@unipasswallet/abi/-/abi-0.3.0-alpha.9.tgz"
+  "version" "0.3.0-alpha.9"
 
-"@unipasswallet/dkim-base@^0.3.0-alpha.5":
-  "integrity" "sha512-Bi/gTWQ1ebxhHk0Mf0vvLJrzf23n75+n0k2P/b+vATAtk+qN07WJU7i9FWPD0EWqtuO+mDTvamfZojdblKoArA=="
-  "resolved" "https://registry.npmjs.org/@unipasswallet/dkim-base/-/dkim-base-0.3.0-alpha.5.tgz"
-  "version" "0.3.0-alpha.5"
+"@unipasswallet/dkim-base@^0.3.0-alpha.9":
+  "integrity" "sha512-1po9Yo+yhS9QGVBhy+ibyXYQeSpxXHH5uPlueKO/Ph5Pw7opkRgrfq6V7BuhxErLQaCf8yBbfhNabjSZ0ROkOg=="
+  "resolved" "https://registry.npmjs.org/@unipasswallet/dkim-base/-/dkim-base-0.3.0-alpha.9.tgz"
+  "version" "0.3.0-alpha.9"
   dependencies:
     "ethers" "^5.7.1"
 
-"@unipasswallet/keys@^0.3.0-alpha.5":
-  "integrity" "sha512-diU/LjOs5mVrEOtgD/UOEwHoqGIG3Fqc10OgTaZP6VrQcgMuNi5HIrPiCviEVg4LwcNH4d4h7YvjDMEOr4W5mw=="
-  "resolved" "https://registry.npmjs.org/@unipasswallet/keys/-/keys-0.3.0-alpha.5.tgz"
-  "version" "0.3.0-alpha.5"
+"@unipasswallet/keys@^0.3.0-alpha.9":
+  "integrity" "sha512-fdzxqt3U0Nm9q3hz5ZaeUPoJ6GAVqZo0uVnAJs1D/FlFksoAW7Dn26g9R2cnhFgifyq15iUH7JaoHcikJNi38w=="
+  "resolved" "https://registry.npmjs.org/@unipasswallet/keys/-/keys-0.3.0-alpha.9.tgz"
+  "version" "0.3.0-alpha.9"
   dependencies:
-    "@unipasswallet/dkim-base" "^0.3.0-alpha.5"
-    "@unipasswallet/utils" "^0.3.0-alpha.5"
+    "@unipasswallet/dkim-base" "^0.3.0-alpha.9"
+    "@unipasswallet/utils" "^0.3.0-alpha.9"
     "base64url" "^3.0.1"
     "ethers" "^5.7.1"
 
-"@unipasswallet/network@^0.3.0-alpha.5":
-  "integrity" "sha512-KzgVhC+4/te+9FaXcaEbKhYrr9Oz7jH2R1ffIJhpA0xGWsjhr24ZSDYKoiRDtOJqFrMhR3MMrz4KUHwfZbx8iw=="
-  "resolved" "https://registry.npmjs.org/@unipasswallet/network/-/network-0.3.0-alpha.5.tgz"
-  "version" "0.3.0-alpha.5"
+"@unipasswallet/network@^0.3.0-alpha.9":
+  "integrity" "sha512-Nl1FkuMWUAg0lGoMBTwIA3hupbTwo0JvIgt6X8tBnLC6T+mK5xcccVo9aCiDqTwuT64sArZS0c0yg7KBFp3Lyg=="
+  "resolved" "https://registry.npmjs.org/@unipasswallet/network/-/network-0.3.0-alpha.9.tgz"
+  "version" "0.3.0-alpha.9"
 
 "@unipasswallet/popup-types@^1.1.0", "@unipasswallet/popup-types@^1.1.1":
   "integrity" "sha512-YvEXIc2MGdbgZoWGX4Euil/bBtycCqDO0FELzHbTXndmqcJRAGMiOd/mIhnZE1grtP1ttdqfUBO/IHjXC5TOpQ=="
@@ -3232,19 +3232,19 @@
     "ethjs-util" "^0.1.6"
     "jest" "24"
 
-"@unipasswallet/provider@^0.3.0-alpha.5":
-  "integrity" "sha512-pV8oc+pmFnwFnOel+WzWSmyY8swgA6Kgm+2Zy4m4mtGqbEkTttWroZH3YZ4HR0dUrGGCn5dMFYWA4dQENyI+1g=="
-  "resolved" "https://registry.npmjs.org/@unipasswallet/provider/-/provider-0.3.0-alpha.5.tgz"
-  "version" "0.3.0-alpha.5"
+"@unipasswallet/provider@^0.3.0-alpha.9":
+  "integrity" "sha512-ltRe5NMhsOH+9NvJgaS4wi54J62tb9+8WODT9HuiVHrU5/8wy7dIc517276MStTCDPoZ++twTeNkjcQFN30c1w=="
+  "resolved" "https://registry.npmjs.org/@unipasswallet/provider/-/provider-0.3.0-alpha.9.tgz"
+  "version" "0.3.0-alpha.9"
   dependencies:
-    "@unipasswallet/keys" "^0.3.0-alpha.5"
-    "@unipasswallet/network" "^0.3.0-alpha.5"
-    "@unipasswallet/relayer" "^0.3.0-alpha.5"
-    "@unipasswallet/sdk" "^0.3.0-alpha.5"
-    "@unipasswallet/transaction-builders" "^0.3.0-alpha.5"
-    "@unipasswallet/transactions" "^0.3.0-alpha.5"
-    "@unipasswallet/utils" "^0.3.0-alpha.5"
-    "@unipasswallet/wallet" "^0.3.0-alpha.5"
+    "@unipasswallet/keys" "^0.3.0-alpha.9"
+    "@unipasswallet/network" "^0.3.0-alpha.9"
+    "@unipasswallet/relayer" "^0.3.0-alpha.9"
+    "@unipasswallet/sdk" "^0.3.0-alpha.9"
+    "@unipasswallet/transaction-builders" "^0.3.0-alpha.9"
+    "@unipasswallet/transactions" "^0.3.0-alpha.9"
+    "@unipasswallet/utils" "^0.3.0-alpha.9"
+    "@unipasswallet/wallet" "^0.3.0-alpha.9"
     "axios" "^0.27.2"
     "comlink" "^4.3.1"
     "dayjs" "^1.11.5"
@@ -3254,79 +3254,79 @@
     "lindell-ecdsa-wasm" "^0.5.0"
     "scrypt-js" "3.0.1"
 
-"@unipasswallet/relayer@^0.3.0-alpha.5", "@unipasswallet/relayer@0.3.0-alpha.5":
-  "integrity" "sha512-ZXb+guiospXv2iqzLY569D1a7VUn3M9ScIOeqCW/c4KIDRymMvvr7gLLlzDO/mo13Z1VtoNLdkarmQ1eWxbNew=="
-  "resolved" "https://registry.npmjs.org/@unipasswallet/relayer/-/relayer-0.3.0-alpha.5.tgz"
-  "version" "0.3.0-alpha.5"
+"@unipasswallet/relayer@^0.3.0-alpha.9", "@unipasswallet/relayer@0.3.0-alpha.9":
+  "integrity" "sha512-/mwZT2bmRtgo8ZO0UdV/E/mJi/PCmnyc2PD6fqQvUHK4tYWkzLqCM71lFn0PY+4kbLl0aHU8v3NpVQ0+dXTIlQ=="
+  "resolved" "https://registry.npmjs.org/@unipasswallet/relayer/-/relayer-0.3.0-alpha.9.tgz"
+  "version" "0.3.0-alpha.9"
   dependencies:
-    "@unipasswallet/abi" "^0.3.0-alpha.5"
-    "@unipasswallet/keys" "^0.3.0-alpha.5"
-    "@unipasswallet/network" "^0.3.0-alpha.5"
-    "@unipasswallet/transactions" "^0.3.0-alpha.5"
-    "@unipasswallet/utils" "^0.3.0-alpha.5"
+    "@unipasswallet/abi" "^0.3.0-alpha.9"
+    "@unipasswallet/keys" "^0.3.0-alpha.9"
+    "@unipasswallet/network" "^0.3.0-alpha.9"
+    "@unipasswallet/transactions" "^0.3.0-alpha.9"
+    "@unipasswallet/utils" "^0.3.0-alpha.9"
     "ethers" "^5.7.1"
     "fetch-ponyfill" "^7.1.0"
 
-"@unipasswallet/sdk@^0.3.0-alpha.5":
-  "integrity" "sha512-sCUFW4kWsw4Wl/AXbFDWFm9uAD+8m0arPSK0QD8sEUzQGGadw2h89F1SRKFEem5zviyI8adZVew4rCpvuJ0NWQ=="
-  "resolved" "https://registry.npmjs.org/@unipasswallet/sdk/-/sdk-0.3.0-alpha.5.tgz"
-  "version" "0.3.0-alpha.5"
+"@unipasswallet/sdk@^0.3.0-alpha.9":
+  "integrity" "sha512-CW6heKbWsoNzui7N8ay4jLVJfRp0KnKuhQnIQ2LFkmV2RRvSLubuVxlOYv64N+S9vDxBRTK3cbYK6LF1Fh/afw=="
+  "resolved" "https://registry.npmjs.org/@unipasswallet/sdk/-/sdk-0.3.0-alpha.9.tgz"
+  "version" "0.3.0-alpha.9"
   dependencies:
-    "@unipasswallet/abi" "^0.3.0-alpha.5"
-    "@unipasswallet/dkim-base" "^0.3.0-alpha.5"
-    "@unipasswallet/keys" "^0.3.0-alpha.5"
-    "@unipasswallet/network" "^0.3.0-alpha.5"
-    "@unipasswallet/relayer" "0.3.0-alpha.5"
-    "@unipasswallet/transaction-builders" "^0.3.0-alpha.5"
-    "@unipasswallet/transactions" "^0.3.0-alpha.5"
-    "@unipasswallet/utils" "^0.3.0-alpha.5"
-    "@unipasswallet/wallet" "^0.3.0-alpha.5"
+    "@unipasswallet/abi" "^0.3.0-alpha.9"
+    "@unipasswallet/dkim-base" "^0.3.0-alpha.9"
+    "@unipasswallet/keys" "^0.3.0-alpha.9"
+    "@unipasswallet/network" "^0.3.0-alpha.9"
+    "@unipasswallet/relayer" "0.3.0-alpha.9"
+    "@unipasswallet/transaction-builders" "^0.3.0-alpha.9"
+    "@unipasswallet/transactions" "^0.3.0-alpha.9"
+    "@unipasswallet/utils" "^0.3.0-alpha.9"
+    "@unipasswallet/wallet" "^0.3.0-alpha.9"
     "ethers" "^5.7.1"
 
-"@unipasswallet/transaction-builders@^0.3.0-alpha.5":
-  "integrity" "sha512-ltm1NqbY0P8caE5DWL/4oz26Ib2JVxr31LJY2Bbptk018jJQEjIungW8hEi3qZp6I4LnqkUeydOcyAEGKkflTw=="
-  "resolved" "https://registry.npmjs.org/@unipasswallet/transaction-builders/-/transaction-builders-0.3.0-alpha.5.tgz"
-  "version" "0.3.0-alpha.5"
+"@unipasswallet/transaction-builders@^0.3.0-alpha.9":
+  "integrity" "sha512-yE0ui2aP3xCQxJ0kG0sO11K6CcgTgZJVsn5P5s1LwnA0BT3ZHeZliIxO5CjnXggnhR7b5Kr3LF133J77cFEPJQ=="
+  "resolved" "https://registry.npmjs.org/@unipasswallet/transaction-builders/-/transaction-builders-0.3.0-alpha.9.tgz"
+  "version" "0.3.0-alpha.9"
   dependencies:
-    "@unipasswallet/abi" "^0.3.0-alpha.5"
-    "@unipasswallet/keys" "^0.3.0-alpha.5"
-    "@unipasswallet/transactions" "^0.3.0-alpha.5"
-    "@unipasswallet/utils" "^0.3.0-alpha.5"
-    "@unipasswallet/wallet" "^0.3.0-alpha.5"
+    "@unipasswallet/abi" "^0.3.0-alpha.9"
+    "@unipasswallet/keys" "^0.3.0-alpha.9"
+    "@unipasswallet/transactions" "^0.3.0-alpha.9"
+    "@unipasswallet/utils" "^0.3.0-alpha.9"
+    "@unipasswallet/wallet" "^0.3.0-alpha.9"
     "ethers" "^5.7.1"
 
-"@unipasswallet/transactions@^0.3.0-alpha.5":
-  "integrity" "sha512-MY4526JKKIyJhQ2P6KXoWdmDbHxUkBN1zMiSnWbYsH9k77eCaHTGeMs7GN2b0L4Bx9iFI4gHI/EpxNKOfFN+Bg=="
-  "resolved" "https://registry.npmjs.org/@unipasswallet/transactions/-/transactions-0.3.0-alpha.5.tgz"
-  "version" "0.3.0-alpha.5"
+"@unipasswallet/transactions@^0.3.0-alpha.9":
+  "integrity" "sha512-l64C77gtVIesNJ+ZM/H+t5a+wvf1AyC5kdICNZAmDDwhsR8VeAu5MYWatvFhpSvWdIS8f+Q8HGjEKK4rKMMXqw=="
+  "resolved" "https://registry.npmjs.org/@unipasswallet/transactions/-/transactions-0.3.0-alpha.9.tgz"
+  "version" "0.3.0-alpha.9"
   dependencies:
-    "@unipasswallet/abi" "^0.3.0-alpha.5"
-    "@unipasswallet/utils" "^0.3.0-alpha.5"
+    "@unipasswallet/abi" "^0.3.0-alpha.9"
+    "@unipasswallet/utils" "^0.3.0-alpha.9"
     "ethers" "^5.7.1"
 
-"@unipasswallet/utils@^0.3.0-alpha.5":
-  "integrity" "sha512-bQNLFKKQkAR0vBcCx2oA9eyQm4HYIhseJzJyaAC3EJMGhslJNrehX5aaHtO+YlD8GyvA+ZtI6R1R53QATrdVMg=="
-  "resolved" "https://registry.npmjs.org/@unipasswallet/utils/-/utils-0.3.0-alpha.5.tgz"
-  "version" "0.3.0-alpha.5"
+"@unipasswallet/utils@^0.3.0-alpha.9":
+  "integrity" "sha512-qipafWR1UZk7LmVMZPdBx9cv+828HDNDNiRVm34cjVaKKk+yxdnefg6iIo1d+cGUbs+q9jYadFGu+PGiR7jgKw=="
+  "resolved" "https://registry.npmjs.org/@unipasswallet/utils/-/utils-0.3.0-alpha.9.tgz"
+  "version" "0.3.0-alpha.9"
   dependencies:
     "@ethersproject/pbkdf2" "^5.7.0"
-    "@unipasswallet/abi" "^0.3.0-alpha.5"
+    "@unipasswallet/abi" "^0.3.0-alpha.9"
     "aes-js" "3.1.2"
     "ethers" "^5.7.1"
     "scrypt-js" "3.0.1"
 
-"@unipasswallet/wallet@^0.3.0-alpha.5":
-  "integrity" "sha512-3L7hvUr6HBGfQXdoRgU4pOpH66NdW94H5YXNc8li+kiUDxmUWNQYI1BSDX92uI9+uMxvYs71XMInEk31yVsBkg=="
-  "resolved" "https://registry.npmjs.org/@unipasswallet/wallet/-/wallet-0.3.0-alpha.5.tgz"
-  "version" "0.3.0-alpha.5"
+"@unipasswallet/wallet@^0.3.0-alpha.9":
+  "integrity" "sha512-kEJpBIJApWVgVok4aSHNM+Hm5A4v4Rbxxmn+fmLV9JtM83pH1/2XxxIu5LxeiPoMZ1nB1ok6oM7Kd4Xj/XUoAA=="
+  "resolved" "https://registry.npmjs.org/@unipasswallet/wallet/-/wallet-0.3.0-alpha.9.tgz"
+  "version" "0.3.0-alpha.9"
   dependencies:
-    "@unipasswallet/abi" "^0.3.0-alpha.5"
-    "@unipasswallet/dkim-base" "^0.3.0-alpha.5"
-    "@unipasswallet/keys" "^0.3.0-alpha.5"
-    "@unipasswallet/network" "^0.3.0-alpha.5"
-    "@unipasswallet/relayer" "^0.3.0-alpha.5"
-    "@unipasswallet/transactions" "^0.3.0-alpha.5"
-    "@unipasswallet/utils" "^0.3.0-alpha.5"
+    "@unipasswallet/abi" "^0.3.0-alpha.9"
+    "@unipasswallet/dkim-base" "^0.3.0-alpha.9"
+    "@unipasswallet/keys" "^0.3.0-alpha.9"
+    "@unipasswallet/network" "^0.3.0-alpha.9"
+    "@unipasswallet/relayer" "^0.3.0-alpha.9"
+    "@unipasswallet/transactions" "^0.3.0-alpha.9"
+    "@unipasswallet/utils" "^0.3.0-alpha.9"
     "ethers" "^5.7.1"
 
 "@vue/babel-helper-vue-jsx-merge-props@^1.4.0":
@@ -15048,10 +15048,10 @@
     "@siddomains/sidjs" "0.1.17"
     "@unipasswallet/popup-types" "^1.1.0"
     "@unipasswallet/popup-utils" "^1.1.0"
-    "@unipasswallet/provider" "^0.3.0-alpha.4"
-    "@unipasswallet/relayer" "^0.3.0-alpha.4"
-    "@unipasswallet/sdk" "^0.3.0-alpha.4"
-    "@unipasswallet/wallet" "^0.3.0-alpha.4"
+    "@unipasswallet/provider" "^0.3.0-alpha.5"
+    "@unipasswallet/relayer" "^0.3.0-alpha.5"
+    "@unipasswallet/sdk" "^0.3.0-alpha.5"
+    "@unipasswallet/wallet" "^0.3.0-alpha.5"
     "@walletconnect/client" "1.8.0"
     "@walletconnect/legacy-types" "^2.0.0-rc.0"
     "@walletconnect/sign-client" "^2.1.4"
@@ -15088,19 +15088,19 @@
     "vue-json-viewer" "3.0.4"
     "vue-router" "^4.0.16"
 
-"up-snap-ui@file:/Users/yangyusen/Documents/unipass/UniPass-Wallet-Snap/packages/up-snap":
+"@unipasswallet/smart-wallet-snap@file:/Users/yangyusen/Documents/unipass/UniPass-Wallet-Snap/packages/up-snap":
   "resolved" "file:packages/up-snap"
-  "version" "0.0.8"
+  "version" "0.0.9"
   dependencies:
     "@metamask/key-tree" "^4.0.0"
     "@metamask/rpc-methods" "^0.29.0"
     "@metamask/snap-types" "^0.23.0"
     "@metamask/snaps-types" "^0.29.0"
     "@metamask/snaps-ui" "^0.29.0"
-    "@unipasswallet/provider" "^0.3.0-alpha.4"
-    "@unipasswallet/relayer" "^0.3.0-alpha.4"
-    "@unipasswallet/sdk" "^0.3.0-alpha.4"
-    "@unipasswallet/wallet" "^0.3.0-alpha.4"
+    "@unipasswallet/provider" "^0.3.0-alpha.5"
+    "@unipasswallet/relayer" "^0.3.0-alpha.5"
+    "@unipasswallet/sdk" "^0.3.0-alpha.5"
+    "@unipasswallet/wallet" "^0.3.0-alpha.5"
     "ethers" "^5.7.0"
 
 "upath@^1.2.0":

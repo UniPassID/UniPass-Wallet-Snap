@@ -1,13 +1,13 @@
 {
-  "version": "0.0.9",
-  "description": "up-snap-ui: Metamask snap for UniPass Wallet",
-  "proposedName": "up-snap-ui",
+  "version": "0.1.0-alpha.0",
+  "description": "@unipasswallet/smart-wallet-snap: Metamask snap for UniPass Wallet",
+  "proposedName": "@unipasswallet/smart-wallet-snap",
   "source": {
-    "shasum": "ryDoUFit5Ds64YJeqh+z8JHhIF5cUUgXcQl0EhUAq8E=",
+    "shasum": "9p/F9qBfAZTczlpWdeo30EvSrVw1R5PQEXl2D2NCbZw=",
     "location": {
       "npm": {
         "filePath": "dist/bundle.js",
-        "packageName": "up-snap-ui",
+        "packageName": "@unipasswallet/smart-wallet-snap",
         "registry": "https://registry.npmjs.org"
       }
     }

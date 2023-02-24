@@ -35,7 +35,7 @@ import {
 import { solidityPack } from 'ethers/lib/utils'
 import { WalletsCreator, ChainType } from '@unipasswallet/provider'
 import { BundledExecuteCall, MainExecuteCall, Wallet } from '@unipasswallet/wallet'
-import { generateTransaction } from '@/service/tx-data-analyzer'
+import { encodeTransactionData, generateTransaction } from '@/service/tx-data-analyzer'
 
 const { hexlify } = utils
 
@@ -144,6 +144,7 @@ export const useSign = () => {
         url_config: sdkConfig.urlConfig,
       })
       const wallet = instance[transaction.value.chain as ChainType] as Wallet
+      console.log('sendSignedTransactions: ', executeObj, chainId, BigNumber.from(nonce))
       const res = await wallet.sendSignedTransactions(executeObj, chainId, BigNumber.from(nonce))
       const timeout = chain === 'eth' ? 120 : 60
       const receipt = await (res.wait as any)(1, timeout)
@@ -296,6 +297,13 @@ export const useSign = () => {
           })
             .then(() => {
               card.data.amount = updatedAmount
+              const transaction = encodeTransactionData({
+                ...card.data,
+                amount: updatedAmount,
+              })
+              if (transaction) {
+                signStore.transaction = transaction
+              }
             })
             .catch(() => {
               signStore.feeSymbol = ''
