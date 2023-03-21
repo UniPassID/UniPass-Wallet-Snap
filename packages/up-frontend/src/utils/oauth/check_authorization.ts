@@ -9,8 +9,8 @@ import { useChainAccountStore } from '@/store/chain-account'
 
 export type OAuthCallBack = () => Promise<void>
 
-const checkNeedOAuth = (cb: OAuthCallBack) => {
-  const needOAuth = checkAuthorization()
+const checkNeedOAuth = (cb: OAuthCallBack, checkAuth = true) => {
+  const needOAuth = checkAuth ? checkAuthorization() : checkUpSignToken()
   if (needOAuth) {
     const userStore = useUserStore()
     userStore.showOAuthCallback = cb
@@ -19,6 +19,29 @@ const checkNeedOAuth = (cb: OAuthCallBack) => {
   }
 
   return needOAuth
+}
+
+export const checkUpSignToken = () => {
+  const up_sign_token = getUpSignToken()
+  let needOAuth = false
+  if (up_sign_token) {
+    const decoded = jwt_decode(up_sign_token) as any
+    if (dayjs(decoded.exp * 1000).isBefore(dayjs())) needOAuth = true
+  } else {
+    needOAuth = true
+  }
+  return needOAuth
+}
+
+export const getUpSignToken = () => {
+  const oauthUserInfo = getOAuthUserInfo()
+  if (!oauthUserInfo) {
+    useUserStore().exit()
+    return undefined
+  }
+
+  const { up_sign_token } = oauthUserInfo
+  return up_sign_token
 }
 
 export const checkAuthorization = () => {
@@ -60,6 +83,10 @@ export const handleOAuthForAuthorizationExpired = async () => {
 
 export const checkAuthorizationExpired = async () => {
   return checkNeedOAuth(handleOAuthForAuthorizationExpired)
+}
+
+export const checkUpSignTokenExpiredForConnectPage = async () => {
+  return checkNeedOAuth(handleOAuthForAuthorizationExpired, false)
 }
 
 export const checkKeysetHash = async () => {

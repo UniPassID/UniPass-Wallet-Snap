@@ -49,6 +49,11 @@ export const useUserStore = defineStore({
       chain: undefined as ChainType | undefined,
       walletConnect: 0,
       theme: 'system',
+      connectLoading: false,
+      connectAndAuth: {
+        message: '',
+        showMessage: false,
+      },
     }
   },
   actions: {

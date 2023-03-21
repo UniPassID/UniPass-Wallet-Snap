@@ -44,7 +44,7 @@ export default class UnipassWalletProvider {
 
     const execute = await operateToRawExecuteCall(generatedTx);
 
-    return sendTransaction(execute, chain, this.config, props.signFunc);
+    return sendTransaction(execute, chain, this.config, signFunc);
   }
 }
 

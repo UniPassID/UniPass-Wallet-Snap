@@ -98,7 +98,7 @@
       type="textarea"
       :rows="8"
       resize="none"
-      :value="JSON.stringify(props.transaction, null, 2)"
+      :value="JSON.stringify(props.rawData, null, 2)"
       readonly
     />
   </div>
@@ -106,6 +106,7 @@
 
 <script setup lang="ts">
 import { TransactionType, useUniPass } from '@/utils/useUniPass'
+import { UPTransactionMessage } from '@unipasswallet/popup-types'
 import { TransactionProps } from '@unipasswallet/provider'
 interface Props {
   show: boolean
@@ -114,6 +115,7 @@ interface Props {
   icon?: string
   transaction?: TransactionProps
   actionName?: string
+  rawData?: UPTransactionMessage
 }
 
 const props = withDefaults(defineProps<Props>(), {

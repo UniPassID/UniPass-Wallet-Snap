@@ -31,6 +31,7 @@ export interface TransactionCard {
   tokenType: 'native' | 'erc20' | 'erc721' | 'erc1155' | 'contract'
   data: any
   actionName?: string
+  rawData?: UPTransactionMessage
 }
 
 interface Card {
@@ -301,7 +302,6 @@ export const useSignStore = defineStore({
     async _updateGasFee() {
       const coinStore = useCoinStore()
       const userStore = useUserStore()
-      console.log('_updateGasFee')
       coinStore.getAccountAssets(userStore.accountInfo.address, getChainIdByChainType(this.chain))
       if (this.chain === 'rangers') {
         return

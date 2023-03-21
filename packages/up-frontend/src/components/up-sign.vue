@@ -30,6 +30,7 @@
         :data="card.data"
         :actionName="card.actionName"
         :icon="signStore.coin?.icon"
+        :rawData="card.rawData"
         :transaction="transaction"
         :key="i"
       />

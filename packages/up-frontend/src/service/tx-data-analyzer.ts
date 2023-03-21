@@ -12,6 +12,69 @@ import { weiToEther, etherToWei } from './format-bignumber'
 
 const { Interface, formatEther, parseEther } = utils
 
+const UniPassABI = [
+  {
+    inputs: [
+      {
+        internalType: 'uint32',
+        name: '_ownerWeight',
+        type: 'uint32',
+      },
+      {
+        internalType: 'uint32',
+        name: '_assetsOpWeight',
+        type: 'uint32',
+      },
+      {
+        internalType: 'uint32',
+        name: '_guardianWeight',
+        type: 'uint32',
+      },
+      {
+        components: [
+          {
+            internalType: 'enum ModuleTransaction.CallType',
+            name: 'callType',
+            type: 'uint8',
+          },
+          {
+            internalType: 'bool',
+            name: 'revertOnError',
+            type: 'bool',
+          },
+          {
+            internalType: 'address',
+            name: 'target',
+            type: 'address',
+          },
+          {
+            internalType: 'uint256',
+            name: 'gasLimit',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'value',
+            type: 'uint256',
+          },
+          {
+            internalType: 'bytes',
+            name: 'data',
+            type: 'bytes',
+          },
+        ],
+        internalType: 'struct ModuleTransaction.Transaction[]',
+        name: '_txs',
+        type: 'tuple[]',
+      },
+    ],
+    name: 'selfExecute',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+]
+
 export interface TransactionData {
   amount: string | number
   address: string
@@ -52,7 +115,10 @@ export const analyzeTransactionData = async (
       'function safeTransferFrom(address _from, address _to, uint256 _tokenId)', // ERC721
       'function safeTransferFrom(address _from, address _to, uint256 _id, uint256 _amount, bytes _data)', // ERC1155
     ]
-    const iface = new Interface(ABI)
+    let iface = new Interface(ABI)
+    if (isSameAddress(payload.from, payload.to)) {
+      iface = new Interface(UniPassABI)
+    }
     try {
       const decodedData = iface.parseTransaction({ data: payload.data })
 
@@ -75,6 +141,7 @@ export const analyzeTransactionData = async (
                 chain: coin.chain,
               },
               actionName: functionName,
+              rawData: payload,
             },
           ]
         }
@@ -96,6 +163,7 @@ export const analyzeTransactionData = async (
                 amount: BigNumber.from(1),
               },
               actionName: functionName,
+              rawData: payload,
             },
           ]
         } else if (decodedData.functionFragment.inputs.length === 5) {
@@ -114,9 +182,28 @@ export const analyzeTransactionData = async (
                 amount: BigNumber.from(decodedData.args[3]),
               },
               actionName: functionName,
+              rawData: payload,
             },
           ]
         }
+      } else if (decodedData.name === 'selfExecute') {
+        // selfExecute for batch transactions
+        const txs = decodedData.args[3]
+        const txsCards = await Promise.all(
+          txs.map(async (tx: any[]) => {
+            const cards = await analyzeTransactionData(
+              {
+                from: payload.from,
+                to: tx[2],
+                value: '0x00',
+                data: tx[5],
+              },
+              chain,
+            )
+            return cards ? cards[0] : undefined
+          }),
+        )
+        return txsCards
       }
     } catch (error) {
       console.log(`parse tx data failed:`, error)
@@ -134,6 +221,7 @@ export const analyzeTransactionData = async (
           value: payload.value,
         },
         actionName: functionName,
+        rawData: payload,
       },
     ]
   } else {
@@ -148,6 +236,7 @@ export const analyzeTransactionData = async (
           symbol: coin.symbol,
           chain: coin.chain,
         },
+        rawData: payload,
       },
     ]
   }

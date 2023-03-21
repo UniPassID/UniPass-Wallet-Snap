@@ -40,7 +40,9 @@
         </div>
         <div class="btns">
           <up-button type="info" @click="reject">{{ $t('Cancel') }}</up-button>
-          <up-button type="primary" @click="approve">{{ $t('Connect') }}</up-button>
+          <up-button type="primary" @click="approve" :loading="userStore.connectLoading">{{
+            $t('Connect')
+          }}</up-button>
         </div>
         <div class="tip" v-if="route.query.type !== 'wallet-connect'">
           {{ $t('ConnectTip4') }}<br />
@@ -54,14 +56,89 @@
 <script setup lang="ts">
 import { useUserStore } from '@/store/user'
 import { upGA } from '@/utils/useUniPass'
+import { useSDK } from '@/composable/useSDK'
+import { useSign } from '@/composable/useSign'
+import { SiweMessage } from 'siwe'
 import { useWalletConnectStore } from '@/store/wallet-connect'
-import { getChainName } from '@/service/chains-config'
+import { getChainIdByChainType, getChainName } from '@/service/chains-config'
+import { isPopupEnv } from '@/service/check-environment'
+import { registerPopupHandler, unregisterPopupHandler } from '@unipasswallet/popup-utils'
+import { AppSettings, UPAccount, UPMessage, UPResponse } from '@unipasswallet/popup-types'
+import { checkUpSignTokenExpiredForConnectPage } from '@/utils/oauth/check_authorization'
+import { utils } from 'ethers'
+import dayjs from 'dayjs'
+import { postMessage } from '@unipasswallet/popup-utils'
 
 const userStore = useUserStore()
 const walletConnectStore = useWalletConnectStore()
+const { parseSDKFromUrl } = useSDK()
+const { signMessage } = useSign()
 
 const route = useRoute()
 const router = useRouter()
+
+const initStateForSDK = async (appSetting?: AppSettings) => {
+  try {
+    userStore.initAppSetting(appSetting)
+    await parseSDKFromUrl()
+  } catch (err) {
+    console.log('err', err)
+  }
+}
+
+const getHostName = (url: string) => {
+  try {
+    return new URL(url).host || url
+  } catch {
+    return url
+  }
+}
+
+onBeforeMount(async () => {
+  registerPopupHandler(async (event: MessageEvent) => {
+    if (typeof event.data !== 'object') return
+    if (event.data.type !== 'UP_LOGIN') return
+    const { appSetting, payload = '' } = event.data as UPMessage
+    try {
+      const { email, authorize = false } = JSON.parse(payload)
+      await initStateForSDK(appSetting)
+      // referrer
+      if (sessionStorage.referrer) {
+        userStore.referrer = sessionStorage.referrer
+      } else {
+        userStore.referrer = window.document.referrer
+        sessionStorage.referrer = window.document.referrer
+      }
+      if (authorize) {
+        userStore.connectAndAuth.message = createSiweMessage(email)
+      }
+      userStore.returnEmail = email
+    } catch {
+      //
+    }
+  })
+})
+
+const createSiweMessage = (returnEmail = false) => {
+  const origin = userStore.referrer
+  const address = userStore.accountInfo.address
+  const email = returnEmail ? userStore.accountInfo.email : ''
+  const chainId = getChainIdByChainType(userStore.chain ?? 'polygon')
+  const siweMessage = new SiweMessage({
+    domain: getHostName(origin),
+    address: utils.getAddress(address),
+    statement: email ? `email: ${email}` : undefined,
+    uri: origin,
+    version: '1',
+    chainId,
+    expirationTime: dayjs().add(10, 'minute').toISOString(),
+  })
+  return siweMessage.prepareMessage()
+}
+
+onBeforeUnmount(() => {
+  unregisterPopupHandler()
+})
 
 const approve = async () => {
   const dapp =
@@ -72,7 +149,40 @@ const approve = async () => {
   })
 
   const user = userStore.accountInfo
+  const newborn = Boolean(sessionStorage.newborn)
   sessionStorage.newborn = ''
+
+  let upAccount
+  if (userStore.returnEmail) {
+    upAccount = new UPAccount(utils.getAddress(user.address), user.email, newborn)
+  } else {
+    upAccount = new UPAccount(utils.getAddress(user.address), undefined, newborn)
+  }
+
+  // popup must be first
+  if (isPopupEnv()) {
+    if (userStore.connectAndAuth.message) {
+      userStore.connectLoading = true
+      const needOAuth = await checkUpSignTokenExpiredForConnectPage()
+      if (needOAuth) return
+      const signature = await signMessage(userStore.connectAndAuth.message, true)
+      const data = {
+        ...upAccount,
+        message: userStore.connectAndAuth.message,
+        signature,
+      }
+      userStore.connectAndAuth.message = ''
+      userStore.connectAndAuth.showMessage = false
+      userStore.connectLoading = false
+
+      postMessage(new UPMessage('UP_RESPONSE', JSON.stringify({ type: 'APPROVE', data })))
+    } else {
+      postMessage(
+        new UPMessage('UP_RESPONSE', JSON.stringify(new UPResponse('APPROVE', upAccount))),
+      )
+    }
+    return
+  }
 
   if (route.query.type === 'wallet-connect') {
     await walletConnectStore.approve(user.address)

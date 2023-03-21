@@ -3,7 +3,7 @@
   "description": "@unipasswallet/smart-wallet-snap: Metamask snap for UniPass Wallet",
   "proposedName": "@unipasswallet/smart-wallet-snap",
   "source": {
-    "shasum": "omKXX5z6sLoEUZyX3wF8w61UIxKfHuQSH/XDEWrJpHo=",
+    "shasum": "1it+G6HBYsyH6WoK9x7fwz8Kz+Bf82MPCHhZVPSXOlY=",
     "location": {
       "npm": {
         "filePath": "dist/bundle.js",

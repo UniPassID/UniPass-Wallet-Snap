@@ -36,35 +36,50 @@ export async function sendTransaction(
     },
   });
 
-  const decodedData = await txDecoder(transactionParams, unipassWalletProps.env)
+  const decodedData = await txDecoder(transactionParams, unipassWalletProps.env, accountInfo?.address as string)
   let decodedFee
-  let contentText
+  let contentTxtArray = []
 
   if (transactionParams.fee) {
     decodedFee = await feeDecoder(transactionParams.fee, transactionParams.chain, unipassWalletProps.env)
   }
 
-  if (decodedData.type === 'contract-call') {
-    contentText = 
-      `From: ${accountInfo?.address}\n\n` + 
-      `Interacted With (To): ${transactionParams.tx.target}\n\n` + 
-      `Chain: ${transactionParams.chain}\n\n` +
-      `Gasfee:\n\n` + 
-        (decodedFee ? (`__cointype: ${decodedFee.symbol}\n\n` + `__amount: ${decodedFee.value}\n\n`) : '0\n\n') +
-      `Function: ${decodedData.function}\n\n` +
-        getFunctionText(decodedData.name, decodedData.args[0], decodedData.amount) + 
-      `Hex Data:\n\n` +
-      `${transactionParams.tx.data}`
-  } else {
-    contentText = 
-      `From: ${accountInfo?.address}\n\n` + 
-      `To: ${transactionParams.tx.target}\n\n` + 
-      `Amount ${decodedData.amount}\n\n` +
-      `Chain: ${transactionParams.chain}\n\n` +
-      `Gasfee:\n\n` + 
-        (decodedFee ? (`__cointype: ${decodedFee.symbol}\n\n` + `__amount: ${decodedFee.value}\n\n`) : `0\n\n`) +
-      `Hex Data:\n\n` +
-      `0x`
+  if (Array.isArray(decodedData)) {
+    contentTxtArray = decodedData.map(data => {
+      let contentText = ''
+      if (data.type === 'contract-call') {
+        contentText = 
+          `From: ${accountInfo?.address}\n\n` + 
+          `Interacted With (To): ${data.to}\n\n` + 
+          `Chain: ${transactionParams.chain}\n\n` +
+          `Gasfee:\n\n` + 
+            (decodedFee ? (`__cointype: ${decodedFee.symbol}\n\n` + `__amount: ${decodedFee.value}\n\n`) : '0\n\n') +
+          `Function: ${data.function}\n\n` +
+            getFunctionText(data.name, data.args[0], data.amount) + 
+          `Hex Data:\n\n` +
+          `${data.rawData}`
+      } else {
+        contentText = 
+          `From: ${accountInfo?.address}\n\n` + 
+          `To: ${data.to}\n\n` + 
+          `Amount ${data.amount}\n\n` +
+          `Chain: ${transactionParams.chain}\n\n` +
+          `Gasfee:\n\n` + 
+            (decodedFee ? (`__cointype: ${decodedFee.symbol}\n\n` + `__amount: ${decodedFee.value}\n\n`) : `0\n\n`) +
+          `Hex Data:\n\n` +
+          `0x`
+      }
+      return contentText
+    })
+  }
+
+  const contentTxtComponents = []
+
+  if (contentTxtArray.length) {
+    contentTxtArray.forEach((txt) => {
+      contentTxtComponents.push(text(txt))
+      contentTxtComponents.push(divider())
+    })
   }
 
   const result = await snap.request({
@@ -75,7 +90,7 @@ export async function sendTransaction(
         heading('Send Transaction?'),
         text('Please verify the transaction to be send'),
         divider(),
-        text(contentText)
+        ...contentTxtComponents,
       ])
     },
   });
