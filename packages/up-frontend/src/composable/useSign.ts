@@ -117,6 +117,7 @@ export const useSign = () => {
       const gasLimit = feeItems.value.find((x) => x.coin.symbol === signStore.feeSymbol)?.fee
         .gasLimit
 
+      // await snapConnect()
       const rpcRes = await sendTransactionWithMM(
         {
           env: sdkConfig.net,

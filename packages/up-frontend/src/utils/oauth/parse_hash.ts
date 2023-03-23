@@ -94,8 +94,8 @@ export const parseOAuthHash = async (loading: any) => {
       await useUserStore().init()
       await useUserStore().fetchBalances()
       await useUserStore().checkKeysetHash()
-      await router.replace(sessionStorage.path || '/send/sign')
       signStore.updateGasFee()
+      router.replace(sessionStorage.path || '/send/sign')
       return
     }
 
@@ -105,7 +105,7 @@ export const parseOAuthHash = async (loading: any) => {
       LocalStorageService.remove('GUARDIAN_ORIGIN_STATE')
       await useUserStore().init()
       await updateUpSignToken(id_token, handleOAuthForSetGuardian)
-      await router.replace('/setting/guardian')
+      router.replace('/setting/guardian')
       return
     }
 
@@ -117,7 +117,7 @@ export const parseOAuthHash = async (loading: any) => {
       await useUserStore().init()
       await useUserStore().fetchBalances()
       await useUserStore().checkKeysetHash()
-      await router.replace('/')
+      router.replace('/')
       return
     }
 

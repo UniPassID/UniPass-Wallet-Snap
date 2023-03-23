@@ -150,7 +150,6 @@ export const useSignStore = defineStore({
       }
     },
     async initTransactionData(appSetting: AppSettings, payload: UPTransactionMessage) {
-      console.log('initTransactionData')
       this.feeOptions = []
       this.initAppSetting(appSetting)
       const transactionCards = await analyzeTransactionData(payload, appSetting.chain)
@@ -268,9 +267,6 @@ export const useSignStore = defineStore({
     init(chain: ChainType, symbol: string) {
       this.symbol = symbol
       this.chain = chain
-      if (!this.coin) {
-        router.back()
-      }
     },
     initCards(cards: TransactionCard[]) {
       this.cards = cards
@@ -280,15 +276,11 @@ export const useSignStore = defineStore({
         this.symbol = symbol
       }
       this.chain = chain
-      if (!this.coin) {
-        router.back()
-      }
     },
     async updateGasFee() {
       console.log('updateGasFee')
       const { t: $t } = i18n.global
       try {
-        this.feeOptions = []
         this.gasFeeLoading = true
         await this._updateGasFee()
       } catch (e) {
@@ -308,7 +300,9 @@ export const useSignStore = defineStore({
       }
       const { isFeeRequired, feeTokens, feeReceiver, discount, gasPrice } =
         await this._simulateTransaction()
+
       if (isFeeRequired) {
+        this.feeOptions = []
         feeTokens.forEach(({ token, gasUsed, nativeTokenPrice, tokenPrice }) => {
           const coinToken = coinStore.coins.find(
             (x) =>

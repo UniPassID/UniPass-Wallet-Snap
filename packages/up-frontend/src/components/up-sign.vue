@@ -22,18 +22,22 @@
           <span>{{ $t('NoRisk') }}</span> -->
         </div>
       </template>
-      <up-sign-card
-        v-for="(card, i) in signStore.cards"
-        v-show="!props.syncMode"
-        v-model:show="card.show"
-        :type="card.type"
-        :data="card.data"
-        :actionName="card.actionName"
-        :icon="signStore.coin?.icon"
-        :rawData="card.rawData"
-        :transaction="transaction"
-        :key="i"
-      />
+      <div class="up-sign-card-container">
+        <up-sign-card
+          v-for="(card, i) in signStore.cards"
+          v-show="!props.syncMode"
+          v-model:show="card.show"
+          :type="card.type"
+          :data="card.data"
+          :actionName="card.actionName"
+          :icon="signStore.coin?.icon"
+          :rawData="card.rawData"
+          :transaction="transaction"
+          :total="signStore.cards.length"
+          :current="i"
+          :key="i"
+        />
+      </div>
       <div class="up-sign-card" v-if="props.syncMode">
         <div class="top">
           <div class="title">Sync or Deploy Wallet</div>
@@ -310,6 +314,10 @@ const referrerHost = computed(() => {
       line-height: 20px;
       border-radius: 0;
     }
+  }
+  .up-sign-card-container {
+    background: var(--up-card-bg);
+    border-radius: 12px;
   }
 }
 </style>

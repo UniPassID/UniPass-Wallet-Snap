@@ -2,7 +2,11 @@
   <div class="up-sign-card" :class="{ show: props.show }">
     <template v-if="props.type === 'send-token'">
       <div class="title" @click="$emit('update:show', !props.show)">
-        <span>{{ $t('SendToken') }}</span>
+        <span>{{
+          props.total > 1
+            ? `${props.actionName ?? 'unknown'} (${props.current + 1}/${props.total})`
+            : $t('SendToken')
+        }}</span>
         <up-icon name="select" />
       </div>
       <template v-if="props.show">
@@ -30,13 +34,17 @@
     </template>
     <template v-else-if="props.type === 'contract-call'">
       <div class="title" @click="$emit('update:show', !props.show)">
-        <span>{{ $t('ContractCall') }}</span>
+        <span>{{
+          props.total > 1
+            ? `${props.actionName ?? 'unknown'} (${props.current + 1}/${props.total})`
+            : $t('ContractCall')
+        }}</span>
         <up-icon name="select" />
       </div>
       <template v-if="props.show">
         <div class="contract-box">
           <div class="address-box">
-            <div>{{ $t('ContractAddress') }}</div>
+            <div>{{ props.total > 1 ? 'Interact With' : $t('ContractAddress') }}</div>
             <div class="address">
               <el-popover placement="top-end" :width="240" trigger="hover" :content="data.to">
                 <template #reference>
@@ -59,7 +67,11 @@
     </template>
     <template v-else-if="props.type === 'send-nft'">
       <div class="title" @click="$emit('update:show', !props.show)">
-        <span>{{ $t('SendNFT') }}</span>
+        <span>{{
+          props.total > 1
+            ? `${props.actionName ?? 'unknown'} (${props.current + 1}/${props.total})`
+            : $t('SendNFT')
+        }}</span>
         <up-icon name="select" />
       </div>
       <template v-if="props.show">
@@ -116,6 +128,8 @@ interface Props {
   transaction?: TransactionProps
   actionName?: string
   rawData?: UPTransactionMessage
+  total: number
+  current: number
 }
 
 const props = withDefaults(defineProps<Props>(), {

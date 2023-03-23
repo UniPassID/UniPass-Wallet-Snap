@@ -29,13 +29,14 @@ const init = async () => {
   // Make sure the unreal callback function is before the async function
   await sdkHandle.initUserStoreFromSDK()
 
-  await walletConnectStore.init()
+  // await walletConnectStore.init()
 
   registerPopupHandler(async (event: MessageEvent) => {
     if (typeof event.data !== 'object') return
     if (event.data.type !== 'UP_TRANSACTION') return
     try {
       const { payload, appSetting } = event.data as UPMessage
+      console.log('in popupHandler', payload, appSetting)
       if (appSetting && payload) {
         signStore.initTransactionData(appSetting, JSON.parse(payload) as UPTransactionMessage)
       }

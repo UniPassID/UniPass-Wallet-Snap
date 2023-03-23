@@ -44,7 +44,35 @@ export async function sendTransaction(
     decodedFee = await feeDecoder(transactionParams.fee, transactionParams.chain, unipassWalletProps.env)
   }
 
-  if (Array.isArray(decodedData)) {
+  if (Array.isArray(decodedData) && decodedData.length > 1) {
+    let commonHead = 
+      `From: ${accountInfo?.address}\n\n` + 
+      `Chain: ${transactionParams.chain}\n\n` +
+      `Gasfee:\n\n` + 
+            (decodedFee ? (`__cointype: ${decodedFee.symbol}\n\n` + `__amount: ${decodedFee.value}\n\n`) : '0\n\n')
+    
+    let childTxtArray = decodedData.map((data, index) => {
+      let contentText = ''
+      if (data.type === 'contract-call') {
+        contentText = 
+          `(${index + 1}/${decodedData.length}) ${data.function}\n\n` + 
+          `Interacted With (To): ${data.to}\n\n` + 
+          `Function: ${data.function}\n\n` +
+            getFunctionText(data.name, data.args[0], data.amount) + 
+          `Hex Data:\n\n` +
+          `${data.rawData}`
+      } else {
+        contentText = 
+          `(${index + 1}/${decodedData.length})\n\n ${data.function}` + 
+          `To: ${data.to}\n\n` + 
+          `Amount ${data.amount}\n\n` +
+          `Hex Data:\n\n` +
+          `0x`
+      }
+      return text(contentText)
+    })
+    contentTxtArray = [text(commonHead), divider(), ...childTxtArray]
+  } else if (decodedData.length) {
     contentTxtArray = decodedData.map(data => {
       let contentText = ''
       if (data.type === 'contract-call') {
@@ -69,16 +97,7 @@ export async function sendTransaction(
           `Hex Data:\n\n` +
           `0x`
       }
-      return contentText
-    })
-  }
-
-  const contentTxtComponents = []
-
-  if (contentTxtArray.length) {
-    contentTxtArray.forEach((txt) => {
-      contentTxtComponents.push(text(txt))
-      contentTxtComponents.push(divider())
+      return text(contentText)
     })
   }
 
@@ -90,7 +109,8 @@ export async function sendTransaction(
         heading('Send Transaction?'),
         text('Please verify the transaction to be send'),
         divider(),
-        ...contentTxtComponents,
+        ...contentTxtArray,
+        divider(),
       ])
     },
   });
