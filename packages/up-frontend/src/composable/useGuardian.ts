@@ -306,7 +306,7 @@ export const useGuardian = () => {
       if (auditRes.data.approveStatus === AuditStatus.Approved) {
         try {
           const prefix =
-            'You are currently updating the guardian details for your Smart wallet Snap'
+            'You are currently updating the guardian details for your Smart Wallet Snap'
           const sig = await signMsgWithMM(digestHash, masterKeyAddress, email, prefix)
           const masterKeySig = solidityPack(['bytes', 'uint8'], [sig, SignTypeUP.EthSign])
 

@@ -31,8 +31,8 @@ const walletConnectConfig = {
   projectId: '384712c485fcfe8ad66170202fb32741',
   relayUrl: 'wss://relay.walletconnect.com',
   metadata: {
-    name: 'Smart wallet Snap',
-    description: 'Smart wallet Snap for WalletConnect',
+    name: 'Smart Wallet Snap',
+    description: 'Smart Wallet Snap for WalletConnect',
     url: 'https://wallet.unipass.id',
     icons: ['https://avatars.githubusercontent.com/u/37784886'],
   },

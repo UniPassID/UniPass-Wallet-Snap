@@ -74,6 +74,7 @@ export interface SignStoreState {
   symbol: string
   transaction: UPTransactionMessage
   gasFeeLoading: boolean
+  gasFeeLoadSuccess: boolean
   redirectUrl?: string
   signMassage: SignMessage
   walletConnectId?: number
@@ -94,6 +95,7 @@ export const useSignStore = defineStore({
       referrer: '',
       chain: 'polygon',
       symbol: 'MATIC',
+      gasFeeLoadSuccess: true,
       transaction: {
         from: '',
         data: '',
@@ -156,7 +158,7 @@ export const useSignStore = defineStore({
       if (!transactionCards) return
       this.transaction = payload
       this.cards = transactionCards
-      this.updateGasFee()
+      await this.updateGasFee()
     },
     initAppSetting(appSetting?: AppSettings) {
       if (appSetting) {
@@ -338,6 +340,7 @@ export const useSignStore = defineStore({
     },
     async _simulateTransaction(): Promise<SimulateResult> {
       const userStore = useUserStore()
+      const signStore = useSignStore()
       const transaction = generateSimulateTransaction()
       if (!transaction) {
         throw new Error('Expected Transaction For Simulating Transaction')
@@ -347,11 +350,12 @@ export const useSignStore = defineStore({
         // @ts-ignore
         userStore.unipassWallet.setAccountInfo(userStore.accountInfo)
         const simulateResult = await userStore.unipassWallet.simulateTransactions(transaction)
+        signStore.gasFeeLoadSuccess = true
         return simulateResult
       } catch (err) {
         // TODO: for account sync, return default gas limit 500000
         console.log('Need Account Sync', err)
-
+        signStore.gasFeeLoadSuccess = false
         return {
           feeTokens: [
             {

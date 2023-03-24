@@ -18,8 +18,10 @@ import {
   postMessage,
 } from '@unipasswallet/popup-utils'
 import { isPopupEnv } from '@/service/check-environment'
+import { ElMessageBox } from 'element-plus'
 
 const { signStore } = useSign()
+const { t: $t } = useI18n()
 const walletConnectStore = useWalletConnectStore()
 
 const init = async () => {
@@ -36,10 +38,6 @@ const init = async () => {
     if (event.data.type !== 'UP_TRANSACTION') return
     try {
       const { payload, appSetting } = event.data as UPMessage
-      console.log('in popupHandler', payload, appSetting)
-      if (appSetting && payload) {
-        signStore.initTransactionData(appSetting, JSON.parse(payload) as UPTransactionMessage)
-      }
 
       // referrer
       if (sessionStorage.referrer) {
@@ -47,6 +45,19 @@ const init = async () => {
       } else {
         signStore.referrer = appSetting?.appName ?? window.document.referrer
         sessionStorage.referrer = window.document.referrer
+      }
+
+      console.log('in popupHandler', payload, appSetting)
+      if (appSetting && payload) {
+        await signStore.initTransactionData(appSetting, JSON.parse(payload) as UPTransactionMessage)
+        if (!signStore.gasFeeLoadSuccess) {
+          ElMessageBox.alert($t('GasFeeLoadingDesc'), $t('GasFeeLoadingFailed'), {
+            confirmButtonText: $t('Confirm'),
+            showClose: false,
+          }).then(() => {
+            reject()
+          })
+        }
       }
     } catch (err) {
       console.error('err', err)

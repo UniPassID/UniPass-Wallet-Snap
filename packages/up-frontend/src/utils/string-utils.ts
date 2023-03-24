@@ -35,9 +35,9 @@ export function prepareSignMessage(scene: 'signUp' | 'signIn' | 'recovery', mast
   const expirationTime = dayjs().add(10, 'minute').toISOString()
   let message = ''
   const descriptionMap = {
-    signUp: `Smart wallet Snap wants you to sign up with your Ethereum account:\n${masterKey}\n\nI accept to register Smart wallet Snap with my Ethereum account.\n\n`,
-    signIn: `Smart wallet Snap wants you to sign in with your Ethereum account:\n${masterKey}\n\nI accept to sign in to Smart wallet Snap with my Ethereum account.\n\n`,
-    recovery: `Smart wallet Snap wants you to recover with your Ethereum account:\n${masterKey}\n\nI accept to recover Smart wallet Snap with my Ethereum account.\n\n`,
+    signUp: `Smart Wallet Snap wants you to sign up with your Ethereum account:\n${masterKey}\n\nI accept to register Smart Wallet Snap with my Ethereum account.\n\n`,
+    signIn: `Smart Wallet Snap wants you to sign in with your Ethereum account:\n${masterKey}\n\nI accept to sign in to Smart Wallet Snap with my Ethereum account.\n\n`,
+    recovery: `Smart Wallet Snap wants you to recover with your Ethereum account:\n${masterKey}\n\nI accept to recover Smart Wallet Snap with my Ethereum account.\n\n`,
   }
   message += descriptionMap[scene]
   message += `URI: ${uri}\n\n`
