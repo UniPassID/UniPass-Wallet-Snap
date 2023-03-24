@@ -61,7 +61,7 @@
           </div>
         </div>
       </div>
-      <div class="up-sign-card" v-if="signStore.chain !== 'rangers'">
+      <div class="up-sign-card gas-card" v-if="signStore.chain !== 'rangers'">
         <div class="top">
           <div class="title">{{ $t('GasFee') }}</div>
           <div class="paid-by" v-if="isFreeFee">
@@ -146,7 +146,7 @@ const isFreeFee = computed(() => {
 })
 
 const chainName = computed(() => {
-  return getChainName(signStore.coin?.chain)
+  return getChainName(signStore.chain || signStore.coin?.chain)
 })
 
 interface Props {
@@ -318,6 +318,10 @@ const referrerHost = computed(() => {
   .up-sign-card-container {
     background: var(--up-card-bg);
     border-radius: 12px;
+    margin-top: 20px;
+  }
+  .gas-card {
+    margin-top: 20px;
   }
 }
 </style>

@@ -43,9 +43,9 @@ const init = async () => {
 
       // referrer
       if (sessionStorage.referrer) {
-        signStore.referrer = sessionStorage.referrer
+        signStore.referrer = appSetting?.appName ?? sessionStorage.referrer
       } else {
-        signStore.referrer = window.document.referrer
+        signStore.referrer = appSetting?.appName ?? window.document.referrer
         sessionStorage.referrer = window.document.referrer
       }
     } catch (err) {

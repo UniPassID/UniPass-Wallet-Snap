@@ -104,9 +104,9 @@ onBeforeMount(async () => {
       await initStateForSDK(appSetting)
       // referrer
       if (sessionStorage.referrer) {
-        userStore.referrer = sessionStorage.referrer
+        userStore.referrer = appSetting?.appName ?? sessionStorage.referrer
       } else {
-        userStore.referrer = window.document.referrer
+        userStore.referrer = appSetting?.appName ?? window.document.referrer
         sessionStorage.referrer = window.document.referrer
       }
       if (authorize) {
@@ -194,6 +194,17 @@ const approve = async () => {
 const reject = () => {
   if (route.query.type === 'wallet-connect') {
     router.replace('/')
+    return
+  }
+
+  // popup must be first
+  if (isPopupEnv()) {
+    postMessage(
+      new UPMessage(
+        'UP_RESPONSE',
+        JSON.stringify(new UPResponse('DECLINE', 'user reject connect')),
+      ),
+    )
     return
   }
 }

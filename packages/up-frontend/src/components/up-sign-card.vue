@@ -2,11 +2,7 @@
   <div class="up-sign-card" :class="{ show: props.show }">
     <template v-if="props.type === 'send-token'">
       <div class="title" @click="$emit('update:show', !props.show)">
-        <span>{{
-          props.total > 1
-            ? `${props.actionName ?? 'unknown'} (${props.current + 1}/${props.total})`
-            : $t('SendToken')
-        }}</span>
+        <span>{{ $t('SendToken') }}</span>
         <up-icon name="select" />
       </div>
       <template v-if="props.show">
@@ -34,17 +30,18 @@
     </template>
     <template v-else-if="props.type === 'contract-call'">
       <div class="title" @click="$emit('update:show', !props.show)">
-        <span>{{
-          props.total > 1
-            ? `${props.actionName ?? 'unknown'} (${props.current + 1}/${props.total})`
-            : $t('ContractCall')
-        }}</span>
+        <span>
+          {{
+            (props.actionName ?? 'unknown') +
+            (props.total > 1 ? ` (${props.current + 1}/${props.total})` : '')
+          }}
+        </span>
         <up-icon name="select" />
       </div>
       <template v-if="props.show">
         <div class="contract-box">
           <div class="address-box">
-            <div>{{ props.total > 1 ? 'Interact With' : $t('ContractAddress') }}</div>
+            <div>Interact With</div>
             <div class="address">
               <el-popover placement="top-end" :width="240" trigger="hover" :content="data.to">
                 <template #reference>
@@ -67,11 +64,7 @@
     </template>
     <template v-else-if="props.type === 'send-nft'">
       <div class="title" @click="$emit('update:show', !props.show)">
-        <span>{{
-          props.total > 1
-            ? `${props.actionName ?? 'unknown'} (${props.current + 1}/${props.total})`
-            : $t('SendNFT')
-        }}</span>
+        <span>{{ $t('SendNFT') }}</span>
         <up-icon name="select" />
       </div>
       <template v-if="props.show">
@@ -151,7 +144,6 @@ const unipass = useUniPass()
 
 <style lang="scss">
 .up-sign-card {
-  margin-top: 20px;
   background: var(--up-card-bg);
   border-radius: 12px;
   padding: 20px;
