@@ -1,6 +1,6 @@
 {
-  "name": "up-snap-ui",
-  "version": "0.0.13",
+  "name": "@unipasswallet/smart-wallet-snap",
+  "version": "0.1.0-alpha.1",
   "license": "Apache 2.0",
   "author": "johnz",
   "main": "dist/bundle.js",
