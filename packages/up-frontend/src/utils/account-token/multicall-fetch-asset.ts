@@ -52,6 +52,7 @@ export async function multicallGetAsset(
         balance: formatUnits(transformed[`TOKEN_BALANCE_NATIVE`], 18),
         contractAddress: ADDRESS_ZERO,
         price: 0,
+        icon: '',
         cmcId: configChainInfo.cmcId,
         gasFee: '0',
       },
@@ -68,6 +69,7 @@ export async function multicallGetAsset(
         balance: formatUnits(transformed[`TOKEN_BALANCE_${i}`], token.decimals),
         contractAddress,
         price: 0,
+        icon: token.logoURI || '',
         cmcId: token.cmcId ?? 0,
         gasFee: '0',
       })

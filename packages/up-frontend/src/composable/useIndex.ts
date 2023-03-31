@@ -35,7 +35,10 @@ export const useIndex = () => {
   })
 
   const sendCoin = (i: number) => {
-    const coin = userStore.coins[i]
+    const coins = userStore.coins.filter((coin) => {
+      return !(coin.balance === '0.0' && (coin.chain === 'bsc' || coin.chain === 'rangers'))
+    })
+    const coin = coins[i]
     router.push({
       path: '/send',
       query: {

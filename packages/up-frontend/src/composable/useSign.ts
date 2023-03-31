@@ -320,6 +320,20 @@ export const useSign = () => {
 
   const updateGasFee = async () => {
     try {
+      const {
+        data: { syncStatus },
+      } = await api.getSyncStatus({
+        email: userStore.accountInfo.email,
+        authChainNode: getAuthNodeChain(signStore.chain),
+      })
+
+      if (syncStatus === SyncStatusEnum.NotReceived || syncStatus === SyncStatusEnum.NotSynced) {
+        checkStatusForSendTransaction(
+          'multiSync',
+          JSON.stringify({ ...signStore.$state, loading: false }),
+        )
+        return
+      }
       signStore.gasFeeLoading = true
       await signStore.updateGasFee()
     } catch (e) {

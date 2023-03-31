@@ -24,6 +24,9 @@ import { initTheme } from '@/utils/init-theme'
 import { convertSelector } from '@/service/convert-selector'
 import { analyzeTransactionData, generateSimulateTransaction } from '@/service/tx-data-analyzer'
 import i18n from '@/plugins/i18n'
+import api, { SyncStatusEnum } from '@/service/backend'
+import { getAuthNodeChain } from '@/service/chains-config'
+import { checkStatusForSendTransaction } from '@/utils/oauth/check_up_sign_token'
 
 export interface TransactionCard {
   show: boolean
@@ -281,6 +284,22 @@ export const useSignStore = defineStore({
     },
     async updateGasFee() {
       console.log('updateGasFee')
+      const userStore = useUserStore()
+      const signStore = useSignStore()
+      const {
+        data: { syncStatus },
+      } = await api.getSyncStatus({
+        email: userStore.accountInfo.email,
+        authChainNode: getAuthNodeChain(signStore.chain),
+      })
+
+      if (syncStatus === SyncStatusEnum.NotReceived || syncStatus === SyncStatusEnum.NotSynced) {
+        checkStatusForSendTransaction(
+          'multiSync',
+          JSON.stringify({ ...signStore.$state, loading: false }),
+        )
+        return
+      }
       const { t: $t } = i18n.global
       try {
         this.gasFeeLoading = true

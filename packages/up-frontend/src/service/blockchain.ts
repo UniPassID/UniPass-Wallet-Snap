@@ -146,4 +146,23 @@ const blockchain = {
     return getWalletAddress(MainModuleAddress, keysetHash)
   },
 }
+
+export const waitForBlocks = async (blocks: number, provider?: providers.Provider) => {
+  if (!provider) return
+  let first: number
+  await new Promise((resolve) => {
+    provider.on('block', (blockNumber) => {
+      console.log('block number', blockNumber)
+      if (!first) {
+        first = blockNumber
+      } else {
+        if (blockNumber >= first + blocks) {
+          resolve(blockNumber)
+          provider.off('block')
+        }
+      }
+    })
+  })
+}
+
 export default blockchain

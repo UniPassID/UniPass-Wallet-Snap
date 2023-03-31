@@ -89,7 +89,11 @@
       <div class="coin-box">
         <div class="coin-title">{{ $t('Token') }}</div>
         <el-table
-          :data="userStore.coins"
+          :data="
+            userStore.coins.filter((coin) => {
+              return !(coin.balance === '0.0' && (coin.chain === 'bsc' || coin.chain === 'rangers'))
+            })
+          "
           height="520px"
           header-cell-class-name="coin-box-title"
           row-class-name="coin-row"

@@ -8,7 +8,7 @@ import router from '@/plugins/router'
 import api from '@/service/backend'
 import { LocalStorageService } from '@/store/storages'
 import { useSignStore } from '@/store/sign'
-import blockchain from '@/service/blockchain'
+import blockchain, { waitForBlocks } from '@/service/blockchain'
 import { useOAuthLoginStore } from '@/store/oauth_login'
 import { useUserStore } from '@/store/user'
 import {
@@ -85,15 +85,19 @@ export const parseOAuthHash = async (loading: any) => {
     if (signOriginState) {
       LocalStorageService.remove('SIGN_TX_ORIGIN_STATE')
       const signStore = useSignStore()
+      const userStore = useUserStore()
       await signStore.restoreSignState(signOriginState, id_token, 'sendTx')
-      if (signStore.chain === 'eth') {
-        await new Promise((resolve) => {
-          setTimeout(resolve, 5000)
-        })
-      }
       await useUserStore().init()
       await useUserStore().fetchBalances()
       await useUserStore().checkKeysetHash()
+      if (signStore.chain === 'eth') {
+        const unipassWallet = useUserStore().unipassWallet
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        unipassWallet.setAccountInfo(userStore.accountInfo)
+        const provider = (await unipassWallet.wallet('eth')).provider
+        await waitForBlocks(1, provider)
+      }
       signStore.updateGasFee()
       router.replace(sessionStorage.path || '/send/sign')
       return
