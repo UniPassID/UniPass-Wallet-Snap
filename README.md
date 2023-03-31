@@ -2,7 +2,7 @@
 
 An example for UniPass Wallet to integrat with [Metamask Snaps](https://docs.metamask.io/guide/snaps.html#what-is-snaps).
 
->You can try online demo: https://up-wallet-snaps.vercel.app/
+>You can try online demo: https://testnet.snap.unipass.id/
 
 
 There are separate projects for the frontend and snaps.
