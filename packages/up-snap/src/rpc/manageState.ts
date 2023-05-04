@@ -1,15 +1,19 @@
 import { ManageStateRequest } from '../interface';
-import { ManageStateOperation } from '@metamask/rpc-methods'
 
 export async function manageState(
   params: ManageStateRequest,
 ) {
-  const result = await snap.request({
+  const param = {
+    operation: params.type,
+    newState: params.data
+  }
+  // newState set to undefined will make crash, so need to delete
+  if (!param.newState) {
+    delete param.newState
+  }
+ const result = await snap.request({
     method: 'snap_manageState',
-    params: {
-      operation: params.type as ManageStateOperation,
-      newState: params.data
-    },
+    params: param,
   });
-  return result;
+  return result
 }

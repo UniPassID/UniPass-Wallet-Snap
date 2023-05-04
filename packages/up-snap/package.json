@@ -1,45 +1,62 @@
 {
   "name": "@unipasswallet/smart-wallet-snap",
   "version": "0.1.0-alpha.2",
-  "license": "Apache 2.0",
-  "author": "johnz",
+  "description": "@unipasswallet/smart-wallet-snap: Metamask snap for UniPass Wallet",
+  "license": "Apache-2.0",
   "main": "dist/bundle.js",
-  "typings": "dist/index.d.ts",
   "files": [
-    "dist/bundle.js",
+    "dist/",
+    "images/",
     "snap.manifest.json"
   ],
   "scripts": {
-    "build": "yarn build:snap",
-    "rebuild": "yarn build:snap && yarn test:snap",
-    "start:dev": "mm-snap watch",
-    "build:snap": "rm -rf build && mm-snap build"
-  },
-  "prettier": {
-    "printWidth": 80,
-    "semi": true,
-    "singleQuote": true,
-    "trailingComma": "es5"
-  },
-  "devDependencies": {
-    "@metamask/snaps-cli": "0.18.1",
-    "@size-limit/preset-small-lib": "^8.0.1",
-    "husky": "^8.0.1",
-    "size-limit": "^8.0.1",
-    "ts-node": "^10.8.0",
-    "typescript": "4.3.5"
+    "build": "mm-snap build",
+    "build:clean": "yarn clean && yarn build",
+    "build:website": "node ./scripts/build-website.js",
+    "clean": "rimraf dist",
+    "lint": "yarn lint:eslint && yarn lint:misc --check",
+    "lint:eslint": "eslint . --cache --ext js,ts",
+    "lint:fix": "yarn lint:eslint --fix && yarn lint:misc --write",
+    "lint:misc": "prettier '**/*.json' '**/*.md' '!CHANGELOG.md' --ignore-path .gitignore",
+    "serve": "mm-snap serve",
+    "start": "mm-snap watch"
   },
   "dependencies": {
-    "@metamask/key-tree": "^4.0.0",
-    "@metamask/rpc-methods": "^0.29.0",
-    "@metamask/snap-types": "^0.23.0",
-    "@metamask/snaps-types": "^0.29.0",
-    "@metamask/snaps-ui": "^0.29.0",
+    "@metamask/snaps-types": "^0.32.2",
+    "@metamask/snaps-ui": "^0.32.2",
+    "buffer": "^6.0.3"
+  },
+  "devDependencies": {
+    "@lavamoat/allow-scripts": "^2.0.3",
+    "@metamask/auto-changelog": "^2.6.0",
+    "@metamask/eslint-config": "^10.0.0",
+    "@metamask/eslint-config-jest": "^10.0.0",
+    "@metamask/eslint-config-nodejs": "^10.0.0",
+    "@metamask/eslint-config-typescript": "^10.0.0",
+    "@metamask/snaps-cli": "^0.32.2",
+    "@typescript-eslint/eslint-plugin": "^5.33.0",
+    "@typescript-eslint/parser": "^5.33.0",
     "@unipasswallet/provider": "^0.3.0-alpha.9",
     "@unipasswallet/relayer": "^0.3.0-alpha.9",
     "@unipasswallet/sdk": "^0.3.0-alpha.9",
     "@unipasswallet/wallet": "^0.3.0-alpha.9",
-    "ethers": "^5.7.0"
+    "eslint": "^8.21.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jest": "^26.8.2",
+    "eslint-plugin-jsdoc": "^39.2.9",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "ethers": "^5.7.0",
+    "prettier": "^2.2.1",
+    "prettier-plugin-packagejson": "^2.2.11",
+    "rimraf": "^3.0.2",
+    "through2": "^4.0.2",
+    "typescript": "^4.7.4"
+  },
+  "packageManager": "yarn@3.2.1",
+  "engines": {
+    "node": ">=16.0.0"
   },
   "publishConfig": {
     "access": "public",

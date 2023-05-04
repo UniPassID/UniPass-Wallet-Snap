@@ -1,4 +1,4 @@
-import { ChainType, Environment, TransactionFee } from '../provider/interface/unipassWalletProvider'
+import { ChainType, Environment, TransactionFee, UniTransaction } from '../provider/interface/unipassWalletProvider'
 import { TransactionProps } from '@unipasswallet/provider';
 import { BigNumber, Contract, providers } from 'ethers'
 import { formatUnits, Interface } from 'ethers/lib/utils'
@@ -20,7 +20,7 @@ const CHAIN_SYMBOL = {
 	'arbitrum': 'ETH'
 }
 
-async function decodeTxData(tx, from, chain, env) {
+async function decodeTxData(tx: UniTransaction, from: string, chain: ChainType, env: Environment) {
   if (tx.data && tx.data !== '0x') {
     const functionName = await convertSelector(tx.data as string)
     const ABI_TX = [
@@ -61,7 +61,7 @@ async function decodeTxData(tx, from, chain, env) {
       }
 
       if (decodedData.args[0] !== ADDRESS_ZERO) {
-        const contract = new Contract(tx.target || tx.to as string, ABI, new providers.JsonRpcProvider(rpc_url))
+        const contract = new Contract((tx.target || tx.to) as string, ABI, new providers.JsonRpcProvider(rpc_url))
         const decimals = await contract.decimals()
         amount = formatUnits(BigNumber.from(decodedData.args[1]), decimals)
       }
@@ -121,5 +121,5 @@ export const txDecoder = async (transaction: TransactionProps, env: Environment,
   const tx = transaction.tx
   const chain = transaction.chain
 
-  return await decodeTxData(tx, from, chain, env)
+  return await decodeTxData(tx, from, chain!, env)
 }

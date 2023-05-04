@@ -6,7 +6,7 @@ import { extractMasterPrivateKey } from './getMasterKeyAddress';
 import UnipassWalletProvider from '../provider';
 import { txDecoder, feeDecoder } from '../util/decoder';
 import { getFunctionText } from '../util';
-import { panel, text, heading, divider } from '@metamask/snaps-ui';
+import { panel, text, heading, divider, NodeType } from '@metamask/snaps-ui';
 import { ManageStateOperation } from '@metamask/rpc-methods'
 
 export async function sendTransaction(
@@ -37,11 +37,11 @@ export async function sendTransaction(
   });
 
   const decodedData = await txDecoder(transactionParams, unipassWalletProps.env, accountInfo?.address as string)
-  let decodedFee
-  let contentTxtArray = []
+  let decodedFee: { symbol: any; value: any; } | undefined = undefined
+  let contentTxtArray: ({ value: string; type: NodeType.Text; } | { type: NodeType.Divider; })[] = []
 
   if (transactionParams.fee) {
-    decodedFee = await feeDecoder(transactionParams.fee, transactionParams.chain, unipassWalletProps.env)
+    decodedFee = await feeDecoder(transactionParams.fee, transactionParams.chain!, unipassWalletProps.env)
   }
 
   if (Array.isArray(decodedData) && decodedData.length > 1) {
@@ -104,7 +104,7 @@ export async function sendTransaction(
   const result = await snap.request({
     method: 'snap_dialog',
     params: {
-      type: 'Confirmation',
+      type: 'confirmation',
       content: panel([
         heading('Send Transaction?'),
         text('Please verify the transaction to be send'),
