@@ -1,31 +1,14 @@
 {
-  // see https://www.typescriptlang.org/tsconfig to better understand tsconfigs
   "compilerOptions": {
-    "module": "commonjs",
-    "lib": [
-      "dom",
-      "ES2017"
-    ],
+    "declaration": true,
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "target": "ES2017",
-    // "noImplicitAny": true,
-    "strictFunctionTypes": true,
-    "strictBindCallApply": true,
-    "noImplicitThis": true,
-    "noImplicitReturns": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "useUnknownInCatchVariables": false,
     "sourceMap": true,
-    "outDir": "./build",
-    "typeRoots": [
-      "./node_modules/@types",
-      "../../node_modules/@types",
-      "./@types"
-    ],
-    "skipLibCheck": true,
+    "strict": true,
+    "target": "ES2017"
   },
-  "include": [
-    "src/**/*.ts",
-    "test/**/*ts"
-  ],
-  "files": ["../../node_modules/@metamask/snap-types/global.d.ts"],
+  "exclude": ["**/__snapshots__/**", "**/test/**", "**/*.test.ts"]
 }

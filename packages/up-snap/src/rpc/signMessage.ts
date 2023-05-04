@@ -26,7 +26,7 @@ export async function signMessage(
   const result = await snap.request({
     method: 'snap_dialog',
     params: {
-      type: 'Confirmation',
+      type: 'confirmation',
       content: panel([
         heading('Sign Message?'),
         text('Please verify the message to be signed'),

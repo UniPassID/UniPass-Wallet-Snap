@@ -12,7 +12,7 @@ const abi = [
   },
 ]
 
-const unipassSelectorMap = {
+const uniPassSelectorMap: {[key: string]: string} = {
   a22cb465: 'setApprovalForAll',
 }
 
@@ -23,7 +23,7 @@ export const convertSelector = async (data: string): Promise<string> => {
     const selector = data.slice(2, 10)
 
     // save some crash abi function name for unipass
-    if (unipassSelectorMap[selector]) return unipassSelectorMap[selector]
+    if (selector in uniPassSelectorMap) return uniPassSelectorMap[selector]
 
     const rpc = chain_config['eth-mainnet'].rpc_url
 

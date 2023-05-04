@@ -30,6 +30,7 @@ export async function manageState(
   if (!state) {
     await snapConnect()
   }
+  console.log('wallet_invokeSnap', 'up_manageState')
   return window.ethereum.request({
     method: 'wallet_invokeSnap',
     params: {

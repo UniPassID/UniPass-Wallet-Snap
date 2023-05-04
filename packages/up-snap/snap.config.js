@@ -1,8 +1,24 @@
+const through = require('through2');
+
 module.exports = {
-    cliOptions: {
-      "dist": "dist",
-      "outfileName": "bundle.js",
-      "port":8080,
-      "src": "src/index.ts"
-    },
-  };
+  cliOptions: {
+    src: './src/index.ts',
+    port: 8080,
+  },
+  bundlerCustomizer: (bundler) => {
+    bundler.transform(function () {
+      let data = '';
+      return through(
+        function (buffer, _encoding, callback) {
+          data += buffer;
+          callback();
+        },
+        function (callback) {
+          this.push("globalThis.Buffer = require('buffer/').Buffer;");
+          this.push(data);
+          callback();
+        },
+      );
+    });
+  },
+};

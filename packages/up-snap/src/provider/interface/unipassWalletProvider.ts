@@ -41,9 +41,11 @@ interface UnipassWalletProps {
 interface UniTransaction {
   revertOnError?: boolean;
   gasLimit?: BigNumber;
-  target: BytesLike;
-  value: BigNumber;
-  data?: BytesLike;
+  target?: BytesLike;
+  value: string;
+  data?: string;
+  to?: string;
+  from?: string;
 }
 
 interface TransactionFee {

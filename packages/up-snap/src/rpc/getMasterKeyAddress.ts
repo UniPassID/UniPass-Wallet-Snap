@@ -3,7 +3,7 @@ import {
   // JsonBIP44CoinTypeNode,
 } from '@metamask/key-tree';
 // import { getMetamaskVersion, isNewerVersion } from '../util/version'
-import { hexlify, sha256, toUtf8Bytes } from 'ethers/lib/utils';
+import { sha256, toUtf8Bytes } from 'ethers/lib/utils';
 import { Wallet } from 'ethers';
 import { MasterKeyAddressRequest } from '../interface';
 
@@ -45,9 +45,8 @@ export async function extractMasterPrivateKey(
   });
 
   const extendedPrivateKey = await addressKeyDeriver(parseInt(addressIndex, 16));
-  const privateKey = extendedPrivateKey.privateKeyBuffer!.slice(0, 32);
-
-  return hexlify(privateKey);
+  //  no privateKeyBuffer in extendedPrivateKey
+  return extendedPrivateKey.privateKey!
 }
 
 /**
