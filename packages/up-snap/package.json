@@ -1,6 +1,6 @@
 {
   "name": "@unipasswallet/smart-wallet-snap",
-  "version": "0.1.0-alpha.3",
+  "version": "0.1.0-alpha.4",
   "description": "@unipasswallet/smart-wallet-snap: Metamask snap for UniPass Wallet",
   "license": "Apache-2.0",
   "main": "dist/bundle.js",

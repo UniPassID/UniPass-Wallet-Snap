@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0-alpha.4](https://github.com/UniPassID/UniPass-Wallet-Snap/compare/v0.1.0-alpha.3...v0.1.0-alpha.4) (2023-05-04)
+
 ## 0.1.0-alpha.3 (2023-05-04)
 
 
